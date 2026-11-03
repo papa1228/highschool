@@ -1,0 +1,1043 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>熊本県 全高校・高専未来キャリアシミュレーター</title>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Chart.js -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <!-- FontAwesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=M+PLUS+Rounded+1c:wght@400;600;800&family=Noto+Sans+JP:wght@400;500;700;900&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Noto Sans JP', 'M PLUS Rounded 1c', sans-serif;
+            background-color: #f8fafc;
+        }
+        .rounded-font {
+            font-family: 'M PLUS Rounded 1c', sans-serif;
+        }
+        .gradient-hero {
+            background: linear-gradient(135deg, #0f172a 0%, #1e3a8a 50%, #0284c7 100%);
+        }
+        .card-shadow {
+            box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.05), 0 8px 10px -6px rgba(0, 0, 0, 0.01);
+        }
+        .table-sticky-col {
+            position: sticky;
+            left: 0;
+            background-color: #f8fafc;
+            z-index: 10;
+        }
+        .fun-quote-bubble {
+            position: relative;
+            background: #f0fdf4;
+            border: 1px solid #bbf7d0;
+            border-radius: 1rem;
+        }
+        .fun-quote-bubble::before {
+            content: '';
+            position: absolute;
+            left: -8px;
+            top: 16px;
+            width: 0;
+            height: 0;
+            border-top: 6px solid transparent;
+            border-bottom: 6px solid transparent;
+            border-right: 8px solid #bbf7d0;
+        }
+    </style>
+</head>
+<body class="text-slate-800 antialiased min-h-screen flex flex-col">
+
+    <!-- Header -->
+    <header class="gradient-hero text-white py-6 px-4 shadow-md relative overflow-hidden">
+        <div class="max-w-6xl mx-auto flex flex-col md:flex-row items-start md:items-center justify-between gap-4 relative z-10">
+            <div>
+                <span class="bg-amber-400 text-slate-900 font-bold text-xs px-3 py-1 rounded-full inline-block mb-2 shadow">
+                    <i class="fa-solid fa-sparkles mr-1"></i> 熊本県内 主要高校・高専 在校生の声＆成長体験データ拡充版
+                </span>
+                <h1 class="text-2xl md:text-3xl font-extrabold rounded-font tracking-wide">
+                    熊本未来ナビ 〜高校・高専 進路比較シミュレーター〜
+                </h1>
+                <p class="text-blue-100 text-xs md:text-sm mt-1">
+                    気になる学校の「楽しさ・行事・部活」「成長できる探究・キャリア体験」「大学・TSMC/地元就職・年収」をまるごとシミュレーション！
+                </p>
+            </div>
+            
+            <!-- Mode Switch Tabs -->
+            <div class="bg-white/10 backdrop-blur-md p-1.5 rounded-2xl border border-white/20 flex gap-2 shrink-0 self-stretch md:self-auto justify-center">
+                <button id="tabSingleBtn" onclick="switchMainTab('single')" class="px-4 py-2 rounded-xl text-xs font-bold transition flex items-center gap-1.5 bg-white text-blue-900 shadow">
+                    <i class="fa-solid fa-user text-blue-600"></i> 1校詳細モード
+                </button>
+                <button id="tabCompareBtn" onclick="switchMainTab('compare')" class="px-4 py-2 rounded-xl text-xs font-bold transition flex items-center gap-1.5 text-white hover:bg-white/10">
+                    <i class="fa-solid fa-code-compare text-amber-300"></i> 3校比較モード
+                </button>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Container -->
+    <main class="max-w-6xl mx-auto w-full px-4 py-6 flex-grow">
+        
+        <!-- ================= MODE 1: SINGLE SCHOOL SIMULATION ================= -->
+        <div id="singleModeView" class="grid grid-cols-1 lg:grid-cols-12 gap-6">
+            
+            <!-- Left Controls (4 cols) -->
+            <div class="lg:col-span-4 space-y-5">
+                
+                <!-- Step 1: Select School -->
+                <div class="bg-white rounded-2xl p-5 card-shadow border border-slate-100">
+                    <h2 class="text-base font-bold text-slate-800 mb-3 flex items-center">
+                        <span class="bg-blue-600 text-white rounded-full w-6 h-6 inline-flex items-center justify-center text-xs mr-2 shadow">1</span>
+                        志望校（高校・高専）を選ぶ
+                    </h2>
+
+                    <!-- Filters -->
+                    <div class="space-y-2 mb-3">
+                        <div>
+                            <label class="block text-xs font-bold text-slate-600 mb-1"><i class="fa-solid fa-map-location-dot text-blue-500 mr-1"></i> エリア絞り込み</label>
+                            <select id="areaFilter" onchange="filterSchools()" class="w-full border border-slate-200 rounded-lg p-2 text-xs font-semibold text-slate-700 bg-slate-50 focus:ring-2 focus:ring-blue-500 outline-none">
+                                <option value="all">すべてのエリア（全県）</option>
+                                <option value="kosen">高専（熊本高専 各キャンパス）</option>
+                                <option value="kumamoto_city">熊本市エリア</option>
+                                <option value="north">県北エリア (合志・菊池・玉名・山鹿・阿蘇)</option>
+                                <option value="central">県中・宇城エリア (宇土・宇城・益城・御船等)</option>
+                                <option value="south">県南エリア (八代・水俣・芦北)</option>
+                                <option value="kuma">球磨・人吉エリア</option>
+                                <option value="amakusa">天草エリア</option>
+                            </select>
+                        </div>
+                        <div>
+                            <label class="block text-xs font-bold text-slate-600 mb-1"><i class="fa-solid fa-tags text-blue-500 mr-1"></i> タイプ絞り込み</label>
+                            <select id="typeFilter" onchange="filterSchools()" class="w-full border border-slate-200 rounded-lg p-2 text-xs font-semibold text-slate-700 bg-slate-50 focus:ring-2 focus:ring-blue-500 outline-none">
+                                <option value="all">すべてのタイプ</option>
+                                <option value="kosen">高等専門学校（5年制高専）</option>
+                                <option value="super">最難関・伝統進学校</option>
+                                <option value="advance">普通科進学校・中堅校</option>
+                                <option value="tech">工業・技術・農業系</option>
+                                <option value="comm">商業・ビジネス系</option>
+                                <option value="private_gen">私立総合・特進系</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <!-- Select Box -->
+                    <div class="mb-3">
+                        <label class="block text-xs font-bold text-slate-600 mb-1"><i class="fa-solid fa-magnifying-glass text-blue-500 mr-1"></i> 学校・学科名を選択</label>
+                        <select id="schoolSelect" onchange="onSchoolSelect(this.value)" class="w-full border-2 border-blue-500 rounded-xl p-2.5 text-sm font-bold text-slate-800 bg-blue-50/40 focus:ring-2 focus:ring-blue-500 outline-none">
+                            <!-- Options generated dynamically -->
+                        </select>
+                    </div>
+
+                    <!-- Custom Input Toggle -->
+                    <div class="pt-2 border-t border-slate-100">
+                        <button onclick="toggleCustomInputs()" class="w-full text-xs font-semibold text-blue-600 hover:text-blue-800 flex items-center justify-between p-1.5 rounded-lg hover:bg-slate-50 transition">
+                            <span><i class="fa-solid fa-sliders mr-1"></i> 数値を自分でカスタマイズする</span>
+                            <i id="customToggleIcon" class="fa-solid fa-chevron-down transition-transform"></i>
+                        </button>
+                        
+                        <div id="customInputsArea" class="hidden mt-2 space-y-2 bg-slate-50 p-3 rounded-xl border border-slate-200 text-xs">
+                            <div>
+                                <label class="block text-slate-600 font-semibold mb-0.5">学校名カスタム</label>
+                                <input type="text" id="customSchoolName" class="w-full border rounded p-1.5 text-xs focus:ring-2 focus:ring-blue-500 outline-none" placeholder="〇〇高校">
+                            </div>
+                            <div class="grid grid-cols-2 gap-2">
+                                <div>
+                                    <label class="block text-slate-600 font-semibold mb-0.5">進学率 (%)</label>
+                                    <input type="number" id="customUnivRate" min="0" max="100" class="w-full border rounded p-1.5 text-xs focus:ring-2 focus:ring-blue-500 outline-none">
+                                </div>
+                                <div>
+                                    <label class="block text-slate-600 font-semibold mb-0.5">就職率 (%)</label>
+                                    <input type="number" id="customEmpRate" min="0" max="100" class="w-full border rounded p-1.5 text-xs focus:ring-2 focus:ring-blue-500 outline-none">
+                                </div>
+                            </div>
+                            <button onclick="applyCustomSettings()" class="w-full bg-slate-800 hover:bg-slate-900 text-white font-bold py-1.5 rounded-lg transition shadow">
+                                設定を反映
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Step 2: Pathway Choice -->
+                <div class="bg-white rounded-2xl p-5 card-shadow border border-slate-100">
+                    <h2 class="text-base font-bold text-slate-800 mb-3 flex items-center">
+                        <span class="bg-blue-600 text-white rounded-full w-6 h-6 inline-flex items-center justify-center text-xs mr-2 shadow">2</span>
+                        卒業後のルートを選択
+                    </h2>
+
+                    <div class="grid grid-cols-2 gap-3" id="pathwayChoices">
+                        <button id="pathUnivBtn" onclick="setPathway('univ')" class="p-3 border-2 rounded-xl text-center transition font-bold flex flex-col items-center justify-center gap-1 border-blue-500 bg-blue-50 text-blue-700">
+                            <i class="fa-solid fa-graduation-cap text-2xl"></i>
+                            <span class="text-xs" id="univBtnLabel">大学・短大進学（編入）</span>
+                        </button>
+                        <button id="pathEmpBtn" onclick="setPathway('emp')" class="p-3 border-2 border-slate-200 rounded-xl text-center transition font-bold flex flex-col items-center justify-center gap-1 text-slate-600 hover:bg-slate-50">
+                            <i class="fa-solid fa-briefcase text-2xl"></i>
+                            <span class="text-xs" id="empBtnLabel">卒業後 直接就職</span>
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Fun & Vibe Summary Card (New Highlight) -->
+                <div class="bg-white rounded-2xl p-4 card-shadow border border-emerald-100 relative overflow-hidden">
+                    <h3 class="font-bold text-xs flex items-center text-emerald-800 mb-2">
+                        <i class="fa-solid fa-face-smile-beam text-emerald-500 mr-1.5 text-base"></i> 在校生のリアルボイス（学校の楽しさ）
+                    </h3>
+                    <div class="p-3 bg-emerald-50/70 border border-emerald-200/80 rounded-xl text-xs text-slate-700 leading-relaxed italic relative" id="quickFunVoice">
+                        「〜」
+                    </div>
+                </div>
+
+                <!-- Advice Card -->
+                <div class="bg-gradient-to-br from-amber-500 to-amber-600 text-white rounded-2xl p-4 shadow-lg relative overflow-hidden">
+                    <h3 class="font-bold text-sm flex items-center gap-1.5 mb-1 text-amber-100">
+                        <i class="fa-solid fa-fire text-amber-200"></i> 受験生のキミへアドバイス
+                    </h3>
+                    <p class="text-xs leading-relaxed text-amber-50">
+                        高校選びは偏差値だけでなく「学校生活の楽しさ」や「探究学習・地域連携などの成長体験」で選ぶのがカギ！TSMC熊本進出など、熊本の高校生活には将来ワクワクできるチャンスがいっぱいです！
+                    </p>
+                </div>
+
+            </div>
+
+            <!-- Dashboard (8 cols) -->
+            <div class="lg:col-span-8 space-y-5">
+
+                <!-- Summary Banner -->
+                <div class="bg-white rounded-2xl p-5 card-shadow border border-slate-100 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
+                    <div>
+                        <span id="selectedSchoolBadge" class="bg-blue-100 text-blue-800 text-xs font-bold px-3 py-1 rounded-full">
+                            高専（5年制高等専門学校）
+                        </span>
+                        <h2 id="displaySchoolName" class="text-xl md:text-2xl font-black text-slate-800 mt-1 rounded-font">
+                            熊本高等専門学校（熊本キャンパス）
+                        </h2>
+                        <p class="text-xs text-slate-500 mt-1" id="schoolDescription">
+                            情報通信・制御・人間情報。5年制で即戦力エンジニア育成および難関国立大編入。
+                        </p>
+                    </div>
+                    <div class="flex items-center gap-3 bg-slate-50 p-3 rounded-xl border border-slate-100 text-center w-full sm:w-auto justify-around shrink-0">
+                        <div>
+                            <div class="text-xs text-slate-500 font-semibold" id="statUnivLabel">進学・大編入率</div>
+                            <div id="statUnivRate" class="text-lg font-extrabold text-blue-600">35%</div>
+                        </div>
+                        <div class="h-7 w-px bg-slate-200"></div>
+                        <div>
+                            <div class="text-xs text-slate-500 font-semibold" id="statEmpLabel">就職率</div>
+                            <div id="statEmpRate" class="text-lg font-extrabold text-emerald-600">65%</div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- NEW: School Life & Growth Highlights Grid -->
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <!-- Fun Points Card -->
+                    <div class="bg-gradient-to-br from-emerald-50/80 to-teal-50/50 rounded-2xl p-4 card-shadow border border-emerald-200/60">
+                        <div class="flex items-center justify-between mb-2">
+                            <h3 class="text-sm font-bold text-emerald-900 flex items-center">
+                                <i class="fa-solid fa-heart-pulse text-emerald-600 mr-2 text-base"></i> 学校生活の「ここが楽しい！」
+                            </h3>
+                            <span class="text-[10px] bg-emerald-600 text-white font-bold px-2 py-0.5 rounded-full">キャンパスライフ</span>
+                        </div>
+                        <p class="text-xs text-slate-700 leading-relaxed mb-3" id="funHighlightsText">
+                            <!-- Injected dynamically -->
+                        </p>
+                        <div class="flex flex-wrap gap-1.5" id="funTagsContainer">
+                            <!-- Tags -->
+                        </div>
+                    </div>
+
+                    <!-- Growth Experience Card -->
+                    <div class="bg-gradient-to-br from-indigo-50/80 to-blue-50/50 rounded-2xl p-4 card-shadow border border-indigo-200/60">
+                        <div class="flex items-center justify-between mb-2">
+                            <h3 class="text-sm font-bold text-indigo-900 flex items-center">
+                                <i class="fa-solid fa-rocket text-indigo-600 mr-2 text-base"></i> 自分を高める「成長コンテンツ」
+                            </h3>
+                            <span class="text-[10px] bg-indigo-600 text-white font-bold px-2 py-0.5 rounded-full">探究・キャリア</span>
+                        </div>
+                        <ul class="text-xs text-slate-700 space-y-1.5" id="growthListContainer">
+                            <!-- Bullet points injected dynamically -->
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- Visual Flow Pipeline -->
+                <div class="bg-white rounded-2xl p-5 card-shadow border border-slate-100">
+                    <h3 class="text-xs font-bold text-slate-400 uppercase tracking-wider mb-3 flex items-center">
+                        <i class="fa-solid fa-route text-blue-500 mr-1.5"></i> 進路・キャリアステップのイメージ
+                    </h3>
+                    <div class="grid grid-cols-1 md:grid-cols-3 gap-3">
+                        <!-- Step 1 -->
+                        <div class="bg-slate-50 p-3.5 rounded-xl border border-slate-200">
+                            <div class="text-xs text-blue-600 font-bold">STEP 1: 在学中</div>
+                            <div class="font-bold text-slate-800 mt-0.5 text-sm" id="flowSchoolName">熊本高専 熊本</div>
+                            <div class="text-xs text-slate-500 mt-1" id="flowSchoolDetail">専門スキルと基礎学力を習得</div>
+                        </div>
+
+                        <!-- Step 2 -->
+                        <div class="bg-blue-50 p-3.5 rounded-xl border border-blue-200">
+                            <div class="text-xs text-blue-700 font-bold">STEP 2: 卒業後の進路</div>
+                            <div class="font-bold text-blue-900 mt-0.5 text-sm" id="flowNextStage">難関大学編入 / 大学進学</div>
+                            <div class="text-xs text-blue-600 mt-1" id="flowNextDetail">専門分野の探求・研究</div>
+                        </div>
+
+                        <!-- Step 3 -->
+                        <div class="bg-emerald-50 p-3.5 rounded-xl border border-emerald-200">
+                            <div class="text-xs text-emerald-700 font-bold">STEP 3: 将来の職種・年収</div>
+                            <div class="font-bold text-emerald-900 mt-0.5 text-sm" id="flowCareer">大手エンジニア・研究職など</div>
+                            <div class="text-xs text-emerald-600 mt-1" id="flowIncome">想定平均年収: 650〜850万円</div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Destination List & Doughnut Chart -->
+                <div class="bg-white rounded-2xl p-5 card-shadow border border-slate-100">
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-5">
+                        <!-- Destination List -->
+                        <div>
+                            <h3 class="text-sm font-bold text-slate-800 mb-3 flex items-center" id="destListTitle">
+                                <i class="fa-solid fa-building-columns text-blue-600 mr-2"></i> 主な進学先・大学編入実績モデル
+                            </h3>
+                            <div class="space-y-2 text-xs" id="destinationList">
+                                <!-- Injected dynamically -->
+                            </div>
+                        </div>
+
+                        <!-- Chart -->
+                        <div class="flex flex-col items-center justify-center">
+                            <h3 class="text-xs font-bold text-slate-500 mb-2 w-full text-left">進路内訳（モデル実績）</h3>
+                            <div class="w-44 h-44 relative">
+                                <canvas id="ratioChart"></canvas>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Income Simulation -->
+                <div class="bg-white rounded-2xl p-5 card-shadow border border-slate-100">
+                    <div class="flex flex-col sm:flex-row items-start sm:items-center justify-between border-b border-slate-100 pb-3 mb-4 gap-2">
+                        <div>
+                            <h3 class="text-base font-extrabold text-slate-800 flex items-center">
+                                <i class="fa-solid fa-sack-dollar text-amber-500 mr-2"></i> 想定年収・収入シミュレーション
+                            </h3>
+                            <p class="text-xs text-slate-400">※厚労省賃金統計および地元企業初任給データを元にした推定モデル</p>
+                        </div>
+                        <span class="bg-slate-100 text-slate-600 text-xs px-2.5 py-1 rounded-full font-bold">男性キャリア平均比較</span>
+                    </div>
+
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-5 items-center">
+                        <div class="space-y-3">
+                            <div class="bg-slate-50 p-3.5 rounded-xl border border-slate-200 flex justify-between items-center">
+                                <div>
+                                    <div class="text-xs text-slate-500 font-semibold">初任給（目安）</div>
+                                    <div class="text-xs text-slate-400">入社1年目（月給想定）</div>
+                                </div>
+                                <div class="text-right">
+                                    <span class="text-2xl font-black text-slate-800" id="incomeInitial">23.5</span>
+                                    <span class="text-xs text-slate-600 font-bold">万円/月</span>
+                                </div>
+                            </div>
+
+                            <div class="bg-amber-50 p-3.5 rounded-xl border border-amber-200 flex justify-between items-center">
+                                <div>
+                                    <div class="text-xs text-amber-800 font-bold">30代〜40代 想定年収</div>
+                                    <div class="text-xs text-amber-600">キャリア中堅期の平均像</div>
+                                </div>
+                                <div class="text-right">
+                                    <span class="text-3xl font-black text-amber-600" id="incomeMid">720</span>
+                                    <span class="text-xs text-amber-800 font-bold">万円/年</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div>
+                            <div class="h-40">
+                                <canvas id="salaryChart"></canvas>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Future Roadmap Advice -->
+                <div class="bg-gradient-to-br from-slate-900 to-slate-800 text-white rounded-2xl p-5 card-shadow">
+                    <h3 class="text-base font-bold rounded-font mb-2 flex items-center text-amber-400">
+                        <i class="fa-solid fa-compass mr-2"></i> 将来の自分に向けたロードマップ
+                    </h3>
+                    <p class="text-xs text-slate-300 leading-relaxed" id="careerAdviceText">
+                        熊本高専で最先端の工学・情報技術を身につけることで、TSMC/JASMをはじめとする世界的人気企業への就職や、九州大学・熊本大学等への3年次編入という超強力なキャリアが開かれます！
+                    </p>
+                    <div class="mt-3 pt-3 border-t border-slate-700/50 flex flex-wrap gap-2" id="adviceTags">
+                        <!-- Dynamic Tags -->
+                    </div>
+                </div>
+
+            </div>
+        </div>
+
+        <!-- ================= MODE 2: 3 SCHOOLS COMPARISON MODE ================= -->
+        <div id="compareModeView" class="hidden space-y-6">
+            
+            <!-- School Pickers Row -->
+            <div class="bg-white rounded-2xl p-5 card-shadow border border-slate-100">
+                <h2 class="text-base font-bold text-slate-800 mb-3 flex items-center">
+                    <i class="fa-solid fa-layer-group text-blue-600 mr-2"></i> 比較したい3つの学校を選択してください
+                </h2>
+                
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+                    <!-- School 1 -->
+                    <div class="bg-blue-50/50 p-3 rounded-xl border border-blue-200">
+                        <label class="block text-xs font-bold text-blue-800 mb-1">
+                            <span class="bg-blue-600 text-white text-[10px] px-1.5 py-0.5 rounded-full mr-1">1</span> 学校 1
+                        </label>
+                        <select id="compareSelect1" onchange="updateComparisonTable()" class="w-full border border-blue-300 rounded-lg p-2 text-xs font-bold text-slate-800 bg-white focus:ring-2 focus:ring-blue-500 outline-none">
+                        </select>
+                    </div>
+
+                    <!-- School 2 -->
+                    <div class="bg-emerald-50/50 p-3 rounded-xl border border-emerald-200">
+                        <label class="block text-xs font-bold text-emerald-800 mb-1">
+                            <span class="bg-emerald-600 text-white text-[10px] px-1.5 py-0.5 rounded-full mr-1">2</span> 学校 2
+                        </label>
+                        <select id="compareSelect2" onchange="updateComparisonTable()" class="w-full border border-emerald-300 rounded-lg p-2 text-xs font-bold text-slate-800 bg-white focus:ring-2 focus:ring-emerald-500 outline-none">
+                        </select>
+                    </div>
+
+                    <!-- School 3 -->
+                    <div class="bg-amber-50/50 p-3 rounded-xl border border-amber-200">
+                        <label class="block text-xs font-bold text-amber-800 mb-1">
+                            <span class="bg-amber-600 text-white text-[10px] px-1.5 py-0.5 rounded-full mr-1">3</span> 学校 3
+                        </label>
+                        <select id="compareSelect3" onchange="updateComparisonTable()" class="w-full border border-amber-300 rounded-lg p-2 text-xs font-bold text-slate-800 bg-white focus:ring-2 focus:ring-amber-500 outline-none">
+                        </select>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Comparison Table -->
+            <div class="bg-white rounded-2xl card-shadow border border-slate-100 overflow-hidden">
+                <div class="p-4 bg-slate-900 text-white flex justify-between items-center">
+                    <h3 class="font-bold text-sm rounded-font flex items-center">
+                        <i class="fa-solid fa-table-columns text-amber-400 mr-2"></i> 熊本県内高校・高専 3校比較テーブル
+                    </h3>
+                    <span class="text-[11px] bg-slate-800 text-slate-300 px-2.5 py-1 rounded-full">横スクロール可</span>
+                </div>
+
+                <div class="overflow-x-auto">
+                    <table class="w-full text-left text-xs border-collapse min-w-[700px]">
+                        <thead>
+                            <tr class="bg-slate-100 text-slate-700 font-bold border-b border-slate-200">
+                                <th class="p-3 w-36 table-sticky-col border-r border-slate-200">比較項目</th>
+                                <th id="cmpHead1" class="p-3 w-1/3 bg-blue-50/60 text-blue-900 border-r border-slate-200">熊本高等専門学校（熊本）</th>
+                                <th id="cmpHead2" class="p-3 w-1/3 bg-emerald-50/60 text-emerald-900 border-r border-slate-200">熊本高校</th>
+                                <th id="cmpHead3" class="p-3 w-1/3 bg-amber-50/60 text-amber-900">熊本工業高校</th>
+                            </tr>
+                        </thead>
+                        <tbody class="divide-y divide-slate-200" id="comparisonTableBody">
+                            <!-- Injected by JavaScript -->
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+        </div>
+
+    </main>
+
+    <!-- Footer -->
+    <footer class="bg-slate-900 text-slate-400 text-center py-4 px-4 text-xs mt-auto">
+        <p>※本シミュレーターのデータは、公的統計・各校公表データをもとに作成した想定モデルです。</p>
+        <p class="mt-0.5">© 未来ナビ - 熊本県中学生の高校・高専受験を応援します</p>
+    </footer>
+
+    <!-- JavaScript Data & Logic -->
+    <script>
+        // Enhanced & Complete Dataset for Kumamoto High Schools & Kosen
+        const allSchools = [
+            // 高専 (Kosen)
+            { 
+              id: 'kosen_kumamoto', name: '熊本高等専門学校（熊本キャンパス）', area: 'kosen', type: 'kosen', badge: '国立5年制高専（合志市）',
+              desc: '情報通信・制御・人間情報。5年制で即戦力エンジニア育成および難関国立大編入。',
+              funVoice: '「高専祭は学生手作りのプロジェクションマッピングやロボット対戦で超盛り上がる！制服もなく私服で自分らしく学べる自由な雰囲気が最高です。」',
+              funHighlights: '高専祭（学園祭）での自作ロボット披露やITアトラクション、球技大会、部活（ロボコン・プロコン）が大熱狂。私服登校で大人な自由さ！',
+              growthExperience: ['【高専ロボコン・プロコン】全国トップレベルの大会で実践開発', '【TSMC・JASM連携】最先端半導体・情報エンジニアリング教育', '【国立大学3年次編入サポート】九大・東工大・熊大への数学・専門特化指導'],
+              univRate: 35, empRate: 65, otherRate: 0,
+              universities: [{name: '九州大学・熊本大学（3年次編入）', ratio: '35%'}, {name: '九州工業大学・豊橋技術科学大（編入）', ratio: '35%'}, {name: '東京工業大学・大阪大学等（編入）', ratio: '20%'}, {name: '高専専攻科進学', ratio: '10%'}],
+              companies: ['TSMC/JASM（エンジニア）', 'ソニー・富士通・大手ITテック', '九州電力・九電工・NTTグループ', '大手電機・自動車研究開発'],
+              directCompanies: ['TSMC/JASM（半導体エンジニア）', 'ソニーセミコンダクタマニュファクチャリング', '九州電力・九電工・NTT', '大手メーカー技術職'],
+              univIncome: { initial: 25, mid: 780, peak: 1100 }, empIncome: { initial: 21.5, mid: 580, peak: 820 },
+              tags: ['#TSMCエンジニア', '#国立大3年次編入', '#ロボコンプロコン', '#私服登校自由な校風'] 
+            },
+
+            { 
+              id: 'kosen_yatsushiro', name: '熊本高等専門学校（八代キャンパス）', area: 'kosen', type: 'kosen', badge: '国立5年制高専（八代市）',
+              desc: '機械知能・建築社会デザイン・生物化学。実務技術と大学編入に圧倒的強み。',
+              funVoice: '「広大な実習室で自分でデザインした立体構造物やロボを作れるのが本当に楽しい！クラスの仲が良く5年間で一生の友人ができます。」',
+              funHighlights: '建築デザインコンテストやメカコンペ、高専祭での大規模模擬店や展示。寮生活（寮祭）では全国から集まる仲間と強い絆が生まれる！',
+              growthExperience: ['【3D CAD・実習ワーク】1年目からプロ仕様の機材を使ったモノづくり', '【地域課題探究PBL】八代の防災・水質改善・スマート農業プロジェクト', '【大手メーカー技術インターン】最先端工場やゼネコンでの長期研修'],
+              univRate: 30, empRate: 70, otherRate: 0,
+              universities: [{name: '熊本大学・九州大学（3年次編入）', ratio: '35%'}, {name: '長岡技術科学大・豊橋技科大', ratio: '35%'}, {name: '九州工業大学・高専専攻科', ratio: '30%'}],
+              companies: ['大手ゼネコン・建設・建築設計', 'TSMC関連・大手重工・機械', '化学・バイオ・環境メーカー', '九州電力・インフラ'],
+              directCompanies: ['大手施工管理・建設設計', 'TSMC・半導体設備技術', '大手機械・化学メーカー', '九州電力・インフラ'],
+              univIncome: { initial: 24.5, mid: 750, peak: 1050 }, empIncome: { initial: 21.5, mid: 570, peak: 800 },
+              tags: ['#建築デザイン', '#機械知能', '#寮生活の仲間', '#実務エンジニア'] 
+            },
+
+            // 熊本市域（最難関・伝統進学）
+            { 
+              id: 'kumamoto_h', name: '熊本高校', area: 'kumamoto_city', type: 'super', badge: '県最難関進学校（公立）',
+              desc: '県内トップ進学校。士魂商才・自主自律の精神のもと東大・京大・医学部へ圧倒的実績。',
+              funVoice: '「江津湖ボートレース大会や体育祭の演舞応援合戦は一生の思い出！『士魂商才』のもと、勉強もイベントも本気でやり抜くかっこいい仲間ばかりです。」',
+              funHighlights: '伝統の「江津湖ボートレース大会」、熱気がすごい体育祭、自由な文化祭（江原祭）。互いを高め合える質の高い議論やクラスの一体感！',
+              growthExperience: ['【自主自律の探究論文】興味のある学問分野を深掘りする質の高い探究課題', '【トップランナー講義】第一線で活躍する卒業生（医師・官僚・研究者）の特別講演', '【高度な受験演習】東大・京大・熊大医学部を見据えた ハイレベル指導'],
+              univRate: 93, empRate: 0, otherRate: 7, 
+              universities: [{name: '最難関国公立（東大・京大・九大・医学部）', ratio: '42%'}, {name: '熊本大学（薬・工・医・法など）', ratio: '26%'}, {name: '最難関私大（早慶・東京理科大等）', ratio: '18%'}, {name: 'その他国公立・難関私大', ratio: '14%'}],
+              companies: ['大手IT・テック研究開発', '総合商社・外資コンサル・金融', '大学病院・主要医療機関（医師）', '国家公務員総合職・官僚'], directCompanies: ['国家公務員一般職', '地方公務員'],
+              univIncome: { initial: 26, mid: 840, peak: 1250 }, empIncome: { initial: 19.5, mid: 480, peak: 650 },
+              tags: ['#江津湖ボートレース', '#自主自律', '#東大京大医学部', '#最高の切磋琢磨'] 
+            },
+            
+            { 
+              id: 'zeizeiko_h', name: '済々黌高校', area: 'kumamoto_city', type: 'super', badge: '伝統難関進学校（公立）',
+              desc: '文武両道の伝統校。大運動会の演舞・伝統の黄線バンカラ文化と高い進学実績。',
+              funVoice: '「体育祭（大運動会）のチアや男子演舞の迫力は圧巻！行事の熱量がとにかく凄くて、部活も勉強も一切妥協しない『黌門精神』が最高に熱いです。」',
+              funHighlights: '全校生徒が一つになる「大運動会」、伝統の文化祭（黌文化祭）。野球部や陸上部をはじめとする全国レベルの部活動と黄線帽の連帯感！',
+              growthExperience: ['【多士済々キャリア講義】政財界・地元経営者OBとの熱い車座対話', '【文武両道タイムマネジメント】ハードな部活動と高い学力を両立する実践力', '【地域探究ワーク】熊本の歴史・文化・経済（TSMC含む）の課題解決プログラム'],
+              univRate: 86, empRate: 1, otherRate: 13,
+              universities: [{name: '熊本大学（全学部）', ratio: '36%'}, {name: '九州大学・主要国公立', ratio: '24%'}, {name: '難関私大（早慶・関関同立・MARCH）', ratio: '16%'}, {name: '西南学院・福岡大・他', ratio: '24%'}],
+              companies: ['熊本県庁・熊本市役所（上級）', '肥後銀行・熊本銀行（総合職）', '九州電力・JR九州・大手インフラ', '大手電機・TSMC関連幹部職'], directCompanies: ['熊本県警察・消防員', '地域インフラ技術職'],
+              univIncome: { initial: 24, mid: 700, peak: 980 }, empIncome: { initial: 19, mid: 450, peak: 620 },
+              tags: ['#大運動会演舞', '#黌門精神文武両道', '#熊本大学トップクラス', '#縦のつながり'] 
+            },
+
+            { 
+              id: 'kita_futsu_h', name: '熊本北高校（普通科・英語科）', area: 'kumamoto_city', type: 'advance', badge: '中堅重点進学校（公立）',
+              desc: '北高（きたこう）。落ち着いた文教の雰囲気、英語科の国際交流と運動部・文化部の活性。',
+              funVoice: '「北高祭（文化祭）でのクラス劇やダンスパフォーマンスがめっちゃ盛り上がる！英語科は外国人留学生とのスピーチセッションが刺激的でした。」',
+              funHighlights: '北高祭（文化祭）、クラスマッチ、英語科のイングリッシュキャンプ。アットホームで穏やか、かつ向上心のある生徒が多い雰囲気！',
+              growthExperience: ['【グローバル探究・英語プレゼン】海外提携校とのオンライン交流・スピーチ', '【志望理由書・面接徹底指導】総合型・学校推薦型選抜に強いキャリア教育', '【熊大・県立大連携セミナー】大学の講義を先行体験する高大連携'],
+              univRate: 80, empRate: 1, otherRate: 19,
+              universities: [{name: '熊本大学・熊本県立大学', ratio: '32%'}, {name: '福岡大学・西南学院大学', ratio: '35%'}, {name: 'その他国公立・私立大学', ratio: '23%'}, {name: '専門学校・短大', ratio: '10%'}],
+              companies: ['肥後銀行・熊本銀行', '公務員（県庁・市役所・教員）', 'TSMC関連・地元商社・IT', '医療福祉・看護'], directCompanies: ['地場企業事務・警察消防'],
+              univIncome: { initial: 23, mid: 600, peak: 840 }, empIncome: { initial: 18.5, mid: 420, peak: 570 },
+              tags: ['#英語科グローバル', '#北高祭盛り上がり', '#熊大県立大', '#親しみやすい校風'] 
+            },
+
+            { 
+              id: 'kita_risu_h', name: '熊本北高校（理数科）', area: 'kumamoto_city', type: 'advance', badge: '理数特色進学校（公立）',
+              desc: '理数探究に強い特化学科。SSH（スーパーサイエンス）指定校としての研究活動と実験設備。',
+              funVoice: '「本格的な実験器具を使って自分たちで仮説を立てて検証するのが楽しい！学会発表やコンテストで全国の理系高校生と繋がれます。」',
+              funHighlights: '理数科野外実習（阿蘇・天草での地質・生物観察）、理数系コンテスト挑戦、北高祭での理数実験ブース大盛況！',
+              growthExperience: ['【理数探究・学会発表】大学研究室並みのテーマで1年間課題研究', '【半導体・IT特別講座】TSMC進出を見据えたプログラミング・電子工作体験', '【国公立理系特化カリキュラム】数学・理科のハイレベル記述演習'],
+              univRate: 85, empRate: 0, otherRate: 15,
+              universities: [{name: '熊本大学・九州大学・九州工業大', ratio: '40%'}, {name: '崇城大・福岡大（理工系）', ratio: '30%'}, {name: 'その他国公立・私立大理系', ratio: '30%'}],
+              companies: ['TSMC/JASM半導体開発', '大手IT・システムエンジニア', 'メーカー研究開発・技術職', '公務員技術職'], directCompanies: ['技術現場職'],
+              univIncome: { initial: 24, mid: 640, peak: 900 }, empIncome: { initial: 18.5, mid: 430, peak: 580 },
+              tags: ['#理数科探究', '#野外実習阿蘇天草', '#TSMC半導体IT', '#九大熊大九工大'] 
+            },
+
+            { 
+              id: 'daini_h', name: '熊本第二高校', area: 'kumamoto_city', type: 'advance', badge: '中堅重点進学校（公立）',
+              desc: '普通科・理数科・美術科の3学科。りんどう祭・吹奏楽や美術展など多彩な個性。',
+              funVoice: '「『りんどう祭』での美術科の巨大アート作品や吹奏楽部の演奏は鳥肌もの！理数科・普通科・美術科が互いの強みをリスペクトし合う雰囲気が好きです。」',
+              funHighlights: '文化祭（りんどう祭）、体育祭、美術展、部活（全国レベルの吹奏楽部・美術部・陸上部等）。多様な個性が集まる魅力！',
+              growthExperience: ['【SSH・探究活動】理数科を中心とした本格論文作成と英語プレゼン', '【美術探究・作品制作】プロのデザイナーや芸術大学を目指す本格デッサン指導', '【国公立・難関私大進学プログラム】放課後補習とチューター学習支援'],
+              univRate: 78, empRate: 2, otherRate: 20,
+              universities: [{name: '熊本大学・熊本県立大学', ratio: '28%'}, {name: '福岡大学・西南学院大学', ratio: '32%'}, {name: 'その他私立大学', ratio: '24%'}, {name: '専門学校・短期大学', ratio: '16%'}],
+              companies: ['TSMC関連・半導体エンジニア', '肥後銀行・地場優良企業', '公務員（県庁・市役所・警察）', '小中高校教員・医療福祉'], directCompanies: ['設備メンテナンス・技術職', '公務員一般職'],
+              univIncome: { initial: 22.5, mid: 590, peak: 830 }, empIncome: { initial: 18.5, mid: 430, peak: 580 },
+              tags: ['#普通理数美術科', '#りんどう祭', '#吹奏楽美術強豪', '#多様性と高め合い'] 
+            },
+
+            { 
+              id: 'daiichi_h', name: '第一高校', area: 'kumamoto_city', type: 'advance', badge: '伝統進学校（公立）',
+              desc: '伝統ある進学校。白梅祭・校歌合唱・薬学・看護・教育分野への高い信頼と実績。',
+              funVoice: '「伝統の『白梅祭』や一高祭の雰囲気が華やかで最高！女子・男子とも仲が良く、落ち着いた環境で真面目に努力できる空間です。」',
+              funHighlights: '白梅祭（文化祭）、一高体育祭、部活（なぎなた部・合唱部など全国レベル）。歴史を感じる美しい校舎と温かい校風！',
+              growthExperience: ['【医療・教育キャリアワーク】看護・薬学・教員志望者に向けた現場体験セミナー', '【地域・SDGs探究】熊本の環境や福祉課題をテーマにしたPBL学習', '【熊本大学・県立大学対策】小論文・面接・共通テスト徹底アプローチ'],
+              univRate: 80, empRate: 1, otherRate: 19,
+              universities: [{name: '熊本大学・熊本県立大学', ratio: '30%'}, {name: '西南学院大・福岡大', ratio: '30%'}, {name: '薬学・看護・医療系大学', ratio: '20%'}, {name: 'その他私立大・短大', ratio: '20%'}],
+              companies: ['肥後銀行・地域医療機関（薬剤師・看護師）', '公務員・教員', '地元商社・IT・企画職', '大手メーカー総合職'], directCompanies: ['事務職・地域インフラ'],
+              univIncome: { initial: 23, mid: 600, peak: 850 }, empIncome: { initial: 18.5, mid: 420, peak: 570 },
+              tags: ['#白梅祭', '#薬学看護教育に強い', '#温かい校風', '#熊大県立大'] 
+            },
+
+            { 
+              id: 'toryo_h', name: '東稜高校', area: 'kumamoto_city', type: 'advance', badge: '普通・国際中堅校（公立）',
+              desc: '国際コース等を持ち、東稜祭や部活動が活発。手厚い進路指導と地域貢献。',
+              funVoice: '「クラスマッチの熱狂と東稜祭の模擬店・ステージ発表がとにかく楽しい！先生たちがすごく親身になって進路相談に乗ってくれます。」',
+              funHighlights: '東稜祭（文化祭）、体育祭、クラスマッチ、国際交流イベント。部活動（弓道・ボランティア・パソコン部等）の活発さ！',
+              growthExperience: ['【語学・国際理解プログラム】ネイティブ教員との英会話ワークショップ', '【地元企業・IT出前講座】TSMC関連や熊本の地元企業を学ぶキャリアワーク', '【検定・資格取得サポート】英検・漢検・パソコン検定の補習支援'],
+              univRate: 65, empRate: 10, otherRate: 25,
+              universities: [{name: '熊本県立大・崇城大・熊本学園大', ratio: '40%'}, {name: '福岡大・西南大・九州圏私大', ratio: '30%'}, {name: '専門学校・短期大学', ratio: '30%'}],
+              companies: ['地元IT・サービス・販売・営業', '地場製造業・TSMC関連技術職', '公務員（警察・消防・行政）', '医療事務・福祉'], directCompanies: ['地場製造・建設・事務', '公務員'],
+              univIncome: { initial: 21.5, mid: 520, peak: 730 }, empIncome: { initial: 18, mid: 410, peak: 550 },
+              tags: ['#国際コース', '#東稜祭盛り上がり', '#先生が親身', '#資格検定充実'] 
+            },
+
+            // 専門・工業・商業
+            { 
+              id: 'kumamoto_tech_h', name: '熊本工業高校（熊工）', area: 'kumamoto_city', type: 'tech', badge: '伝統技術系専門校（公立）',
+              desc: '全国屈指の工業高校。圧倒的な設備とTSMC・JASMや九州電力など大手就職実績。',
+              funVoice: '「『熊工祭』のクオリティがすごい！各学科の専門技術を使った作品展示やアトラクション、部活の全国レベルの応援が最高にカッコいいです。」',
+              funHighlights: '熊工祭（文化祭）、科対抗体育祭（団結力が凄まじい）、全国トップレベルの野球部・マーチングバンド部・マイコン部！',
+              growthExperience: ['【国家資格・技能検定ラッシュ】電気工事士・危険物・CAD・測量等の取得', '【TSMC・JASM半導体特化講習】企業連携による最新クリーンルーム技術学習', '【ものづくりコンテスト全国挑戦】旋盤・電子回路・旋盤等の技術磨き'],
+              univRate: 20, empRate: 75, otherRate: 5,
+              universities: [{name: '九州工業大学・熊本大（編入・推薦）', ratio: '20%'}, {name: '崇城大・西日本工大（工学部）', ratio: '50%'}, {name: '産業技術短大・専門学校', ratio: '30%'}],
+              companies: ['TSMC/JASM半導体エンジニア', '大手自動車・重工・電機技術職', '九州電力・九電工・インフラ', '建設・土木・建築施工管理'], directCompanies: ['JASM（TSMC熊本）・半導体大手', '九州電力・九電工・トヨタ自動車', 'JR九州・地場大手施工管理'],
+              univIncome: { initial: 23.5, mid: 650, peak: 900 }, empIncome: { initial: 20, mid: 520, peak: 720 },
+              tags: ['#TSMCJASM半導体', '#九州電力九電工', '#熊工祭と団結力', '#国家資格多数'] 
+            },
+
+            { 
+              id: 'kumamoto_comm_h', name: '熊本商業高校（熊商）', area: 'kumamoto_city', type: 'comm', badge: '伝統ビジネス系専門校（公立）',
+              desc: '簿記・IT資格取得で肥後銀行や地元大手・公務員（税務職）への実績多数。',
+              funVoice: '「生徒が主体となって運営する『熊商デパート』は本当の会社みたいで大興奮！実践的な商業・接客・仕入れが学べて自信がつきます。」',
+              funHighlights: '伝統の実践販売実習「熊商デパート」、熊商祭、商業競技大会、全国レベルの部活動（吹奏楽・情報処理部等）！',
+              growthExperience: ['【熊商デパート運営PBL】社長・店長・経理役として店舗マーケティング実践', '【日商簿記1・2級＆基本情報技術者】難関資格の校内集中対策', '【高卒税務職員・肥後銀行採用プログラム】公務員・金融機関に特化した面接演習'],
+              univRate: 50, empRate: 45, otherRate: 5,
+              universities: [{name: '経済・経営・商学部系大学', ratio: '60%'}, {name: '熊本県立大（総合管理）', ratio: '15%'}, {name: 'ビジネス専門学校・短大', ratio: '25%'}],
+              companies: ['肥後銀行・熊本銀行（総合職）', '地場商社・流通・IT企画', '税務職・公務員', '企業経理・財務'], directCompanies: ['肥後銀行・地銀一般職', '高卒税務職員（公務員）', '地場優良商社・事務'],
+              univIncome: { initial: 22, mid: 560, peak: 780 }, empIncome: { initial: 18.5, mid: 440, peak: 600 },
+              tags: ['#熊商デパート', '#日商簿記IT資格', '#肥後銀行税務署', '#実践ビジネス'] 
+            },
+
+            // 私立（熊本市）
+            { 
+              id: 'gakuho_h', name: '熊本学園大学付属高校', area: 'kumamoto_city', type: 'private_gen', badge: '私立進学校（熊本市）',
+              desc: '学園大附属。充実した施設・カフェテリア、学園大内部進学と国公立受験の両立。',
+              funVoice: '「きれいな校舎と美味しいカフェテリア（食堂）が最高！学園大への内部進学権を持ちつつ、他大学へ挑戦できる安心感が魅力です。」',
+              funHighlights: '学付祭（文化祭）、体育祭、カフェテリアでのランチタイム、運動部・文化部ともに施設が整った恵まれた環境！',
+              growthExperience: ['【高大連携インターン】熊本学園大学の講座受講やキャリアワーク', '【海外語学研修・探究プログラム】オーストラリア等への留学・異文化理解', '【手厚い受験個別指導】内部進学・外部推薦・一般入試に対応する柔軟カリキュラム'],
+              univRate: 82, empRate: 3, otherRate: 15,
+              universities: [{name: '熊本学園大学（内部進学・外部）', ratio: '45%'}, {name: '西南学院大・福岡大・九州圏私大', ratio: '25%'}, {name: '国公立大・その他難関私大', ratio: '15%'}, {name: '専門学校・短大', ratio: '15%'}],
+              companies: ['肥後銀行・熊本銀行', '地場優良企業・流通', '公務員（県市町村）', '医療事務・サービス'], directCompanies: ['地場総合職・サービス業'],
+              univIncome: { initial: 22, mid: 540, peak: 750 }, empIncome: { initial: 18, mid: 410, peak: 550 },
+              tags: ['#学園大内部進学', '#カフェテリア綺麗', '#海外研修', '#私立進学'] 
+            },
+
+            { 
+              id: 'kyugaku_h', name: '九州学院高校', area: 'kumamoto_city', type: 'private_gen', badge: '私立伝統校・スポーツ（熊本市）',
+              desc: 'キリスト教主義の敬天愛人。剣道部をはじめとする全国制覇レベルのスポーツと特進進学。',
+              funVoice: '「剣道部や野球部の全国レベルの応援は鳥肌が立つ！九学祭のダンスや模擬店、毎日の礼拝で落ち着いた心が育まれる雰囲気が良いです。」',
+              funHighlights: '九学祭（学園祭）、クリスマス礼拝、全国トップクラスの部活動（剣道・野球・陸上・水泳等）の応援の一体感！',
+              growthExperience: ['【特進プログレスコース】難関国公立・有名私大（GMARCH・関関同立）突破指導', '【敬天愛人ボランティア】地域福祉や平和学習を通じた人間性・人間力の形成', '【スポーツキャリア】アスリートとしてのメンタル・リーダーシップ養成'],
+              univRate: 75, empRate: 15, otherRate: 10,
+              universities: [{name: '西南学院・福岡大・同志社大等（指定校含む）', ratio: '45%'}, {name: '熊本大・鹿児島大・九州圏国公立', ratio: '20%'}, {name: '関東関西主要私立大学', ratio: '15%'}, {name: '専門学校・短大', ratio: '20%'}],
+              companies: ['地元大手・金融・実業団スポーツ', '教員・公務員・警察消防', '全国展開企業・サービス', 'スポーツ関連産業'], directCompanies: ['実業団・地元大手・警察消防'],
+              univIncome: { initial: 22.5, mid: 580, peak: 820 }, empIncome: { initial: 18.5, mid: 430, peak: 600 },
+              tags: ['#剣道全国制覇', '#敬天愛人', '#指定校推薦豊富', '#九学精神'] 
+            },
+
+            { 
+              id: 'marist_h', name: '熊本マリスト学園高校', area: 'kumamoto_city', type: 'private_gen', badge: '私立中高一貫・特進（熊本市）',
+              desc: '少人数手厚い指導。国際理解教育・難関大学・医歯薬系進学へのアプローチ。',
+              funVoice: '「先生と生徒の距離がすごく近くて家族みたい！少人数だから一人ひとりの夢を全力で応援してくれるのが伝わります。」',
+              funHighlights: 'マリスト祭、体育祭、海外姉妹校との交換留学、緑豊かな健軍の静かな教育環境！',
+              growthExperience: ['【少人数ゼミナール】医歯薬系・難関国公立に対応する小論文・面接指導', '【グローバル・アクトプログラム】英語ディベートや海外フィールドワーク', '【ICT活用個別最適学習】一人一台タブレットを活用したデータ分析学習'],
+              univRate: 88, empRate: 2, otherRate: 10,
+              universities: [{name: '熊大・九大・国公立大学', ratio: '30%'}, {name: '医歯薬・医療系大学', ratio: '20%'}, {name: '早慶・上智・関関同立・MARCH', ratio: '25%'}, {name: '西南大・福岡大等', ratio: '25%'}],
+              companies: ['医療機関（医師・薬剤師）', '大手IT・金融・コンサル', '教育機関・公務員', '海外・グローバル企業'], directCompanies: ['地場企業・医療関連'],
+              univIncome: { initial: 24, mid: 720, peak: 1000 }, empIncome: { initial: 18.5, mid: 420, peak: 580 },
+              tags: ['#少人数手厚い', '#医歯薬系強み', '#国際教育', '#先生と距離が近い'] 
+            },
+
+            // 県北・県中・県南拠点
+            { 
+              id: 'tamana_h', name: '玉名高校', area: 'north', type: 'advance', badge: '県北伝統進学校（玉名市）',
+              desc: '玉名・荒尾エリアの拠点校。中高一貫の強みを活かし熊大・九大など国公立大に多数合格。',
+              funVoice: '「『玉高祭』でのクラス演劇や音楽発表が本格的！中高一貫生と高校入学生が互いに刺激し合って高め合える雰囲気が魅力です。」',
+              funHighlights: '玉高祭（文化祭）、体育祭、伝統の応援合戦、部活動（陸上・くまもとアート部・吹奏楽等）！',
+              growthExperience: ['【玉高ゼミ（探究学習）】県北の地域活性化や医療・農業をテーマにしたPBL', '【中高一貫アドバンストカリキュラム】先取り学習と国公立二次対策講座', '【TSMC県北影響研究】菊陽・玉名エリアの産業構造変化を学ぶワークショップ'],
+              univRate: 82, empRate: 1, otherRate: 17,
+              universities: [{name: '熊本大学・福岡教育大', ratio: '35%'}, {name: '九州大学・主要国公立', ratio: '18%'}, {name: '西南学院大・福岡大', ratio: '25%'}, {name: 'その他私大・専門', ratio: '22%'}],
+              companies: ['公務員（県庁・市役所・教員）', '肥後銀行・地銀', 'TSMC関連企業（菊陽周辺）', '医療機関'], directCompanies: ['公務員・地元インフラ'],
+              univIncome: { initial: 23, mid: 610, peak: 860 }, empIncome: { initial: 18.5, mid: 420, peak: 570 },
+              tags: ['#玉名地域トップ', '#中高一貫', '#玉高ゼミ探究', '#熊大九大'] 
+            },
+
+            { 
+              id: 'yatsushiro_h', name: '八代高校', area: 'south', type: 'advance', badge: '県南伝統進学校（八代市）',
+              desc: '八代地域の中心進学校。中高一貫校。熊大・九大など国公立大学への高い進学実績。',
+              funVoice: '「『八高祭』の文化祭や体育祭の団対抗競技は毎年大熱戦！県南の志が高い仲間が集まるので勉強のやる気が出ます。」',
+              funHighlights: '八高祭（文化祭）、体育祭、伝統のクラスマッチ、百人一首大会や充実した図書館での学習！',
+              growthExperience: ['【八代未来探究プロジェクト】フードバレー八代や八代港活用を考える地域探究', '【中高一貫SGH・SSH流探究】論文執筆と研究成果の英語プレゼン', '【国公立大二次演習・小論文指導】熊大・九大・鹿児島大特化の個別添削'],
+              univRate: 80, empRate: 1, otherRate: 19,
+              universities: [{name: '熊本大学・鹿児島大学等', ratio: '36%'}, {name: '九州大学・主要国公立', ratio: '18%'}, {name: '西南学院大・福岡大等', ratio: '26%'}, {name: 'その他大学・専門', ratio: '20%'}],
+              companies: ['八代市役所・国家公務員', '肥後銀行・熊本銀行', '大手メーカー・化学プラント', '医療・製薬'], directCompanies: ['公務員・プラント技術職'],
+              univIncome: { initial: 23, mid: 610, peak: 860 }, empIncome: { initial: 18.5, mid: 420, peak: 570 },
+              tags: ['#八代拠点トップ', '#中高一貫', '#フードバレー探究', '#国公立進学'] 
+            },
+
+            { 
+              id: 'yatsushiro_tech_h', name: '八代工業高校', area: 'south', type: 'tech', badge: '県南工業専門校（八代市）',
+              desc: '機械・電気・建築・化学などの専門技術。八代・県南の製造業や大手プラントへ多数就職。',
+              funVoice: '「実際に実習で製作した作品を『八工祭』で展示するのが誇らしい！技術を身につけて旋盤やCADを操れるのがカッコいいです。」',
+              funHighlights: '八工祭（文化祭）、科対抗体育祭、実習作品展、ものづくり部活（マイコン・自動車・ロボット）！',
+              growthExperience: ['【化学・電気・機械資格ラッシュ】危険物取扱者・ボイラー技士・電気工事士', '【コンビナート・プラント出前講義】八代の化学工業・日本製紙等との連携授業', '【インターンシップ＆現場体験】大手工場・施工現場での1週間実務体験'],
+              univRate: 15, empRate: 80, otherRate: 5,
+              universities: [{name: '熊本高専（3年次編入）', ratio: '25%'}, {name: '崇城大・西日本工大（工学部）', ratio: '50%'}, {name: '専門学校・職業能力開発校', ratio: '25%'}],
+              companies: ['化学プラント・大手重工', 'TSMC関連・半導体設備', '九州電力・JR九州・インフラ', '建設・ゼネコン技術職'], directCompanies: ['化学コンビナート・プラント', '九州電力・八代市職員（技術）', '大手製造・建設施工管理'],
+              univIncome: { initial: 22.5, mid: 610, peak: 850 }, empIncome: { initial: 19.5, mid: 500, peak: 690 },
+              tags: ['#八代コンビナート', '#工業資格多数', '#八工祭展示', '#県南製造業の要'] 
+            },
+
+            { 
+              id: 'hitoyoshi_h', name: '人吉高校', area: 'kuma', type: 'advance', badge: '球磨人吉進学校（人吉市）',
+              desc: '球磨・人吉地域の伝統校。国公立大学や医療看護系、地元リーダーへの進路を切り拓く。',
+              funVoice: '「人高祭（文化祭）の有志ステージや球技大会がクラスみんなの思い出！地域を愛する温かい仲間と先生たちに囲まれています。」',
+              funHighlights: '人高祭（文化祭）、体育祭、伝統の球技大会、部活動（カヌー部・山岳部・カヌー等全国レベルのユニークな部も）！',
+              growthExperience: ['【球磨川・復興探究プロジェクト】地域の環境保全・防災・観光デザインを学ぶ', '【医療・看護系特化カリキュラム】地域医療を支える看護・医療職へのサポート', '【国公立大学進学対策】少人数・個別での共通テスト＆二次試験対策'],
+              univRate: 70, empRate: 5, otherRate: 25,
+              universities: [{name: '熊本大学・鹿児島大学・宮崎大学', ratio: '32%'}, {name: '熊本県立大・福岡大・西南大', ratio: '35%'}, {name: '看護・医療系大学専門学校', ratio: '33%'}],
+              companies: ['人吉市役所・球磨地域公務員', '人吉球磨地域金融機関', '医療機関・看護師', '地元優良企業'], directCompanies: ['地元公務員・医療福祉・建設'],
+              univIncome: { initial: 22, mid: 550, peak: 770 }, empIncome: { initial: 18, mid: 410, peak: 560 },
+              tags: ['#人吉球磨拠点', '#カヌー山岳部', '#球磨川復興探究', '#地域医療看護'] 
+            },
+
+            { 
+              id: 'amakusa_h', name: '天草高校', area: 'amakusa', type: 'advance', badge: '天草地域進学校（天草市）',
+              desc: '天草地域の中心進学校。SSH指定校としての自然探究と国公立大学・医学部への実績。',
+              funVoice: '「SSHの天草の海やイルカに関する探究学習がすごく面白い！天高祭（文化祭）やクラスマッチでの全校の団結力も最高です。」',
+              funHighlights: '天高祭（文化祭）、体育祭（団パフォーマンス）、SSH天草自然フィールドワーク、部活動！',
+              growthExperience: ['【SSH天草自然・海洋探究】天草の海洋生態系・生態資源を活用した科学研究', '【天草未来共創PBL】地元自治体・企業と連携した観光・産業活性化提案', '【難関国公立・医学部対策】オンライン・対面での高度受験演習'],
+              univRate: 75, empRate: 3, otherRate: 22,
+              universities: [{name: '熊本大学・長崎大学・鹿児島大', ratio: '34%'}, {name: '福岡大・西南学院大・広島周辺', ratio: '32%'}, {name: '医療・看護・薬学系大学', ratio: '20%'}, {name: 'その他私大・専門', ratio: '14%'}],
+              companies: ['天草市役所・公務員', '地元金融・インフラ', '医療・福祉・看護職', '水産・観光関連'], directCompanies: ['地方公務員・地元インフラ'],
+              univIncome: { initial: 22, mid: 570, peak: 800 }, empIncome: { initial: 18, mid: 410, peak: 560 },
+              tags: ['#SSH海洋天草探究', '#天高祭', '#天草地域トップ', '#国公立医学部'] 
+            }
+        ];
+
+        // State variables
+        let currentSchool = allSchools[0];
+        let currentPathway = 'univ'; // 'univ' or 'emp'
+        let ratioChartInstance = null;
+        let salaryChartInstance = null;
+
+        // Initialize App on Window Load
+        window.onload = function() {
+            populateSchoolSelects();
+            updateDashboard();
+            updateComparisonTable();
+        };
+
+        // Switch Main Tabs (Single vs Compare)
+        function switchMainTab(mode) {
+            const singleView = document.getElementById('singleModeView');
+            const compareView = document.getElementById('compareModeView');
+            const tabSingleBtn = document.getElementById('tabSingleBtn');
+            const tabCompareBtn = document.getElementById('tabCompareBtn');
+
+            if (mode === 'single') {
+                singleView.classList.remove('hidden');
+                compareView.classList.add('hidden');
+                tabSingleBtn.className = "px-4 py-2 rounded-xl text-xs font-bold transition flex items-center gap-1.5 bg-white text-blue-900 shadow";
+                tabCompareBtn.className = "px-4 py-2 rounded-xl text-xs font-bold transition flex items-center gap-1.5 text-white hover:bg-white/10";
+            } else {
+                singleView.classList.add('hidden');
+                compareView.classList.remove('hidden');
+                tabCompareBtn.className = "px-4 py-2 rounded-xl text-xs font-bold transition flex items-center gap-1.5 bg-white text-blue-900 shadow";
+                tabSingleBtn.className = "px-4 py-2 rounded-xl text-xs font-bold transition flex items-center gap-1.5 text-white hover:bg-white/10";
+                updateComparisonTable();
+            }
+        }
+
+        // Populate School Select dropdowns based on filters
+        function populateSchoolSelects() {
+            const area = document.getElementById('areaFilter').value;
+            const type = document.getElementById('typeFilter').value;
+            const select = document.getElementById('schoolSelect');
+            
+            const filtered = allSchools.filter(s => {
+                const matchArea = (area === 'all' || s.area === area);
+                const matchType = (type === 'all' || s.type === type);
+                return matchArea && matchType;
+            });
+
+            select.innerHTML = '';
+            filtered.forEach(s => {
+                const opt = document.createElement('option');
+                opt.value = s.id;
+                opt.textContent = s.name + ` (${s.badge})`;
+                if (s.id === currentSchool.id) opt.selected = true;
+                select.appendChild(opt);
+            });
+
+            // If current school filtered out, pick first available
+            if (filtered.length > 0 && !filtered.some(s => s.id === currentSchool.id)) {
+                currentSchool = filtered[0];
+                updateDashboard();
+            }
+
+            // Also populate compare selects
+            ['compareSelect1', 'compareSelect2', 'compareSelect3'].forEach((id, idx) => {
+                const cmpSelect = document.getElementById(id);
+                const currentVal = cmpSelect.value;
+                cmpSelect.innerHTML = '';
+                allSchools.forEach(s => {
+                    const opt = document.createElement('option');
+                    opt.value = s.id;
+                    opt.textContent = s.name;
+                    if (!currentVal && idx === 0 && s.id === 'kosen_kumamoto') opt.selected = true;
+                    if (!currentVal && idx === 1 && s.id === 'kumamoto_h') opt.selected = true;
+                    if (!currentVal && idx === 2 && s.id === 'kumamoto_tech_h') opt.selected = true;
+                    if (currentVal && s.id === currentVal) opt.selected = true;
+                    cmpSelect.appendChild(opt);
+                });
+            });
+        }
+
+        function filterSchools() {
+            populateSchoolSelects();
+        }
+
+        function onSchoolSelect(id) {
+            const found = allSchools.find(s => s.id === id);
+            if (found) {
+                currentSchool = found;
+                updateDashboard();
+            }
+        }
+
+        // Toggle custom inputs
+        function toggleCustomInputs() {
+            const area = document.getElementById('customInputsArea');
+            const icon = document.getElementById('customToggleIcon');
+            area.classList.toggle('hidden');
+            icon.classList.toggle('rotate-180');
+            if (!area.classList.contains('hidden')) {
+                document.getElementById('customSchoolName').value = currentSchool.name;
+                document.getElementById('customUnivRate').value = currentSchool.univRate;
+                document.getElementById('customEmpRate').value = currentSchool.empRate;
+            }
+        }
+
+        function applyCustomSettings() {
+            const name = document.getElementById('customSchoolName').value;
+            const univ = parseInt(document.getElementById('customUnivRate').value) || 0;
+            const emp = parseInt(document.getElementById('customEmpRate').value) || 0;
+            
+            if (univ + emp > 100) {
+                alert('進学率と就職率の合計は100%以下にしてください。');
+                return;
+            }
+
+            currentSchool.name = name || currentSchool.name;
+            currentSchool.univRate = univ;
+            currentSchool.empRate = emp;
+            currentSchool.otherRate = Math.max(0, 100 - (univ + emp));
+            currentSchool.badge = 'ユーザーカスタム校';
+            updateDashboard();
+            toggleCustomInputs();
+        }
+
+        // Set Pathway ('univ' or 'emp')
+        function setPathway(path) {
+            currentPathway = path;
+            const univBtn = document.getElementById('pathUnivBtn');
+            const empBtn = document.getElementById('pathEmpBtn');
+
+            if (path === 'univ') {
+                univBtn.className = "p-3 border-2 rounded-xl text-center transition font-bold flex flex-col items-center justify-center gap-1 border-blue-500 bg-blue-50 text-blue-700";
+                empBtn.className = "p-3 border-2 border-slate-200 rounded-xl text-center transition font-bold flex flex-col items-center justify-center gap-1 text-slate-600 hover:bg-slate-50";
+            } else {
+                empBtn.className = "p-3 border-2 rounded-xl text-center transition font-bold flex flex-col items-center justify-center gap-1 border-emerald-500 bg-emerald-50 text-emerald-700";
+                univBtn.className = "p-3 border-2 border-slate-200 rounded-xl text-center transition font-bold flex flex-col items-center justify-center gap-1 text-slate-600 hover:bg-slate-50";
+            }
+            updateDashboard();
+        }
+
+        // Update Dashboard UI with currentSchool data
+        function updateDashboard() {
+            document.getElementById('selectedSchoolBadge').textContent = currentSchool.badge;
+            document.getElementById('displaySchoolName').textContent = currentSchool.name;
+            document.getElementById('schoolDescription').textContent = currentSchool.desc;
+            document.getElementById('statUnivRate').textContent = currentSchool.univRate + '%';
+            document.getElementById('statEmpRate').textContent = currentSchool.empRate + '%';
+
+            // Fun & Growth Highlights
+            document.getElementById('quickFunVoice').textContent = currentSchool.funVoice || '「行事も部活も熱い！」';
+            document.getElementById('funHighlightsText').textContent = currentSchool.funHighlights || '魅力あふれる学校生活！';
+            
+            // Fun Tags
+            const funTagsContainer = document.getElementById('funTagsContainer');
+            funTagsContainer.innerHTML = '';
+            (currentSchool.tags || []).forEach(tag => {
+                const span = document.createElement('span');
+                span.className = "bg-emerald-100 text-emerald-800 text-[10px] font-bold px-2 py-0.5 rounded-full";
+                span.textContent = tag;
+                funTagsContainer.appendChild(span);
+            });
+
+            // Growth List
+            const growthContainer = document.getElementById('growthListContainer');
+            growthContainer.innerHTML = '';
+            (currentSchool.growthExperience || []).forEach(item => {
+                const li = document.createElement('li');
+                li.className = "flex items-start gap-1.5";
+                li.innerHTML = `<i class="fa-solid fa-circle-check text-indigo-500 text-xs mt-0.5 shrink-0"></i><span>${item}</span>`;
+                growthContainer.appendChild(li);
+            });
+
+            // Flow pipeline
+            document.getElementById('flowSchoolName').textContent = currentSchool.name.split('（')[0];
+            document.getElementById('flowSchoolDetail').textContent = `進学率 ${currentSchool.univRate}% / 就職率 ${currentSchool.empRate}%`;
+
+            if (currentPathway === 'univ') {
+                document.getElementById('flowNextStage').textContent = '国公立・有名大学進学（編入）';
+                document.getElementById('flowNextDetail').textContent = '専門性をさらに深め学士号取得';
+                document.getElementById('flowCareer').textContent = '研究開発・総合職・先端エンジニア';
+                document.getElementById('flowIncome').textContent = `想定中堅年収: ${currentSchool.univIncome.mid}万円`;
+            } else {
+                document.getElementById('flowNextStage').textContent = '卒業後 直接就職・プロフェッショナル';
+                document.getElementById('flowNextDetail').textContent = 'TSMC・地元大手・公務員等';
+                document.getElementById('flowCareer').textContent = '技術職・金融・事務・公務員';
+                document.getElementById('flowIncome').textContent = `想定中堅年収: ${currentSchool.empIncome.mid}万円`;
+            }
+
+            // Destination list
+            const destListTitle = document.getElementById('destListTitle');
+            const destContainer = document.getElementById('destinationList');
+            destContainer.innerHTML = '';
+
+            if (currentPathway === 'univ') {
+                destListTitle.innerHTML = `<i class="fa-solid fa-building-columns text-blue-600 mr-2"></i> 主な進学先・大学編入実績モデル`;
+                currentSchool.universities.forEach(u => {
+                    const div = document.createElement('div');
+                    div.className = "flex justify-between items-center bg-slate-50 p-2.5 rounded-xl border border-slate-200 font-medium";
+                    div.innerHTML = `<span><i class="fa-solid fa-check text-blue-500 mr-1.5"></i> ${u.name}</span><span class="bg-blue-100 text-blue-800 font-bold px-2 py-0.5 rounded text-[11px]">${u.ratio}</span>`;
+                    destContainer.appendChild(div);
+                });
+            } else {
+                destListTitle.innerHTML = `<i class="fa-solid fa-briefcase text-emerald-600 mr-2"></i> 主な就職先・キャリア実績モデル`;
+                const list = currentSchool.directCompanies || currentSchool.companies;
+                list.forEach(c => {
+                    const div = document.createElement('div');
+                    div.className = "flex justify-between items-center bg-emerald-50/60 p-2.5 rounded-xl border border-emerald-200 font-medium";
+                    div.innerHTML = `<span><i class="fa-solid fa-shield-halved text-emerald-600 mr-1.5"></i> ${c}</span><span class="bg-emerald-100 text-emerald-800 font-bold px-2 py-0.5 rounded text-[11px]">主要実績</span>`;
+                    destContainer.appendChild(div);
+                });
+            }
+
+            // Income stats
+            const income = (currentPathway === 'univ') ? currentSchool.univIncome : currentSchool.empIncome;
+            document.getElementById('incomeInitial').textContent = income.initial;
+            document.getElementById('incomeMid').textContent = income.mid;
+
+            // Advice tags
+            const tagsContainer = document.getElementById('adviceTags');
+            tagsContainer.innerHTML = '';
+            currentSchool.tags.forEach(t => {
+                const span = document.createElement('span');
+                span.className = "bg-slate-800 text-amber-300 border border-slate-700 text-[11px] px-2.5 py-1 rounded-full font-bold";
+                span.textContent = t;
+                tagsContainer.appendChild(span);
+            });
+
+            // Update Charts
+            renderRatioChart();
+            renderSalaryChart(income);
+        }
+
+        // Render Doughnut Chart for Pathway Ratio
+        function renderRatioChart() {
+            const ctx = document.getElementById('ratioChart').getContext('2d');
+            if (ratioChartInstance) ratioChartInstance.destroy();
+
+            ratioChartInstance = new Chart(ctx, {
+                type: 'doughnut',
+                data: {
+                    labels: ['進学率', '就職率', 'その他・浪人等'],
+                    datasets: [{
+                        data: [currentSchool.univRate, currentSchool.empRate, currentSchool.otherRate],
+                        backgroundColor: ['#2563eb', '#10b981', '#cbd5e1'],
+                        borderWidth: 2,
+                        borderColor: '#ffffff'
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: { position: 'bottom', labels: { boxWidth: 10, font: { size: 10, family: 'Noto Sans JP' } } }
+                    }
+                }
+            });
+        }
+
+        // Render Salary Bar/Line Chart
+        function renderSalaryChart(income) {
+            const ctx = document.getElementById('salaryChart').getContext('2d');
+            if (salaryChartInstance) salaryChartInstance.destroy();
+
+            salaryChartInstance = new Chart(ctx, {
+                type: 'bar',
+                data: {
+                    labels: ['初任給(年換算)', '30代中堅期', '40代以降ピーク'],
+                    datasets: [{
+                        label: '想定年収モデル (万円)',
+                        data: [(income.initial * 12), income.mid, income.peak],
+                        backgroundColor: ['#38bdf8', '#f59e0b', '#10b981'],
+                        borderRadius: 8
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    scales: {
+                        y: { beginAtZero: true, grid: { color: '#f1f5f9' }, ticks: { font: { size: 10 } } },
+                        x: { grid: { display: false }, ticks: { font: { size: 10 } } }
+                    },
+                    plugins: { legend: { display: false } }
+                }
+            });
+        }
+
+        // Update Comparison Table for 3 Schools
+        function updateComparisonTable() {
+            const s1Id = document.getElementById('compareSelect1').value;
+            const s2Id = document.getElementById('compareSelect2').value;
+            const s3Id = document.getElementById('compareSelect3').value;
+
+            const s1 = allSchools.find(s => s.id === s1Id) || allSchools[0];
+            const s2 = allSchools.find(s => s.id === s2Id) || allSchools[2];
+            const s3 = allSchools.find(s => s.id === s3Id) || allSchools[8];
+
+            document.getElementById('cmpHead1').textContent = s1.name;
+            document.getElementById('cmpHead2').textContent = s2.name;
+            document.getElementById('cmpHead3').textContent = s3.name;
+
+            const tbody = document.getElementById('comparisonTableBody');
+            tbody.innerHTML = '';
+
+            const formatGrowth = (arr) => (arr || []).map(i => `・${i}`).join('<br>');
+
+            const rows = [
+                { label: '学校タイプ・特徴', val1: s1.badge, val2: s2.badge, val3: s3.badge },
+                { label: '在校生が楽しいポイント', val1: `<strong>${s1.funHighlights}</strong><br><span class="text-slate-500">${s1.funVoice}</span>`, val2: `<strong>${s2.funHighlights}</strong><br><span class="text-slate-500">${s2.funVoice}</span>`, val3: `<strong>${s3.funHighlights}</strong><br><span class="text-slate-500">${s3.funVoice}</span>` },
+                { label: '成長コンテンツ（探究・キャリア）', val1: formatGrowth(s1.growthExperience), val2: formatGrowth(s2.growthExperience), val3: formatGrowth(s3.growthExperience) },
+                { label: '進学率 / 就職率', val1: `進学 ${s1.univRate}% / 就職 ${s1.empRate}%`, val2: `進学 ${s2.univRate}% / 就職 ${s2.empRate}%`, val3: `進学 ${s3.univRate}% / 就職 ${s3.empRate}%` },
+                { label: '主な進学実績モデル', val1: s1.universities.map(u => u.name).join('、'), val2: s2.universities.map(u => u.name).join('、'), val3: s3.universities.map(u => u.name).join('、') },
+                { label: '主な就職先・企業', val1: s1.companies.join('、'), val2: s2.companies.join('、'), val3: s3.companies.join('、') },
+                { label: '大学進学コース 中堅年収', val1: `${s1.univIncome.mid}万円/年`, val2: `${s2.univIncome.mid}万円/年`, val3: `${s3.univIncome.mid}万円/年` },
+                { label: '直接就職コース 中堅年収', val1: `${s1.empIncome.mid}万円/年`, val2: `${s2.empIncome.mid}万円/年`, val3: `${s3.empIncome.mid}万円/年` },
+                { label: '特徴タグ', val1: s1.tags.join(' '), val2: s2.tags.join(' '), val3: s3.tags.join(' ') }
+            ];
+
+            rows.forEach(r => {
+                const tr = document.createElement('tr');
+                tr.innerHTML = `
+                    <td class="p-3 font-bold text-slate-700 bg-slate-50 table-sticky-col border-r border-slate-200">${r.label}</td>
+                    <td class="p-3 bg-blue-50/20 border-r border-slate-200 text-slate-800">${r.val1}</td>
+                    <td class="p-3 bg-emerald-50/20 border-r border-slate-200 text-slate-800">${r.val2}</td>
+                    <td class="p-3 bg-amber-50/20 text-slate-800">${r.val3}</td>
+                `;
+                tbody.appendChild(tr);
+            });
+        }
+    </script>
+</body>
+</html>
