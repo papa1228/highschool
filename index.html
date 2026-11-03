@@ -72,14 +72,13 @@
             <!-- Left Controls (4 cols) -->
             <div class="lg:col-span-4 space-y-5">
                 
-                <!-- Step 1: Select School (絞り込み非表示・ダイレクト選択) -->
+                <!-- Step 1: Select School -->
                 <div class="bg-white rounded-2xl p-5 card-shadow border border-slate-100">
                     <h2 class="text-base font-bold text-slate-800 mb-3 flex items-center">
                         <span class="bg-blue-600 text-white rounded-full w-6 h-6 inline-flex items-center justify-center text-xs mr-2 shadow">1</span>
                         志望校（高校・高専）を選ぶ
                     </h2>
 
-                    <!-- Select Box (全校検索) -->
                     <div class="mb-2">
                         <label class="block text-xs font-bold text-slate-600 mb-1.5">
                             <i class="fa-solid fa-magnifying-glass text-blue-500 mr-1"></i> 学校・学科名を選択
@@ -90,23 +89,14 @@
                     </div>
                 </div>
 
-                <!-- Step 2: Pathway Choice -->
-                <div class="bg-white rounded-2xl p-5 card-shadow border border-slate-100">
-                    <h2 class="text-base font-bold text-slate-800 mb-3 flex items-center">
-                        <span class="bg-blue-600 text-white rounded-full w-6 h-6 inline-flex items-center justify-center text-xs mr-2 shadow">2</span>
-                        卒業後のルートを選択
-                    </h2>
-
-                    <div class="grid grid-cols-2 gap-3" id="pathwayChoices">
-                        <button id="pathUnivBtn" onclick="setPathway('univ')" class="p-3 border-2 rounded-xl text-center transition font-bold flex flex-col items-center justify-center gap-1 border-blue-500 bg-blue-50 text-blue-700">
-                            <i class="fa-solid fa-graduation-cap text-2xl"></i>
-                            <span class="text-xs" id="univBtnLabel">大学・短大進学</span>
-                        </button>
-                        <button id="pathEmpBtn" onclick="setPathway('emp')" class="p-3 border-2 border-slate-200 rounded-xl text-center transition font-bold flex flex-col items-center justify-center gap-1 text-slate-600 hover:bg-slate-50">
-                            <i class="fa-solid fa-briefcase text-2xl"></i>
-                            <span class="text-xs" id="empBtnLabel">卒業後 直接就職</span>
-                        </button>
-                    </div>
+                <!-- Advice Card -->
+                <div class="bg-gradient-to-br from-amber-500 to-amber-600 text-white rounded-2xl p-4 shadow-lg">
+                    <h3 class="font-bold text-sm flex items-center gap-1.5 mb-1 text-amber-100">
+                        <i class="fa-solid fa-fire text-amber-200"></i> 受験生のキミへアドバイス
+                    </h3>
+                    <p class="text-xs leading-relaxed text-amber-50">
+                        高校や高専選びは「今の偏差値」だけでなく「その先目指せる仕事や年収」を知るとやる気がアップ！自分のやりたいことを見つけよう！
+                    </p>
                 </div>
 
             </div>
@@ -129,12 +119,12 @@
                     </div>
                     <div class="flex items-center gap-3 bg-slate-50 p-3 rounded-xl border border-slate-100 text-center w-full sm:w-auto justify-around shrink-0">
                         <div>
-                            <div class="text-xs text-slate-500 font-semibold" id="statUnivLabel">進学率</div>
+                            <div class="text-xs text-slate-500 font-semibold">進学率</div>
                             <div id="statUnivRate" class="text-lg font-extrabold text-blue-600">35%</div>
                         </div>
                         <div class="h-7 w-px bg-slate-200"></div>
                         <div>
-                            <div class="text-xs text-slate-500 font-semibold" id="statEmpLabel">就職率</div>
+                            <div class="text-xs text-slate-500 font-semibold">就職率</div>
                             <div id="statEmpRate" class="text-lg font-extrabold text-emerald-600">65%</div>
                         </div>
                     </div>
@@ -167,7 +157,7 @@
                     </div>
                 </div>
 
-                <!-- ENHANCED: Visual Flow Pipeline (ボリュームアップ版) -->
+                <!-- Visual Flow Pipeline -->
                 <div class="bg-white rounded-2xl p-5 card-shadow border border-slate-100">
                     <div class="flex items-center justify-between mb-4">
                         <h3 class="text-xs font-bold text-slate-500 uppercase tracking-wider flex items-center">
@@ -176,7 +166,6 @@
                         <span class="text-[11px] bg-blue-50 text-blue-700 px-2 py-0.5 rounded font-bold">未来シミュレーション</span>
                     </div>
                     <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
-                        <!-- Step 1 -->
                         <div class="bg-slate-50 p-4 rounded-xl border border-slate-200 flex flex-col justify-between">
                             <div>
                                 <div class="flex items-center justify-between mb-2">
@@ -184,43 +173,35 @@
                                     <i class="fa-solid fa-school text-slate-400"></i>
                                 </div>
                                 <div class="font-bold text-slate-800 text-sm" id="flowSchoolName">熊本高専 熊本</div>
-                                <p class="text-xs text-slate-600 mt-2 leading-relaxed" id="flowStep1Detail">
-                                    専門スキルと基礎学力を習得。行事や部活を楽しみつつ、課題解決能力や主体性をじっくり育む。
-                                </p>
+                                <p class="text-xs text-slate-600 mt-2 leading-relaxed" id="flowStep1Detail">専門スキルと基礎学力を習得。</p>
                             </div>
                             <div class="mt-3 pt-2 border-t border-slate-200/60 text-[11px] text-slate-500">
                                 <i class="fa-solid fa-circle-check text-emerald-500 mr-1"></i> 実践力を身につける基礎期
                             </div>
                         </div>
 
-                        <!-- Step 2 -->
                         <div class="bg-blue-50/70 p-4 rounded-xl border border-blue-200 flex flex-col justify-between">
                             <div>
                                 <div class="flex items-center justify-between mb-2">
                                     <span class="text-xs text-blue-700 font-bold bg-blue-200/80 px-2 py-0.5 rounded-full">STEP 2: 卒業後の進路</span>
                                     <i class="fa-solid fa-graduation-cap text-blue-500"></i>
                                 </div>
-                                <div class="font-bold text-blue-900 text-sm" id="flowNextStage">難関大学編入 / 大学進学</div>
-                                <p class="text-xs text-blue-800 mt-2 leading-relaxed" id="flowStep2Detail">
-                                    大学進学・3年次編入や地元優良企業への就職。自らの専門分野をさらに深め、実務や研究にチャレンジする発展期。
-                                </p>
+                                <div class="font-bold text-blue-900 text-sm" id="flowNextStage">大学進学・編入 / 直接就職</div>
+                                <p class="text-xs text-blue-800 mt-2 leading-relaxed" id="flowStep2Detail">大学進学や地元優良企業への就職。</p>
                             </div>
                             <div class="mt-3 pt-2 border-t border-blue-200/60 text-[11px] text-blue-700">
                                 <i class="fa-solid fa-arrow-trend-up text-blue-600 mr-1"></i> キャリアの選択肢を拡大
                             </div>
                         </div>
 
-                        <!-- Step 3 -->
                         <div class="bg-emerald-50/70 p-4 rounded-xl border border-emerald-200 flex flex-col justify-between">
                             <div>
                                 <div class="flex items-center justify-between mb-2">
                                     <span class="text-xs text-emerald-700 font-bold bg-emerald-200/80 px-2 py-0.5 rounded-full">STEP 3: 将来の職種・年収</span>
                                     <i class="fa-solid fa-briefcase text-emerald-600"></i>
                                 </div>
-                                <div class="font-bold text-emerald-900 text-sm" id="flowCareer">大手エンジニア・研究職など</div>
-                                <p class="text-xs text-emerald-800 mt-2 leading-relaxed" id="flowStep3Detail">
-                                    TSMC/JASMや地場優良企業、官公庁等の第一線で活躍。リーダーや専門家として社会を支える。
-                                </p>
+                                <div class="font-bold text-emerald-900 text-sm" id="flowCareer">エンジニア・研究職など</div>
+                                <p class="text-xs text-emerald-800 mt-2 leading-relaxed" id="flowStep3Detail">第一線で活躍し社会を支える。</p>
                             </div>
                             <div class="mt-3 pt-2 border-t border-emerald-200/60 text-[11px] font-bold text-emerald-700" id="flowIncome">
                                 想定平均年収: 650〜850万円
@@ -229,15 +210,22 @@
                     </div>
                 </div>
 
-                <!-- Destination List & Doughnut Chart -->
+                <!-- Destination & Employment List & Doughnut Chart -->
                 <div class="bg-white rounded-2xl p-5 card-shadow border border-slate-100">
                     <div class="grid grid-cols-1 md:grid-cols-2 gap-5">
                         <div>
-                            <h3 class="text-sm font-bold text-slate-800 mb-3 flex items-center" id="destListTitle">
-                                <i class="fa-solid fa-building-columns text-blue-600 mr-2"></i> 主な進学先・合格実績モデル
+                            <h3 class="text-sm font-bold text-slate-800 mb-3 flex items-center">
+                                <i class="fa-solid fa-building-columns text-blue-600 mr-2"></i> 主な進学先 & 直接就職実績モデル
                             </h3>
-                            <div class="space-y-2 text-xs" id="destinationList">
-                                <!-- Injected dynamically -->
+                            <div class="space-y-3 text-xs">
+                                <div>
+                                    <div class="font-bold text-blue-700 mb-1"><i class="fa-solid fa-graduation-cap mr-1"></i> 主な進学先（進学率: <span id="listUnivRate">35</span>%）</div>
+                                    <div class="space-y-1" id="univDestinationList"></div>
+                                </div>
+                                <div class="pt-2 border-t border-slate-100">
+                                    <div class="font-bold text-emerald-700 mb-1"><i class="fa-solid fa-briefcase mr-1"></i> 主な就職先（就職率: <span id="listEmpRate">65</span>%）</div>
+                                    <div class="space-y-1" id="empDestinationList"></div>
+                                </div>
                             </div>
                         </div>
                         <div class="flex flex-col items-center justify-center">
@@ -315,389 +303,4 @@
                 <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
                     <div class="bg-blue-50/50 p-3 rounded-xl border border-blue-200">
                         <label class="block text-xs font-bold text-blue-800 mb-1">
-                            <span class="bg-blue-600 text-white text-[10px] px-1.5 py-0.5 rounded-full mr-1">1</span> 学校 1
-                        </label>
-                        <select id="compareSelect1" onchange="updateComparisonTable()" class="w-full border border-blue-300 rounded-lg p-2 text-xs font-bold text-slate-800 bg-white focus:ring-2 focus:ring-blue-500 outline-none"></select>
-                    </div>
-                    <div class="bg-emerald-50/50 p-3 rounded-xl border border-emerald-200">
-                        <label class="block text-xs font-bold text-emerald-800 mb-1">
-                            <span class="bg-emerald-600 text-white text-[10px] px-1.5 py-0.5 rounded-full mr-1">2</span> 学校 2
-                        </label>
-                        <select id="compareSelect2" onchange="updateComparisonTable()" class="w-full border border-emerald-300 rounded-lg p-2 text-xs font-bold text-slate-800 bg-white focus:ring-2 focus:ring-emerald-500 outline-none"></select>
-                    </div>
-                    <div class="bg-amber-50/50 p-3 rounded-xl border border-amber-200">
-                        <label class="block text-xs font-bold text-amber-800 mb-1">
-                            <span class="bg-amber-600 text-white text-[10px] px-1.5 py-0.5 rounded-full mr-1">3</span> 学校 3
-                        </label>
-                        <select id="compareSelect3" onchange="updateComparisonTable()" class="w-full border border-amber-300 rounded-lg p-2 text-xs font-bold text-slate-800 bg-white focus:ring-2 focus:ring-amber-500 outline-none"></select>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Comparison Table -->
-            <div class="bg-white rounded-2xl card-shadow border border-slate-100 overflow-hidden">
-                <div class="p-4 bg-slate-900 text-white flex justify-between items-center">
-                    <h3 class="font-bold text-sm rounded-font flex items-center">
-                        <i class="fa-solid fa-table-columns text-amber-400 mr-2"></i> 熊本県内高校・高専 3校比較テーブル
-                    </h3>
-                    <span class="text-[11px] bg-slate-800 text-slate-300 px-2.5 py-1 rounded-full">横スクロール可</span>
-                </div>
-                <div class="overflow-x-auto">
-                    <table class="w-full text-left text-xs border-collapse min-w-[700px]">
-                        <thead>
-                            <tr class="bg-slate-100 text-slate-700 font-bold border-b border-slate-200">
-                                <th class="p-3 w-36 table-sticky-col border-r border-slate-200">比較項目</th>
-                                <th id="cmpHead1" class="p-3 w-1/3 bg-blue-50/60 text-blue-900 border-r border-slate-200">学校1</th>
-                                <th id="cmpHead2" class="p-3 w-1/3 bg-emerald-50/60 text-emerald-900 border-r border-slate-200">学校2</th>
-                                <th id="cmpHead3" class="p-3 w-1/3 bg-amber-50/60 text-amber-900">学校3</th>
-                            </tr>
-                        </thead>
-                        <tbody class="divide-y divide-slate-200" id="comparisonTableBody"></tbody>
-                    </table>
-                </div>
-            </div>
-        </div>
-
-    </main>
-
-    <!-- Footer -->
-    <footer class="bg-slate-900 text-slate-400 text-center py-4 px-4 text-xs mt-auto">
-        <p>※本シミュレーターのデータは公的統計・各校公表データをもとに作成した想定モデルです。</p>
-        <p class="mt-0.5">© 未来ナビ - 熊本県中学生の高校・高専受験を応援します</p>
-    </footer>
-
-    <!-- JavaScript Data & Logic -->
-    <script>
-        const allSchools = [
-            // ================= 高等専門学校（国立 1校2キャンパス） =================
-            { id: 'kosen_kumamoto', name: '熊本高等専門学校（熊本キャンパス）', badge: '国立5年制高専（合志市）', desc: '情報通信・制御・人間情報。5年制で即戦力エンジニア育成および難関国立大編入。', univRate: 35, empRate: 65, otherRate: 0,
-              studentVoice: '専門的な実験やプログラミングに熱中できる！部活と勉強を両立しながら高度な学びができるのが楽しい。',
-              growthContent: '国立大教授陣やTSMCなど先進企業との共同研究・インターンシップを通じて実社会の技術が身につく。',
-              universities: [{name: '九州大学・熊本大学（編入）', ratio: '35%'}, {name: '九州工業大・豊橋技科大', ratio: '35%'}, {name: '東工大・阪大等', ratio: '20%'}, {name: '高専専攻科', ratio: '10%'}],
-              companies: ['TSMC/JASM', 'ソニー・富士通', '九州電力・九電工', '大手メーカー技術職'], directCompanies: ['TSMC/JASM', 'ソニーセミコンダクタ', '九州電力', '大手メーカー'],
-              univIncome: { initial: 25, mid: 780, peak: 1100 }, empIncome: { initial: 21.5, mid: 580, peak: 820 }, tags: ['#TSMCエンジニア', '#国立大編入', '#5年制高専'] },
-
-            { id: 'kosen_yatsushiro', name: '熊本高等専門学校（八代キャンパス）', badge: '国立5年制高専（八代市）', desc: '機械知能・建築・生物化学。実務技術と大学編入に圧倒的強み。', univRate: 30, empRate: 70, otherRate: 0,
-              studentVoice: 'ものづくりや建築模型の制作など実習が面白い！先輩後輩の仲も良くアットホーム。',
-              growthContent: '国家資格取得支援や地域課題を解決するプロジェクトに参加し、プロの技術を早期習得。',
-              universities: [{name: '熊本大学・九州大学（編入）', ratio: '35%'}, {name: '長岡技科大・豊橋技科大', ratio: '35%'}, {name: '九州工業大・専攻科', ratio: '30%'}],
-              companies: ['大手ゼネコン・建築設計', 'TSMC関連・大手重工', '化学・バイオメーカー', 'インフラ企業'], directCompanies: ['施工管理・建築設計', 'TSMC・半導体設備', '大手機械・化学', '九州電力'],
-              univIncome: { initial: 24.5, mid: 750, peak: 1050 }, empIncome: { initial: 21.5, mid: 570, peak: 800 }, tags: ['#機械知能', '#建築デザイン', '#生物化学'] },
-
-            // ================= 熊本市エリア（公立 13校） =================
-            { id: 'kumamoto_h', name: '熊本高校', badge: '県最難関進学校（県立）', desc: '県内トップ進学校。東大・京大・九大・熊大医学部へ圧倒的な進学実績。', univRate: 93, empRate: 0, otherRate: 7,
-              studentVoice: '個性を尊重する自由な校風の中で、全国レベルの優秀な友人たちと切磋琢磨できるのが最高！',
-              growthContent: 'ハイレベルな授業と自主自立の学校行事を通じて、圧倒的な思考力とリーダーシップが養われる。',
-              universities: [{name: '東大・京大・九大・医学部', ratio: '42%'}, {name: '熊本大学（全学部）', ratio: '26%'}, {name: '早慶・東京理科大', ratio: '18%'}, {name: 'その他難関国公立', ratio: '14%'}],
-              companies: ['大手IT・テック研究開発', '総合商社・外資コンサル', '大学病院・医師', '国家公務員総合職'], directCompanies: ['国家公務員一般職', '地方公務員'],
-              univIncome: { initial: 26, mid: 840, peak: 1250 }, empIncome: { initial: 19.5, mid: 480, peak: 650 }, tags: ['#東大京大九大', '#熊大医学部', '#研究・官僚'] },
-
-            { id: 'zeizeiko_h', name: '済々黌高校', badge: '伝統難関進学校（県立）', desc: '文武両道の伝統校。熊大・九大を中心に全国の国公立・有名私大へ多数合格。', univRate: 86, empRate: 1, otherRate: 13,
-              studentVoice: '運動会や体育祭の熱量が熱い！仲間とともに勉学と行事に全力を注げる最高の環境。',
-              growthContent: '伝統の文武両道スピリットと充実した探究学習で、人間性と学術的探求力を同時に磨く。',
-              universities: [{name: '熊本大学（全学部）', ratio: '36%'}, {name: '九州大学・主要国公立', ratio: '24%'}, {name: '早慶・関関同立・MARCH', ratio: '16%'}, {name: '西南・福大・他', ratio: '24%'}],
-              companies: ['熊本県庁・市役所（幹部）', '肥後銀行・地銀総合職', '九州電力・大手インフラ', 'TSMC関連幹部'], directCompanies: ['警察・消防員', '地域インフラ技術'],
-              univIncome: { initial: 24, mid: 700, peak: 980 }, empIncome: { initial: 19, mid: 450, peak: 620 }, tags: ['#文武両道', '#熊大・九大', '#地域・全国大手'] },
-
-            { id: 'daiichi_h', name: '第一高校', badge: '伝統重点進学校（県立）', desc: '高い合格実績と、薬学・看護・教育分野への強みを誇る伝統進学校。', univRate: 80, empRate: 1, otherRate: 19,
-              studentVoice: '落ち着いた雰囲気で勉強に集中できる。行事や部活も一致団結して盛り上がる！',
-              growthContent: '薬学・医療・教育探究プログラムや探究活動を通じて、社会貢献への志を育む。',
-              universities: [{name: '熊本大学・県立大', ratio: '30%'}, {name: '西南学院・福岡大', ratio: '30%'}, {name: '薬学・看護・医療系大学', ratio: '20%'}, {name: '私立大・短大', ratio: '20%'}],
-              companies: ['肥後銀行・医療機関（薬剤師/看護師）', '公務員・教員', '地場商社・IT', '大手総合職'], directCompanies: ['地場事務職', '公務員'],
-              univIncome: { initial: 23, mid: 600, peak: 850 }, empIncome: { initial: 18.5, mid: 420, peak: 570 }, tags: ['#薬学・医療・教育', '#熊大・県立大', '#歴史と伝統'] },
-
-            { id: 'daini_h', name: '第二高校', badge: '普通・理数・美術（県立）', desc: '普通科・理数科・美術科を設置。熊大や県立大、難関私大への高い進学率。', univRate: 78, empRate: 2, otherRate: 20,
-              studentVoice: '普通科のほか理数科・美術科があり、多彩な才能を持つ仲間と出会えるのが楽しい！',
-              growthContent: 'SSH（スーパーサイエンスハイスクール）活動や美術展出品など専門的な感性と論理性を鍛える。',
-              universities: [{name: '熊本大学・県立大', ratio: '28%'}, {name: '福岡大・西南学院', ratio: '32%'}, {name: '他私立大学', ratio: '24%'}, {name: '専門学校・短大', ratio: '16%'}],
-              companies: ['TSMC関連エンジニア', '肥後銀行・地場企業', '公務員（県庁・市役所）', '教員・医療福祉'], directCompanies: ['設備メンテナンス', '公務員一般職'],
-              univIncome: { initial: 22.5, mid: 590, peak: 830 }, empIncome: { initial: 18.5, mid: 430, peak: 580 }, tags: ['#理数科・美術科', '#熊大・県立大', '#SSH探究'] },
-
-            { id: 'kita_h', name: '熊本北高校', badge: '普通・理数・英語（県立）', desc: '普通科・理数科・英語科。熊大・九大・九工大やグローバル人材を目指す。', univRate: 82, empRate: 1, otherRate: 17,
-              studentVoice: '理数科や英語科の授業がとても刺激的。海外研修や実験などワクワクする行事が多い！',
-              growthContent: 'SSH指定校としての高度な科学実験・研究や、ALTをフル活用した英語プレゼンテーション能力の強化。',
-              universities: [{name: '熊本大学・県立大学', ratio: '35%'}, {name: '九州大学・九州工業大', ratio: '15%'}, {name: '福岡大・西南学院', ratio: '30%'}, {name: 'その他大学', ratio: '20%'}],
-              companies: ['TSMC/JASMエンジニア', '大手IT・システムエンジニア', '銀行・公務員', '国際関連ビジネス'], directCompanies: ['技術現場職', '一般事務'],
-              univIncome: { initial: 23.5, mid: 630, peak: 880 }, empIncome: { initial: 18.5, mid: 430, peak: 580 }, tags: ['#SSH指定校', '#理数科・英語科', '#TSMC・ITエンジニア'] },
-
-            { id: 'toryo_h', name: '東稜高校', badge: '普通・国際・理数（県立）', desc: '国際コース等を誇り、文系・理系・国際派までバランスよく育成。', univRate: 68, empRate: 8, otherRate: 24,
-              studentVoice: '校舎が綺麗で快適！国際コースなどもあり、英語や異文化に触れるチャンスが多い。',
-              growthContent: '国際理解教育や探究プログラムを通じた、多角的な視野と表現力の習得。',
-              universities: [{name: '熊本県立大・崇城大・学園大', ratio: '42%'}, {name: '福岡大・西南大', ratio: '26%'}, {name: 'その他私大・短大', ratio: '16%'}, {name: '専門学校', ratio: '16%'}],
-              companies: ['地場IT・サービス・販売', 'TSMC関連技術職', '公務員（警察・行政）', '医療事務・福祉'], directCompanies: ['製造・建設', '事務職', '公務員'],
-              univIncome: { initial: 21.5, mid: 520, peak: 730 }, empIncome: { initial: 18, mid: 410, peak: 550 }, tags: ['#国際コース', '#熊本学園大・崇城大', '#総合キャリア'] },
-
-            { id: 'kumamoto_tech_h', name: '熊本工業高校（熊工）', badge: '全国屈指の工業校（県立）', desc: 'TSMC/JASM・九州電力など大手就職＆九工大等への進学に圧倒的実績。', univRate: 20, empRate: 75, otherRate: 5,
-              studentVoice: '圧倒的な資格取得数と実習の多さ！求人数が非常に多く、大手企業への就職に強い！',
-              growthContent: '専門的な機械・電気実習やモノづくり大会、部活動で培うプロフェッショナル意識。',
-              universities: [{name: '九州工業大・熊本大（編入）', ratio: '20%'}, {name: '崇城大・西日本工大', ratio: '50%'}, {name: '産業技術短大・専門学校', ratio: '30%'}],
-              companies: ['TSMC/JASM半導体', '大手自動車・重工', '九州電力・九電工', '大手ゼネコン施工管理'], directCompanies: ['JASM（TSMC熊本）', '九州電力・九電工', 'JR九州・大手施工管理'],
-              univIncome: { initial: 23.5, mid: 650, peak: 900 }, empIncome: { initial: 20, mid: 520, peak: 720 }, tags: ['#TSMC半導体', '#九州電力', '#製造業就職最強'] },
-
-            { id: 'kumamoto_comm_h', name: '熊本商業高校（熊商）', badge: '伝統ビジネス名門校（県立）', desc: '簿記・IT資格取得で肥後銀行や地場大手、税務職公務員への実績多数。', univRate: 50, empRate: 45, otherRate: 5,
-              studentVoice: '資格がどんどん取れて成長を感じられる！熊商デパート（販売実習）は最高の思い出！',
-              growthContent: '実践的なビジネス・経理実習や「熊商デパート」の運営を通じた経営・マーケティング体験。',
-              universities: [{name: '経済・経営・商学部系大学', ratio: '60%'}, {name: '熊本県立大（総合管理）', ratio: '15%'}, {name: 'ビジネス専門学校・短大', ratio: '25%'}],
-              companies: ['肥後銀行・熊本銀行', '地場商社・流通・IT', '税務職・行政公務員', '企業経理'], directCompanies: ['地銀一般職', '高卒税務職員', '地場優良商社'],
-              univIncome: { initial: 22, mid: 560, peak: 780 }, empIncome: { initial: 18.5, mid: 440, peak: 600 }, tags: ['#肥後銀行', '#熊商デパート', '#高卒税務署員'] },
-
-            // ================= 主要地区校・私立（代表抜粋） =================
-            { id: 'ozu_h', name: '大津高校', badge: 'サッカー全国強豪＆普通科（県立）', desc: '全国屈指のサッカー強豪。TSMC近接エリアとしてのSTEAM探究も注力。', univRate: 75, empRate: 8, otherRate: 17,
-              studentVoice: '部活の熱量が凄まじく全校生徒の一体感が最高！文武両道で成長できる環境。',
-              growthContent: 'TSMC進出エリアでの「半導体・地域STEAM探究」と、全国大会レベルの部活で鍛える精神力。',
-              universities: [{name: '熊本大学・県立大', ratio: '45%'}, {name: '西南学院・福岡大', ratio: '30%'}, {name: '専門学校・短大', ratio: '25%'}],
-              companies: ['TSMC/JASM関連', '肥後銀行・地場優良', '公務員（警察・自治体）', 'スポーツ・サービス'], directCompanies: ['TSMC/JASM関連', '地場メーカー', '公務員'],
-              univIncome: { initial: 22, mid: 580, peak: 800 }, empIncome: { initial: 18.5, mid: 430, peak: 580 }, tags: ['#サッカー全国強豪', '#TSMC探究', '#文武両道'] },
-
-            { id: 'kikuchi_h', name: '菊池高校', badge: '普通・商業・菊池学（県立）', desc: '地域密着「菊池学」探究。手厚い小集団教育で進学・就職に対応。', univRate: 60, empRate: 25, otherRate: 15,
-              studentVoice: '先生と生徒の距離が近くアットホーム！ボランティアや地域イベントの主役になれる。',
-              growthContent: '「菊池学」での地元企業コラボや商品開発、商業資格の取得。',
-              universities: [{name: '熊本学園大・崇城大', ratio: '50%'}, {name: '熊本県立大・国公立', ratio: '15%'}, {name: '専門学校・医療系', ratio: '35%'}],
-              companies: ['地元金融・信用金庫', '製造業・食品', '公務員（市役所・警察）', '医療福祉'], directCompanies: ['地場製造', '地元金融', '公務員一般職'],
-              univIncome: { initial: 21, mid: 510, peak: 710 }, empIncome: { initial: 18, mid: 400, peak: 540 }, tags: ['#菊池学', '#アットホーム', '#地域貢献'] },
-
-            { id: 'gakuho_h', name: '熊本学園大学付属高校', badge: '県内トップ私立進学校（私立）', desc: '圧倒的な進学実績。難関国公立から早慶・熊本学園大内部推薦まで。', univRate: 90, empRate: 1, otherRate: 9,
-              studentVoice: '文武両道で部活動も強い！行事がめちゃくちゃ盛り上がって最高に楽しい学校生活。',
-              growthContent: 'ハイレベルな特別進学カリキュラムと、国際交流プログラムや充実した探究活動。',
-              universities: [{name: '熊本大・九州大等国公立', ratio: '30%'}, {name: '早慶・MARCH・関関同立', ratio: '25%'}, {name: '熊本学園大学（内部推薦）', ratio: '30%'}, {name: 'その他私大', ratio: '15%'}],
-              companies: ['大手IT・メーカー', '肥後銀行・大手金融', '公務員（県庁・市役所）', '医療機関・教員'], directCompanies: ['一般事務職', '公務員'],
-              univIncome: { initial: 24, mid: 700, peak: 980 }, empIncome: { initial: 18.5, mid: 430, peak: 580 }, tags: ['#私立トップ校', '#学園大内部推薦', '#文武両道'] }
-        ];
-
-        let currentMode = 'single';
-        let currentSchool = allSchools[0];
-        let currentPathway = 'univ';
-        let ratioChartInstance = null;
-        let salaryChartInstance = null;
-
-        function initApp() {
-            populateSchoolSelects();
-            onSchoolSelect(allSchools[0].id);
-            updateComparisonTable();
-        }
-
-        function populateSchoolSelects() {
-            const sel = document.getElementById('schoolSelect');
-            sel.innerHTML = '';
-            allSchools.forEach(s => {
-                const opt = document.createElement('option');
-                opt.value = s.id;
-                opt.textContent = `${s.name} （${s.badge}）`;
-                sel.appendChild(opt);
-            });
-
-            // Compare selects
-            ['compareSelect1', 'compareSelect2', 'compareSelect3'].forEach((id, idx) => {
-                const cs = document.getElementById(id);
-                cs.innerHTML = '';
-                allSchools.forEach(s => {
-                    const opt = document.createElement('option');
-                    opt.value = s.id;
-                    opt.textContent = s.name;
-                    cs.appendChild(opt);
-                });
-                if(allSchools[idx]) cs.value = allSchools[idx].id;
-            });
-        }
-
-        function switchMainTab(mode) {
-            currentMode = mode;
-            const sBtn = document.getElementById('tabSingleBtn');
-            const cBtn = document.getElementById('tabCompareBtn');
-            const sView = document.getElementById('singleModeView');
-            const cView = document.getElementById('compareModeView');
-
-            if(mode === 'single') {
-                sBtn.className = "px-4 py-2 rounded-xl text-xs font-bold transition flex items-center gap-1.5 bg-white text-blue-900 shadow";
-                cBtn.className = "px-4 py-2 rounded-xl text-xs font-bold transition flex items-center gap-1.5 text-white hover:bg-white/10";
-                sView.classList.remove('hidden');
-                cView.classList.add('hidden');
-            } else {
-                cBtn.className = "px-4 py-2 rounded-xl text-xs font-bold transition flex items-center gap-1.5 bg-white text-blue-900 shadow";
-                sBtn.className = "px-4 py-2 rounded-xl text-xs font-bold transition flex items-center gap-1.5 text-white hover:bg-white/10";
-                cView.classList.remove('hidden');
-                sView.classList.add('hidden');
-                updateComparisonTable();
-            }
-        }
-
-        function onSchoolSelect(id) {
-            const found = allSchools.find(s => s.id === id);
-            if(found) {
-                currentSchool = found;
-                document.getElementById('schoolSelect').value = id;
-                updateDashboard();
-            }
-        }
-
-        function setPathway(path) {
-            currentPathway = path;
-            const univBtn = document.getElementById('pathUnivBtn');
-            const empBtn = document.getElementById('pathEmpBtn');
-            if(path === 'univ') {
-                univBtn.className = "p-3 border-2 rounded-xl text-center transition font-bold flex flex-col items-center justify-center gap-1 border-blue-500 bg-blue-50 text-blue-700";
-                empBtn.className = "p-3 border-2 border-slate-200 rounded-xl text-center transition font-bold flex flex-col items-center justify-center gap-1 text-slate-600 hover:bg-slate-50";
-            } else {
-                empBtn.className = "p-3 border-2 rounded-xl text-center transition font-bold flex flex-col items-center justify-center gap-1 border-emerald-500 bg-emerald-50 text-emerald-700";
-                univBtn.className = "p-3 border-2 border-slate-200 rounded-xl text-center transition font-bold flex flex-col items-center justify-center gap-1 text-slate-600 hover:bg-slate-50";
-            }
-            updateDashboard();
-        }
-
-        function updateDashboard() {
-            const s = currentSchool;
-            document.getElementById('selectedSchoolBadge').textContent = s.badge;
-            document.getElementById('displaySchoolName').textContent = s.name;
-            document.getElementById('schoolDescription').textContent = s.desc;
-            document.getElementById('statUnivRate').textContent = s.univRate + '%';
-            document.getElementById('statEmpRate').textContent = s.empRate + '%';
-
-            // Student voice & Growth
-            document.getElementById('studentVoiceText').textContent = s.studentVoice || '先生と生徒の距離が近く、毎日が充実しています！';
-            document.getElementById('growthContentText').textContent = s.growthContent || '特色ある授業や探究活動を通じて、実践的なスキルが身につきます。';
-
-            // ENHANCED STEP FLOW
-            document.getElementById('flowSchoolName').textContent = s.name.split('（')[0];
-            document.getElementById('flowStep1Detail').textContent = `${s.name.split('（')[0]}の授業や行事、部活動を通じて基礎知識と社会性を習得。${s.studentVoice || ''}`;
-
-            if(currentPathway === 'univ') {
-                document.getElementById('flowNextStage').textContent = '難関大学進学 / 大学院・編入';
-                document.getElementById('flowStep2Detail').textContent = `${s.universities[0]?.name || '国公立・有名私立大学'}等に進学・編入。専門分野の論文執筆や研究、高度な専門スキルを培う学びの発展期。`;
-                document.getElementById('flowCareer').textContent = s.companies[0] || '高度専門職・技術研究職・総合職';
-                document.getElementById('flowStep3Detail').textContent = `大学での専門研究を活かし、${s.companies.slice(0, 2).join('や')}等の第一線で研究者・エンジニア・リーダーとして活躍。`;
-                document.getElementById('flowIncome').textContent = `想定年収: ${s.univIncome.mid}万円/年 （ピーク時: ${s.univIncome.peak}万円）`;
-            } else {
-                document.getElementById('flowNextStage').textContent = '卒業後 直接就職・現場実務';
-                document.getElementById('flowStep2Detail').textContent = `${s.directCompanies[0] || '地元優良企業'}等へ直接就職。在学中に培った実技や資格を武器に、即戦力として現場実務をスタート。`;
-                document.getElementById('flowCareer').textContent = s.directCompanies[1] || '技術スペシャリスト・現場リーダー';
-                document.getElementById('flowStep3Detail').textContent = `${s.directCompanies.slice(0, 2).join('や')}などでキャリアを重ね、30代には現場のチーフやマネジメント層として企業を牽引。`;
-                document.getElementById('flowIncome').textContent = `想定年収: ${s.empIncome.mid}万円/年 （ピーク時: ${s.empIncome.peak}万円）`;
-            }
-
-            // Destination list
-            const destList = document.getElementById('destinationList');
-            destList.innerHTML = '';
-            const items = currentPathway === 'univ' ? s.universities : s.companies.map(c => ({name: c, ratio: 'モデル想定'}));
-            items.forEach(item => {
-                const div = document.createElement('div');
-                div.className = "flex justify-between items-center p-2 bg-slate-50 rounded-lg border border-slate-100";
-                div.innerHTML = `<span class="font-semibold text-slate-700">${item.name}</span><span class="text-blue-600 font-bold">${item.ratio}</span>`;
-                destList.appendChild(div);
-            });
-
-            updateIncomeDisplay();
-            updateCharts();
-            updateTags();
-        }
-
-        function updateIncomeDisplay() {
-            const s = currentSchool;
-            const inc = currentPathway === 'univ' ? s.univIncome : s.empIncome;
-            document.getElementById('incomeInitial').textContent = inc.initial;
-            document.getElementById('incomeMid').textContent = inc.mid;
-        }
-
-        function updateTags() {
-            const container = document.getElementById('adviceTags');
-            container.innerHTML = '';
-            currentSchool.tags.forEach(t => {
-                const span = document.createElement('span');
-                span.className = "bg-slate-800 text-amber-400 text-[11px] font-bold px-2.5 py-1 rounded-md border border-slate-700";
-                span.textContent = t;
-                container.appendChild(span);
-            });
-            document.getElementById('careerAdviceText').textContent = `${currentSchool.name}の強みと特色を活かして、${currentPathway === 'univ' ? '大学でのより深い学びや' : '卒業後すぐの即戦力として'}大きな夢を実現しましょう！`;
-        }
-
-        function updateCharts() {
-            const s = currentSchool;
-            if(ratioChartInstance) ratioChartInstance.destroy();
-            const ctx1 = document.getElementById('ratioChart').getContext('2d');
-            ratioChartInstance = new Chart(ctx1, {
-                type: 'doughnut',
-                data: {
-                    labels: ['進学率', '就職率', 'その他'],
-                    datasets: [{
-                        data: [s.univRate, s.empRate, s.otherRate],
-                        backgroundColor: ['#2563eb', '#10b981', '#cbd5e1']
-                    }]
-                },
-                options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { position: 'bottom', labels: { boxWidth: 12, font: { size: 10 } } } } }
-            });
-
-            if(salaryChartInstance) salaryChartInstance.destroy();
-            const inc = currentPathway === 'univ' ? s.univIncome : s.empIncome;
-            const ctx2 = document.getElementById('salaryChart').getContext('2d');
-            salaryChartInstance = new Chart(ctx2, {
-                type: 'bar',
-                data: {
-                    labels: ['初任給換算', '30代中堅期', 'ピーク時'],
-                    datasets: [{
-                        label: '想定年収 (万円)',
-                        data: [inc.initial * 12, inc.mid, inc.peak],
-                        backgroundColor: ['#3b82f6', '#f59e0b', '#10b981'],
-                        borderRadius: 6
-                    }]
-                },
-                options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { display: false } }, scales: { y: { beginAtZero: true } } }
-            });
-        }
-
-        function updateComparisonTable() {
-            const id1 = document.getElementById('compareSelect1').value;
-            const id2 = document.getElementById('compareSelect2').value;
-            const id3 = document.getElementById('compareSelect3').value;
-            
-            const s1 = allSchools.find(s => s.id === id1) || allSchools[0];
-            const s2 = allSchools.find(s => s.id === id2) || allSchools[1];
-            const s3 = allSchools.find(s => s.id === id3) || allSchools[2];
-
-            document.getElementById('cmpHead1').textContent = s1.name;
-            document.getElementById('cmpHead2').textContent = s2.name;
-            document.getElementById('cmpHead3').textContent = s3.name;
-
-            const tbody = document.getElementById('comparisonTableBody');
-            tbody.innerHTML = `
-                <tr>
-                    <td class="p-3 table-sticky-col font-bold border-r border-slate-200">学校タイプ・バッジ</td>
-                    <td class="p-3 border-r border-slate-200 text-blue-900 font-semibold">${s1.badge}</td>
-                    <td class="p-3 border-r border-slate-200 text-emerald-900 font-semibold">${s2.badge}</td>
-                    <td class="p-3 text-amber-900 font-semibold">${s3.badge}</td>
-                </tr>
-                <tr class="bg-slate-50/50">
-                    <td class="p-3 table-sticky-col font-bold border-r border-slate-200">在校生のリアルな声</td>
-                    <td class="p-3 border-r border-slate-200 text-slate-700">${s1.studentVoice}</td>
-                    <td class="p-3 border-r border-slate-200 text-slate-700">${s2.studentVoice}</td>
-                    <td class="p-3 text-slate-700">${s3.studentVoice}</td>
-                </tr>
-                <tr>
-                    <td class="p-3 table-sticky-col font-bold border-r border-slate-200">成長体験コンテンツ</td>
-                    <td class="p-3 border-r border-slate-200 text-slate-700">${s1.growthContent}</td>
-                    <td class="p-3 border-r border-slate-200 text-slate-700">${s2.growthContent}</td>
-                    <td class="p-3 text-slate-700">${s3.growthContent}</td>
-                </tr>
-                <tr class="bg-slate-50/50">
-                    <td class="p-3 table-sticky-col font-bold border-r border-slate-200">進学率 / 就職率</td>
-                    <td class="p-3 border-r border-slate-200 font-bold text-blue-600">進学: ${s1.univRate}% / 就職: ${s1.empRate}%</td>
-                    <td class="p-3 border-r border-slate-200 font-bold text-emerald-600">進学: ${s2.univRate}% / 就職: ${s2.empRate}%</td>
-                    <td class="p-3 font-bold text-amber-600">進学: ${s3.univRate}% / 就職: ${s3.empRate}%</td>
-                </tr>
-                <tr>
-                    <td class="p-3 table-sticky-col font-bold border-r border-slate-200">主な進学・就職先</td>
-                    <td class="p-3 border-r border-slate-200 text-slate-600">${s1.universities[0]?.name || '---'} 他</td>
-                    <td class="p-3 border-r border-slate-200 text-slate-600">${s2.universities[0]?.name || '---'} 他</td>
-                    <td class="p-3 text-slate-600">${s3.universities[0]?.name || '---'} 他</td>
-                </tr>
-                <tr class="bg-slate-50/50">
-                    <td class="p-3 table-sticky-col font-bold border-r border-slate-200">30~40代想定年収</td>
-                    <td class="p-3 border-r border-slate-200 font-extrabold text-blue-700">${s1.univIncome.mid} 万円</td>
-                    <td class="p-3 border-r border-slate-200 font-extrabold text-emerald-700">${s2.univIncome.mid} 万円</td>
-                    <td class="p-3 font-extrabold text-amber-700">${s3.univIncome.mid} 万円</td>
-                </tr>
-            `;
-        }
-
-        window.onload = initApp;
-    </script>
-</body>
-</html>
+                            <span class="bg-blue-600 text-white text-[10px] px-1.
