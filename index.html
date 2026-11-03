@@ -303,4 +303,351 @@
                 <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
                     <div class="bg-blue-50/50 p-3 rounded-xl border border-blue-200">
                         <label class="block text-xs font-bold text-blue-800 mb-1">
-                            <span class="bg-blue-600 text-white text-[10px] px-1.
+                            <span class="bg-blue-600 text-white text-[10px] px-1.5 py-0.5 rounded-full mr-1">1</span> 学校 1
+                        </label>
+                        <select id="compareSelect1" onchange="updateComparisonTable()" class="w-full border border-blue-300 rounded-lg p-2 text-xs font-bold text-slate-800 bg-white focus:ring-2 focus:ring-blue-500 outline-none"></select>
+                    </div>
+                    <div class="bg-emerald-50/50 p-3 rounded-xl border border-emerald-200">
+                        <label class="block text-xs font-bold text-emerald-800 mb-1">
+                            <span class="bg-emerald-600 text-white text-[10px] px-1.5 py-0.5 rounded-full mr-1">2</span> 学校 2
+                        </label>
+                        <select id="compareSelect2" onchange="updateComparisonTable()" class="w-full border border-emerald-300 rounded-lg p-2 text-xs font-bold text-slate-800 bg-white focus:ring-2 focus:ring-emerald-500 outline-none"></select>
+                    </div>
+                    <div class="bg-amber-50/50 p-3 rounded-xl border border-amber-200">
+                        <label class="block text-xs font-bold text-amber-800 mb-1">
+                            <span class="bg-amber-600 text-white text-[10px] px-1.5 py-0.5 rounded-full mr-1">3</span> 学校 3
+                        </label>
+                        <select id="compareSelect3" onchange="updateComparisonTable()" class="w-full border border-amber-300 rounded-lg p-2 text-xs font-bold text-slate-800 bg-white focus:ring-2 focus:ring-amber-500 outline-none"></select>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Comparison Table -->
+            <div class="bg-white rounded-2xl card-shadow border border-slate-100 overflow-hidden">
+                <div class="p-4 bg-slate-900 text-white flex justify-between items-center">
+                    <h3 class="font-bold text-sm rounded-font flex items-center">
+                        <i class="fa-solid fa-table-columns text-amber-400 mr-2"></i> 熊本県内高校・高専 3校比較テーブル
+                    </h3>
+                    <span class="text-[11px] bg-slate-800 text-slate-300 px-2.5 py-1 rounded-full">横スクロール可</span>
+                </div>
+                <div class="overflow-x-auto">
+                    <table class="w-full text-left text-xs border-collapse min-w-[700px]">
+                        <thead>
+                            <tr class="bg-slate-100 text-slate-700 font-bold border-b border-slate-200">
+                                <th class="p-3 w-36 table-sticky-col border-r border-slate-200">比較項目</th>
+                                <th id="cmpHead1" class="p-3 w-1/3 bg-blue-50/60 text-blue-900 border-r border-slate-200">学校1</th>
+                                <th id="cmpHead2" class="p-3 w-1/3 bg-emerald-50/60 text-emerald-900 border-r border-slate-200">学校2</th>
+                                <th id="cmpHead3" class="p-3 w-1/3 bg-amber-50/60 text-amber-900">学校3</th>
+                            </tr>
+                        </thead>
+                        <tbody class="divide-y divide-slate-200" id="comparisonTableBody"></tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+
+    </main>
+
+    <!-- Footer -->
+    <footer class="bg-slate-900 text-slate-400 text-center py-4 px-4 text-xs mt-auto">
+        <p>※本シミュレーターのデータは公的統計・各校公表データをもとに作成した想定モデルです。</p>
+        <p class="mt-0.5">© 未来ナビ - 熊本県中学生の高校・高専受験を応援します</p>
+    </footer>
+
+    <!-- JavaScript Data & Logic -->
+    <script>
+        const allSchools = [
+            // ================= 高等専門学校（国立 1校2キャンパス） =================
+            { id: 'kosen_kumamoto', name: '熊本高等専門学校（熊本キャンパス）', badge: '国立5年制高専（合志市）', desc: '情報通信・制御・人間情報。5年制で即戦力エンジニア育成および難関国立大編入。', univRate: 35, empRate: 65, otherRate: 0,
+              studentVoice: '専門的な実験やプログラミングに熱中できる！部活と勉強を両立しながら高度な学びができるのが楽しい。',
+              growthContent: '国立大教授陣やTSMCなど先進企業との共同研究・インターンシップを通じて実社会の技術が身につく。',
+              universities: [{name: '九州大学・熊本大学（編入）', ratio: '35%'}, {name: '九州工業大・豊橋技科大', ratio: '35%'}],
+              companies: ['TSMC/JASM（半導体エンジニア）', 'ソニー・富士通・大手IT', '九州電力・九電工・NTT'],
+              univIncome: { initial: 25, mid: 780, peak: 1100 }, empIncome: { initial: 21.5, mid: 580, peak: 820 }, tags: ['#TSMCエンジニア', '#国立大編入', '#5年制高専'] },
+
+            { id: 'kosen_yatsushiro', name: '熊本高等専門学校（八代キャンパス）', badge: '国立5年制高専（八代市）', desc: '機械知能・建築・生物化学。実務技術と大学編入に圧倒的強み。', univRate: 30, empRate: 70, otherRate: 0,
+              studentVoice: 'ものづくりや建築模型の制作など実習が面白い！先輩後輩の仲も良くアットホーム。',
+              growthContent: '国家資格取得支援や地域課題を解決するプロジェクトに参加し、プロの技術を早期習得。',
+              universities: [{name: '熊本大学・九州大学（編入）', ratio: '35%'}, {name: '長岡技科大・豊橋技科大', ratio: '35%'}],
+              companies: ['大手ゼネコン・建築設計', 'TSMC関連・大手重工', '化学・バイオメーカー'],
+              univIncome: { initial: 24.5, mid: 750, peak: 1050 }, empIncome: { initial: 21.5, mid: 570, peak: 800 }, tags: ['#機械知能', '#建築デザイン', '#生物化学'] },
+
+            // ================= 熊本市エリア（公立 13校） =================
+            { id: 'kumamoto_h', name: '熊本高校', badge: '県最難関進学校（県立）', desc: '県内トップ進学校。東大・京大・九大・熊大医学部へ圧倒的な進学実績。', univRate: 93, empRate: 0, otherRate: 7,
+              studentVoice: '個性を尊重する自由な校風の中で、全国レベルの優秀な友人たちと切磋琢磨できるのが最高！',
+              growthContent: 'ハイレベルな授業と自主自立の学校行事を通じて、圧倒的な思考力とリーダーシップが養われる。',
+              universities: [{name: '東大・京大・九大・医学部', ratio: '42%'}, {name: '熊本大学（全学部）', ratio: '26%'}],
+              companies: ['大手IT・テック研究開発', '総合商社・外資コンサル', '国家公務員総合職'],
+              univIncome: { initial: 26, mid: 840, peak: 1250 }, empIncome: { initial: 19.5, mid: 480, peak: 650 }, tags: ['#東大京大九大', '#熊大医学部', '#研究・官僚'] },
+
+            { id: 'zeizeiko_h', name: '済々黌高校', badge: '伝統難関進学校（県立）', desc: '文武両道の伝統校。熊大・九大を中心に全国の国公立・有名私大へ多数合格。', univRate: 86, empRate: 1, otherRate: 13,
+              studentVoice: '運動会や体育祭の熱量が熱い！仲間とともに勉学と行事に全力を注げる最高の環境。',
+              growthContent: '伝統の文武両道スピリットと充実した探究学習で、人間性と学術的探求力を同時に磨く。',
+              universities: [{name: '熊本大学（全学部）', ratio: '36%'}, {name: '九州大学・主要国公立', ratio: '24%'}],
+              companies: ['熊本県庁・市役所（幹部）', '肥後銀行・地銀総合職', '九州電力'],
+              univIncome: { initial: 24, mid: 700, peak: 980 }, empIncome: { initial: 19, mid: 450, peak: 620 }, tags: ['#文武両道', '#熊大・九大', '#地域・全国大手'] },
+
+            { id: 'kumamoto_tech_h', name: '熊本工業高校（熊工）', badge: '全国屈指の工業校（県立）', desc: 'TSMC/JASM・九州電力など大手就職＆九工大等への進学に圧倒的実績。', univRate: 20, empRate: 75, otherRate: 5,
+              studentVoice: '圧倒的な資格取得数と実習の多さ！求人数が非常に多く、大手企業への就職に強い！',
+              growthContent: '専門的な機械・電気実習やモノづくり大会、部活動で培うプロフェッショナル意識。',
+              universities: [{name: '九州工業大・熊本大（編入）', ratio: '20%'}, {name: '崇城大・西日本工大', ratio: '50%'}],
+              companies: ['JASM（TSMC熊本）・半導体', '九州電力・九電工', 'JR九州・大手ゼネコン施工管理'],
+              univIncome: { initial: 23.5, mid: 650, peak: 900 }, empIncome: { initial: 20, mid: 520, peak: 720 }, tags: ['#TSMC半導体', '#九州電力', '#製造業就職最強'] },
+
+            { id: 'kumamoto_comm_h', name: '熊本商業高校（熊商）', badge: '伝統ビジネス名門校（県立）', desc: '簿記・IT資格取得で肥後銀行や地場大手、税務職公務員への実績多数。', univRate: 50, empRate: 45, otherRate: 5,
+              studentVoice: '資格がどんどん取れて成長を感じられる！熊商デパート（販売実習）は最高の思い出！',
+              growthContent: '実践的なビジネス・経理実習や「熊商デパート」の運営を通じた経営・マーケティング体験。',
+              universities: [{name: '経済・経営・商学部系大学', ratio: '60%'}, {name: '熊本県立大（総合管理）', ratio: '15%'}],
+              companies: ['肥後銀行・熊本銀行（一般職）', '高卒税務職員（公務員）', '地場優良商社・事務'],
+              univIncome: { initial: 22, mid: 560, peak: 780 }, empIncome: { initial: 18.5, mid: 440, peak: 600 }, tags: ['#肥後銀行', '#熊商デパート', '#高卒税務署員'] },
+
+            // ================= 主要地区校・私立 =================
+            { id: 'ozu_h', name: '大津高校', badge: 'サッカー全国強豪＆普通科（県立）', desc: '全国屈指のサッカー強豪。TSMC近接エリアとしてのSTEAM探究も注力。', univRate: 75, empRate: 8, otherRate: 17,
+              studentVoice: '部活の熱量が凄まじく全校生徒の一体感が最高！文武両道で成長できる環境。',
+              growthContent: 'TSMC進出エリアでの「半導体・地域STEAM探究」と、全国大会レベルの部活で鍛える精神力。',
+              universities: [{name: '熊本大学・県立大', ratio: '45%'}, {name: '西南学院・福岡大', ratio: '30%'}],
+              companies: ['TSMC/JASM・半導体関連', '地場優良メーカー・製造', '公務員一般職'],
+              univIncome: { initial: 22, mid: 580, peak: 800 }, empIncome: { initial: 18.5, mid: 430, peak: 580 }, tags: ['#サッカー全国強豪', '#TSMC探究', '#文武両道'] },
+
+            { id: 'gakuho_h', name: '熊本学園大学付属高校', badge: '県内トップ私立進学校（私立）', desc: '圧倒的な進学実績。難関国公立から早慶・熊本学園大内部推薦まで。', univRate: 90, empRate: 1, otherRate: 9,
+              studentVoice: '文武両道で部活動も強い！行事がめちゃくちゃ盛り上がって最高に楽しい学校生活。',
+              growthContent: 'ハイレベルな特別進学カリキュラムと、国際交流プログラムや充実した探究活動。',
+              universities: [{name: '熊本大・九州大等国公立', ratio: '30%'}, {name: '熊本学園大学（内部推薦）', ratio: '30%'}],
+              companies: ['一般事務職', '公務員一般職', '地場金融機関'],
+              univIncome: { initial: 24, mid: 700, peak: 980 }, empIncome: { initial: 18.5, mid: 430, peak: 580 }, tags: ['#私立トップ校', '#学園大内部推薦', '#文武両道'] }
+        ];
+
+        let currentSchool = allSchools[0];
+        let ratioChartInstance = null;
+        let salaryChartInstance = null;
+
+        function initApp() {
+            populateSchoolSelects();
+            onSchoolSelect(allSchools[0].id);
+            updateComparisonTable();
+        }
+
+        function populateSchoolSelects() {
+            const sel = document.getElementById('schoolSelect');
+            sel.innerHTML = '';
+            allSchools.forEach(s => {
+                const opt = document.createElement('option');
+                opt.value = s.id;
+                opt.textContent = `${s.name} （${s.badge}）`;
+                sel.appendChild(opt);
+            });
+
+            // Compare selects
+            ['compareSelect1', 'compareSelect2', 'compareSelect3'].forEach((id, idx) => {
+                const cs = document.getElementById(id);
+                cs.innerHTML = '';
+                allSchools.forEach(s => {
+                    const opt = document.createElement('option');
+                    opt.value = s.id;
+                    opt.textContent = s.name;
+                    cs.appendChild(opt);
+                });
+                if(allSchools[idx]) cs.value = allSchools[idx].id;
+            });
+        }
+
+        function switchMainTab(mode) {
+            const sBtn = document.getElementById('tabSingleBtn');
+            const cBtn = document.getElementById('tabCompareBtn');
+            const sView = document.getElementById('singleModeView');
+            const cView = document.getElementById('compareModeView');
+
+            if(mode === 'single') {
+                sBtn.className = "px-4 py-2 rounded-xl text-xs font-bold transition flex items-center gap-1.5 bg-white text-blue-900 shadow";
+                cBtn.className = "px-4 py-2 rounded-xl text-xs font-bold transition flex items-center gap-1.5 text-white hover:bg-white/10";
+                sView.classList.remove('hidden');
+                cView.classList.add('hidden');
+            } else {
+                cBtn.className = "px-4 py-2 rounded-xl text-xs font-bold transition flex items-center gap-1.5 bg-white text-blue-900 shadow";
+                sBtn.className = "px-4 py-2 rounded-xl text-xs font-bold transition flex items-center gap-1.5 text-white hover:bg-white/10";
+                cView.classList.remove('hidden');
+                sView.classList.add('hidden');
+                updateComparisonTable();
+            }
+        }
+
+        function onSchoolSelect(id) {
+            const found = allSchools.find(s => s.id === id);
+            if(found) {
+                currentSchool = found;
+                document.getElementById('schoolSelect').value = id;
+                updateDashboard();
+            }
+        }
+
+        function updateDashboard() {
+            const s = currentSchool;
+            document.getElementById('selectedSchoolBadge').textContent = s.badge;
+            document.getElementById('displaySchoolName').textContent = s.name;
+            document.getElementById('schoolDescription').textContent = s.desc;
+            document.getElementById('statUnivRate').textContent = s.univRate + '%';
+            document.getElementById('statEmpRate').textContent = s.empRate + '%';
+
+            // Student voice & Growth
+            document.getElementById('studentVoiceText').textContent = s.studentVoice || '先生と生徒の距離が近く、毎日が充実しています！';
+            document.getElementById('growthContentText').textContent = s.growthContent || '特色ある授業や探究活動を通じて、実践的なスキルが身につきます。';
+
+            // ENHANCED STEP FLOW
+            document.getElementById('flowSchoolName').textContent = s.name.split('（')[0];
+            document.getElementById('flowStep1Detail').textContent = `${s.name.split('（')[0]}での授業や行事、部活動を通じて基礎知識と社会性を習得。`;
+            document.getElementById('flowStep2Detail').textContent = `進学率 ${s.univRate}% （大学・短大・編入） / 就職率 ${s.empRate}% （TSMC・大手・地元優良企業）。`;
+            document.getElementById('flowCareer').textContent = s.companies[0] || '専門職・技術職・総合職';
+            document.getElementById('flowStep3Detail').textContent = `地域や社会の第一線で、プロフェッショナルとしてリーダーシップを発揮。`;
+            document.getElementById('flowIncome').textContent = `想定平均年収: ${Math.round((s.univIncome.mid + s.empIncome.mid)/2)}万円前後`;
+
+            // Destination Lists
+            document.getElementById('listUnivRate').textContent = s.univRate;
+            document.getElementById('listEmpRate').textContent = s.empRate;
+
+            const univList = document.getElementById('univDestinationList');
+            univList.innerHTML = '';
+            if(s.univRate > 0 && s.universities.length > 0) {
+                s.universities.forEach(u => {
+                    const div = document.createElement('div');
+                    div.className = "flex justify-between items-center p-1.5 bg-blue-50/50 rounded border border-blue-100 text-slate-700";
+                    div.innerHTML = `<span>${u.name}</span><span class="text-blue-600 font-bold">${u.ratio}</span>`;
+                    univList.appendChild(div);
+                });
+            } else {
+                univList.innerHTML = '<div class="text-slate-400 p-1">進学実績はほぼありません（直接就職メイン）</div>';
+            }
+
+            const empList = document.getElementById('empDestinationList');
+            empList.innerHTML = '';
+            if(s.empRate > 0 && s.companies.length > 0) {
+                s.companies.forEach(c => {
+                    const div = document.createElement('div');
+                    div.className = "flex justify-between items-center p-1.5 bg-emerald-50/50 rounded border border-emerald-100 text-slate-700";
+                    div.innerHTML = `<span>${c}</span><span class="text-emerald-600 font-bold">実績モデル</span>`;
+                    empList.appendChild(div);
+                });
+            } else {
+                empList.innerHTML = '<div class="text-slate-400 p-1">直接就職実績はほぼありません（進学メイン）</div>';
+            }
+
+            updateIncomeDisplay();
+            updateCharts();
+            updateTags();
+        }
+
+        function updateIncomeDisplay() {
+            const s = currentSchool;
+            // 平均的な初任給・中堅期を算出
+            const avgInit = ((s.univIncome.initial * (s.univRate/100)) + (s.empIncome.initial * (s.empRate/100))).toFixed(1);
+            const avgMid = Math.round((s.univIncome.mid * (s.univRate/100)) + (s.empIncome.mid * (s.empRate/100)));
+            document.getElementById('incomeInitial').textContent = avgInit;
+            document.getElementById('incomeMid').textContent = avgMid;
+        }
+
+        function updateTags() {
+            const container = document.getElementById('adviceTags');
+            container.innerHTML = '';
+            currentSchool.tags.forEach(t => {
+                const span = document.createElement('span');
+                span.className = "bg-slate-800 text-amber-400 text-[11px] font-bold px-2.5 py-1 rounded-md border border-slate-700";
+                span.textContent = t;
+                container.appendChild(span);
+            });
+            document.getElementById('careerAdviceText').textContent = `${currentSchool.name}の強みと特色を活かして、大学進学や将来のキャリアの夢を大きく広げましょう！`;
+        }
+
+        function updateCharts() {
+            const s = currentSchool;
+            if(ratioChartInstance) ratioChartInstance.destroy();
+            const ctx1 = document.getElementById('ratioChart').getContext('2d');
+            ratioChartInstance = new Chart(ctx1, {
+                type: 'doughnut',
+                data: {
+                    labels: ['進学率', '就職率', 'その他'],
+                    datasets: [{
+                        data: [s.univRate, s.empRate, s.otherRate],
+                        backgroundColor: ['#2563eb', '#10b981', '#cbd5e1']
+                    }]
+                },
+                options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { position: 'bottom', labels: { boxWidth: 12, font: { size: 10 } } } } }
+            });
+
+            if(salaryChartInstance) salaryChartInstance.destroy();
+            const avgInit = (s.univIncome.initial * (s.univRate/100)) + (s.empIncome.initial * (s.empRate/100));
+            const avgMid = (s.univIncome.mid * (s.univRate/100)) + (s.empIncome.mid * (s.empRate/100));
+            const avgPeak = (s.univIncome.peak * (s.univRate/100)) + (s.empIncome.peak * (s.empRate/100));
+
+            const ctx2 = document.getElementById('salaryChart').getContext('2d');
+            salaryChartInstance = new Chart(ctx2, {
+                type: 'bar',
+                data: {
+                    labels: ['初任給換算', '30代中堅期', 'ピーク時'],
+                    datasets: [{
+                        label: '想定年収 (万円)',
+                        data: [Math.round(avgInit * 12), Math.round(avgMid), Math.round(avgPeak)],
+                        backgroundColor: ['#3b82f6', '#f59e0b', '#10b981'],
+                        borderRadius: 6
+                    }]
+                },
+                options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { display: false } }, scales: { y: { beginAtZero: true } } }
+            });
+        }
+
+        function updateComparisonTable() {
+            const id1 = document.getElementById('compareSelect1').value;
+            const id2 = document.getElementById('compareSelect2').value;
+            const id3 = document.getElementById('compareSelect3').value;
+            
+            const s1 = allSchools.find(s => s.id === id1) || allSchools[0];
+            const s2 = allSchools.find(s => s.id === id2) || allSchools[1];
+            const s3 = allSchools.find(s => s.id === id3) || allSchools[2];
+
+            document.getElementById('cmpHead1').textContent = s1.name;
+            document.getElementById('cmpHead2').textContent = s2.name;
+            document.getElementById('cmpHead3').textContent = s3.name;
+
+            const tbody = document.getElementById('comparisonTableBody');
+            tbody.innerHTML = `
+                <tr>
+                    <td class="p-3 table-sticky-col font-bold border-r border-slate-200">学校タイプ・バッジ</td>
+                    <td class="p-3 border-r border-slate-200 text-blue-900 font-semibold">${s1.badge}</td>
+                    <td class="p-3 border-r border-slate-200 text-emerald-900 font-semibold">${s2.badge}</td>
+                    <td class="p-3 text-amber-900 font-semibold">${s3.badge}</td>
+                </tr>
+                <tr class="bg-slate-50/50">
+                    <td class="p-3 table-sticky-col font-bold border-r border-slate-200">在校生のリアルな声</td>
+                    <td class="p-3 border-r border-slate-200 text-slate-700">${s1.studentVoice}</td>
+                    <td class="p-3 border-r border-slate-200 text-slate-700">${s2.studentVoice}</td>
+                    <td class="p-3 text-slate-700">${s3.studentVoice}</td>
+                </tr>
+                <tr>
+                    <td class="p-3 table-sticky-col font-bold border-r border-slate-200">成長体験コンテンツ</td>
+                    <td class="p-3 border-r border-slate-200 text-slate-700">${s1.growthContent}</td>
+                    <td class="p-3 border-r border-slate-200 text-slate-700">${s2.growthContent}</td>
+                    <td class="p-3 text-slate-700">${s3.growthContent}</td>
+                </tr>
+                <tr class="bg-slate-50/50">
+                    <td class="p-3 table-sticky-col font-bold border-r border-slate-200">進学率 / 就職率</td>
+                    <td class="p-3 border-r border-slate-200 font-bold text-blue-600">進学: ${s1.univRate}% / 就職: ${s1.empRate}%</td>
+                    <td class="p-3 border-r border-slate-200 font-bold text-emerald-600">進学: ${s2.univRate}% / 就職: ${s2.empRate}%</td>
+                    <td class="p-3 font-bold text-amber-600">進学: ${s3.univRate}% / 就職: ${s3.empRate}%</td>
+                </tr>
+                <tr>
+                    <td class="p-3 table-sticky-col font-bold border-r border-slate-200">主な進学・就職先</td>
+                    <td class="p-3 border-r border-slate-200 text-slate-600">進: ${s1.universities[0]?.name || '---'}<br>就: ${s1.companies[0] || '---'}</td>
+                    <td class="p-3 border-r border-slate-200 text-slate-600">進: ${s2.universities[0]?.name || '---'}<br>就: ${s2.companies[0] || '---'}</td>
+                    <td class="p-3 text-slate-600">進: ${s3.universities[0]?.name || '---'}<br>就: ${s3.companies[0] || '---'}</td>
+                </tr>
+                <tr class="bg-slate-50/50">
+                    <td class="p-3 table-sticky-col font-bold border-r border-slate-200">30~40代想定年収</td>
+                    <td class="p-3 border-r border-slate-200 font-extrabold text-blue-700">${Math.round((s1.univIncome.mid * (s1.univRate/100)) + (s1.empIncome.mid * (s1.empRate/100)))} 万円</td>
+                    <td class="p-3 border-r border-slate-200 font-extrabold text-emerald-700">${Math.round((s2.univIncome.mid * (s2.univRate/100)) + (s2.empIncome.mid * (s2.empRate/100)))} 万円</td>
+                    <td class="p-3 font-extrabold text-amber-700">${Math.round((s3.univIncome.mid * (s3.univRate/100)) + (s3.empIncome.mid * (s3.empRate/100)))} 万円</td>
+                </tr>
+            `;
+        }
+
+        window.onload = initApp;
+    </script>
+</body>
+</html>
