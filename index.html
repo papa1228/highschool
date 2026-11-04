@@ -41,7 +41,7 @@
         <div class="max-w-6xl mx-auto flex flex-col md:flex-row items-start md:items-center justify-between gap-4 relative z-10">
             <div>
                 <span class="bg-amber-400 text-slate-900 font-bold text-xs px-3 py-1 rounded-full inline-block mb-2 shadow">
-                    <i class="fa-solid fa-location-dot mr-1"></i> 熊本県内 全高校・高専 完全対応版
+                    <i class="fa-solid fa-location-dot mr-1"></i> 熊本市・県北エリア対応版
                 </span>
                 <h1 class="text-2xl md:text-3xl font-extrabold rounded-font tracking-wide">
                     熊本未来ナビ 〜高校・高専 進路比較シミュレーター〜
@@ -130,7 +130,7 @@
                     </div>
                 </div>
 
-                <!-- Student Voice & Growth Content Card -->
+                <!-- Student Voice & Growth Content Card (ボリュームアップ版) -->
                 <div class="bg-gradient-to-r from-blue-50 to-indigo-50 rounded-2xl p-5 card-shadow border border-blue-100 space-y-3">
                     <div class="flex items-center gap-2">
                         <span class="bg-blue-600 text-white text-xs font-bold px-2.5 py-1 rounded-lg">
@@ -138,21 +138,31 @@
                         </span>
                     </div>
                     <div class="grid grid-cols-1 md:grid-cols-2 gap-4 text-xs">
-                        <div class="bg-white p-3.5 rounded-xl border border-blue-100">
-                            <div class="font-bold text-blue-900 mb-1 flex items-center">
-                                <i class="fa-solid fa-comments text-blue-500 mr-1.5"></i> 在校生のリアルな声（学校生活・魅力）
+                        <div class="bg-white p-3.5 rounded-xl border border-blue-100 flex flex-col justify-between">
+                            <div>
+                                <div class="font-bold text-blue-900 mb-1.5 flex items-center">
+                                    <i class="fa-solid fa-comments text-blue-500 mr-1.5"></i> 在校生のリアルな声（学校生活・魅力）
+                                </div>
+                                <p class="text-slate-700 leading-relaxed" id="studentVoiceText">
+                                    （ここに在校生の具体的な声が表示されます）
+                                </p>
                             </div>
-                            <p class="text-slate-700 leading-relaxed" id="studentVoiceText">
-                                高度な実験やプログラミングに没頭できる！部活と勉強のメリハリがあり、自由な校風の中で一生の仲間ができる。
-                            </p>
+                            <div class="mt-3 pt-2 border-t border-blue-50 text-[10px] text-blue-600 font-semibold">
+                                <i class="fa-regular fa-lightbulb mr-1"></i> 生徒主体の行事や部活動が充実
+                            </div>
                         </div>
-                        <div class="bg-white p-3.5 rounded-xl border border-indigo-100">
-                            <div class="font-bold text-indigo-900 mb-1 flex items-center">
-                                <i class="fa-solid fa-seedling text-indigo-500 mr-1.5"></i> 学校での体験・成長プログラム
+                        <div class="bg-white p-3.5 rounded-xl border border-indigo-100 flex flex-col justify-between">
+                            <div>
+                                <div class="font-bold text-indigo-900 mb-1.5 flex items-center">
+                                    <i class="fa-solid fa-seedling text-indigo-500 mr-1.5"></i> 学校での体験・成長プログラム
+                                </div>
+                                <p class="text-slate-700 leading-relaxed" id="growthContentText">
+                                    （ここに学校独自の成長体験コンテンツが表示されます）
+                                </p>
                             </div>
-                            <p class="text-slate-700 leading-relaxed" id="growthContentText">
-                                国立大の教授陣やTSMCなど先進企業との共同研究・インターンシップを通じて、実社会で通用する課題解決力が身につく。
-                            </p>
+                            <div class="mt-3 pt-2 border-t border-indigo-50 text-[10px] text-indigo-600 font-semibold">
+                                <i class="fa-solid fa-rocket mr-1"></i> 将来の進路に直結する実践的な学び
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -345,7 +355,7 @@
             <div class="bg-white rounded-2xl card-shadow border border-slate-100 overflow-hidden">
                 <div class="p-4 bg-slate-900 text-white flex justify-between items-center">
                     <h3 class="font-bold text-sm rounded-font flex items-center">
-                        <i class="fa-solid fa-table-columns text-amber-400 mr-2"></i> 熊本県内高校・高専 3校比較テーブル
+                        <i class="fa-solid fa-table-columns text-amber-400 mr-2"></i> 熊本市・県北エリア 高校・高専 3校比較テーブル
                     </h3>
                     <span class="text-[11px] bg-slate-800 text-slate-300 px-2.5 py-1 rounded-full">横スクロール可</span>
                 </div>
@@ -375,499 +385,337 @@
 
     <!-- JavaScript Data & Logic -->
     <script>
-        // 熊本県内 全高校・高専データセット（全50校＋分校・国立高専・私立全校 完全網羅）
+        // 熊本市・県北エリアの学校データセット（ボリュームアップしたリアルな声・成長体験を搭載）
         const allSchools = [
             // ================= 高等専門学校（国立 1校2キャンパス） =================
             { id: 'kosen_kumamoto', name: '熊本高等専門学校（熊本キャンパス）', badge: '国立5年制高専（合志市）', desc: '情報通信・制御・人間情報。5年制で即戦力エンジニア育成および難関国立大編入。', univRate: 35, empRate: 65, otherRate: 0,
-              studentVoice: '専門的な実験やプログラミングに熱中できる！部活と勉強を両立しながら高度な学びができるのが楽しい。',
-              growthContent: '国立大教授陣やTSMCなど先進企業との共同研究・インターンシップを通じて実社会の技術が身につく。',
+              studentVoice: '「座学だけでなく、1年次から本格的なプログラミングやロボット製作の実験に没頭できるのが最高です。大学のような自由なキャンパスライフを5年間満喫しながら、将来即戦力になれる技術が身につきます！」（情報通信工学科 4年）',
+              growthContent: '国立大学の教授陣やTSMCなどの先端半導体企業との共同研究・インターンシップに参加。実社会の最先端技術に触れながら、自ら課題を発見して解決するエンジニアリング思考力を徹底的に鍛え上げます。',
               universities: [{name: '九州大学・熊本大学（編入）', ratio: '35%'}, {name: '九州工業大・豊橋技科大', ratio: '35%'}, {name: '東工大・阪大等', ratio: '20%'}, {name: '高専専攻科', ratio: '10%'}],
               companies: ['TSMC/JASM（半導体エンジニア）', 'ソニー・富士通・大手IT', '九州電力・九電工・NTT'],
               univIncome: { initial: 25, mid: 780, peak: 1100 }, empIncome: { initial: 21.5, mid: 580, peak: 820 }, tags: ['#TSMCエンジニア', '#国立大編入', '#5年制高専'] },
 
             { id: 'kosen_yatsushiro', name: '熊本高等専門学校（八代キャンパス）', badge: '国立5年制高専（八代市）', desc: '機械知能・建築・生物化学。実務技術と大学編入に圧倒的強み。', univRate: 30, empRate: 70, otherRate: 0,
-              studentVoice: 'ものづくりや建築模型の制作など実習が面白い！先輩後輩の仲も良くアットホーム。',
-              growthContent: '国家資格取得支援や地域課題を解決するプロジェクトに参加し、プロの技術を早期習得。',
+              studentVoice: '「巨大なものづくり機械の操作や、建築模型のデザイン制作など、手を動かす実習がとにかく楽しくて時間を忘れます。縦横のつながりが強く、先輩や先生が親身に技術を教えてくれるアットホームな雰囲気が自慢です。」（機械知能システム工学科 5年）',
+              growthContent: '国家資格の取得支援や、地域社会と連携したモノづくりプロジェクトに多数参加。現場で即トルクを発揮できる実践的な技術者・建築家としてのプロフェッショナルなスキルを早期に習得できます。',
               universities: [{name: '熊本大学・九州大学（編入）', ratio: '35%'}, {name: '長岡技科大・豊橋技科大', ratio: '35%'}, {name: '九州工業大・専攻科', ratio: '30%'}],
               companies: ['大手ゼネコン・建築設計', 'TSMC関連・大手重工', '化学・バイオメーカー'],
               univIncome: { initial: 24.5, mid: 750, peak: 1050 }, empIncome: { initial: 21.5, mid: 570, peak: 800 }, tags: ['#機械知能', '#建築デザイン', '#生物化学'] },
 
             // ================= 熊本市エリア（公立 13校） =================
             { id: 'kumamoto_h', name: '熊本高校', badge: '県最難関進学校（県立）', desc: '県内トップ進学校。東大・京大・九大・熊大医学部へ圧倒的な進学実績。', univRate: 93, empRate: 0, otherRate: 7,
-              studentVoice: '個性を尊重する自由な校風の中で、全国レベルの優秀な友人たちと切磋琢磨できるのが最高！',
-              growthContent: 'ハイレベルな授業と自主自立の学校行事を通じて、圧倒的な思考力とリーダーシップが養われる。',
+              studentVoice: '「生徒の自主性を重んじる『自由な校風』の下、全国レベルですごい友人たちと日々切磋琢磨できる環境です。勉強だけでなく学校行事や部活にも全員が本気で熱中し、最高の仲間と濃厚な高校生活を送れます！」（普通科 3年）',
+              growthContent: 'ハイレベルな授業や自学自習の徹底に加え、自主自立を掲げる伝統の行事を通じて、単なる暗記ではない『圧倒的な思考力』『問題解決力』そして将来社会をリードするリーダーシップが養われます。',
               universities: [{name: '東大・京大・九大・医学部', ratio: '42%'}, {name: '熊本大学（全学部）', ratio: '26%'}, {name: '早慶・東京理科大', ratio: '18%'}, {name: 'その他難関国公立', ratio: '14%'}],
               companies: ['大手IT・テック研究開発', '総合商社・外資コンサル', '国家公務員総合職'],
               univIncome: { initial: 26, mid: 840, peak: 1250 }, empIncome: { initial: 19.5, mid: 480, peak: 650 }, tags: ['#東大京大九大', '#熊大医学部', '#研究・官僚'] },
 
             { id: 'zeizeiko_h', name: '済々黌高校', badge: '伝統難関進学校（県立）', desc: '文武両道の伝統校。熊大・九大を中心に全国の国公立・有名私大へ多数合格。', univRate: 86, empRate: 1, otherRate: 13,
-              studentVoice: '運動会や体育祭の熱量が熱い！仲間とともに勉学と行事に全力を注げる最高の環境。',
-              growthContent: '伝統の文武両道スピリットと充実した探究学習で、人間性と学術的探求力を同時に磨く。',
+              studentVoice: '「運動会や体育祭にかける全校生徒の熱量が本当に半端ないです！勉強のときは集中し、遊ぶときは全力で弾けるという『文武両道』のメリハリが心地よく、何事にも恐れず挑戦するエネルギーがもらえます。」（普通科 2年）',
+              growthContent: '伝統の「黌風」と充実した探究学習プログラムを通じ、高い学力と豊かな人間性を同時に開花させます。部活動や学校行事で培ったチームワークは、将来社会に出てからも大きな財産になります。',
               universities: [{name: '熊本大学（全学部）', ratio: '36%'}, {name: '九州大学・主要国公立', ratio: '24%'}, {name: '早慶・関関同立・MARCH', ratio: '16%'}],
               companies: ['熊本県庁・市役所（幹部）', '肥後銀行・地銀総合職', '九州電力・大手インフラ'],
               univIncome: { initial: 24, mid: 700, peak: 980 }, empIncome: { initial: 19, mid: 450, peak: 620 }, tags: ['#文武両道', '#熊大・九大', '#地域・全国大手'] },
 
             { id: 'daiichi_h', name: '第一高校', badge: '伝統重点進学校（県立）', desc: '高い合格実績と、薬学・看護・教育分野への強みを誇る伝統進学校。', univRate: 80, empRate: 1, otherRate: 19,
-              studentVoice: '落ち着いた雰囲気で勉強に集中できる。行事や部活も一致団結して盛り上がる！',
-              growthContent: '薬学・医療・教育探究プログラムや探究活動を通じて、社会貢献への志を育む。',
+              studentVoice: '「落ち着いた緑豊かなキャンパスで、自分の進路目標に向かってじっくり勉強に集中できる環境です。医療や薬学に関心の高い仲間が多く、互いに刺激を受けながら将来の夢を具体化できています。」（普通科 3年）',
+              growthContent: '医療・薬学・教育分野への進学を見据えた特別探究プログラムや補習体制が充実。確かな基礎学力と、人を支える医療・教育人としての高い倫理観・コミュニケーション能力を育てます。',
               universities: [{name: '熊本大学・県立大', ratio: '30%'}, {name: '西南学院・福岡大', ratio: '30%'}, {name: '薬学・看護・医療系大学', ratio: '20%'}],
               companies: ['肥後銀行・医療機関（薬剤師/看護師）', '公務員・教員', '地場商社・IT'],
               univIncome: { initial: 23, mid: 600, peak: 850 }, empIncome: { initial: 18.5, mid: 420, peak: 570 }, tags: ['#薬学・医療・教育', '#熊大・県立大', '#歴史と伝統'] },
 
             { id: 'daini_h', name: '第二高校', badge: '普通・理数・美術（県立）', desc: '普通科・理数科・美術科を設置。熊大や県立大、難関私大への高い進学率。', univRate: 78, empRate: 2, otherRate: 20,
-              studentVoice: '普通科のほか理数科・美術科があり、多彩な才能を持つ仲間と出会えるのが楽しい！',
-              growthContent: 'SSH（スーパーサイエンスハイスクール）活動や美術展出品など専門的な感性と論理性を鍛える。',
+              studentVoice: '「普通科のほかに理数科や美術科があり、多彩な才能や個性的で面白い仲間たちに囲まれているのが刺激的！自分の好きなことに思い切り没頭できる自由で温かい雰囲気が大好きです。」（普通科 2年）',
+              growthContent: 'SSH（スーパーサイエンスハイスクール）指定校としての先進的な科学探究や、美術展への作品出展など。論理的思考力と豊かな感性を同時に磨き上げる独自のカリキュラムが魅力です。',
               universities: [{name: '熊本大学・県立大', ratio: '28%'}, {name: '福岡大・西南学院', ratio: '32%'}, {name: '他私立大学', ratio: '24%'}],
               companies: ['TSMC関連エンジニア', '肥後銀行・地場企業', '公務員（県庁・市役所）'],
               univIncome: { initial: 22.5, mid: 590, peak: 830 }, empIncome: { initial: 18.5, mid: 430, peak: 580 }, tags: ['#理数科・美術科', '#熊大・県立大', '#SSH探究'] },
 
             { id: 'kumamoto_nishi_h', name: '熊本西高校', badge: '普通・理数・体育（県立）', desc: 'スポーツとサイエンス情報に強み。文武両道で多様なキャリアを目指す。', univRate: 65, empRate: 15, otherRate: 20,
-              studentVoice: '部活動の勢いがすごい！スポーツが得意な仲間も多く、明るくハキハキとした雰囲気。',
-              growthContent: 'サイエンス情報科でのIT探究や、体育科でのアスリート教育・リーダーシップ育成。',
+              studentVoice: '「部活動の熱気がものすごく、毎日グラウンドや体育館から活気があふれています。サイエンス情報科ではパソコンを使った高度なIT実習もあり、将来の選択肢がぐっと広がりました！」（サイエンス情報科 3年）',
+              growthContent: 'サイエンス情報科での専門的なプログラミング・IT技術の習得や、体育科でのトップアスリート教育を通じた強いメンタルとリーダーシップの育成。社会でタフに生き抜く力が身につきます。',
               universities: [{name: '熊本学園大・崇城大', ratio: '40%'}, {name: '熊本県立大・国公立', ratio: '15%'}],
               companies: ['警察・消防・自衛隊', '地元製造・IT技術職', 'スポーツ関連・サービス'],
               univIncome: { initial: 21.5, mid: 530, peak: 740 }, empIncome: { initial: 18.5, mid: 420, peak: 560 }, tags: ['#サイエンス情報', '#体育科・部活', '#警察消防'] },
 
             { id: 'kita_h', name: '熊本北高校', badge: '普通・理数・英語（県立）', desc: '普通科・理数科・英語科。熊大・九大・九工大やグローバル人材を目指す。', univRate: 82, empRate: 1, otherRate: 17,
-              studentVoice: '理数科や英語科の授業がとても刺激的。海外研修や実験などワクワクする行事が多い！',
-              growthContent: 'SSH指定校としての高度な科学実験・研究や、ALTをフル活用した英語プレゼンテーション能力の強化。',
+              studentVoice: '「理数科や英語科の専門授業がとてもディープで面白いです。海外からの留学生やALTの先生と英語で議論する機会も多く、視野が世界規模に広がった実感があります！」（英語科 3年）',
+              growthContent: 'SSH指定校としての本格的な科学実験・研究論文執筆や、英語科・理数科を通じた国際感覚の育成。グローバル社会やハイテク産業界で即戦力となる高い英語力と科学的素養が身につきます。',
               universities: [{name: '熊本大学・県立大学', ratio: '35%'}, {name: '九州大学・九州工業大', ratio: '15%'}, {name: '福岡大・西南学院', ratio: '30%'}],
               companies: ['TSMC/JASMエンジニア', '大手IT・システムエンジニア', '銀行・公務員'],
               univIncome: { initial: 23.5, mid: 630, peak: 880 }, empIncome: { initial: 18.5, mid: 430, peak: 580 }, tags: ['#SSH指定校', '#理数科・英語科', '#TSMC・ITエンジニア'] },
 
             { id: 'toryo_h', name: '東稜高校', badge: '普通・国際・理数（県立）', desc: '国際コース等を誇り、文系・理系・国際派までバランスよく育成。', univRate: 68, empRate: 8, otherRate: 24,
-              studentVoice: '校舎が綺麗で快適！国際コースなどもあり、英語や異文化に触れるチャンスが多い。',
-              growthContent: '国際理解教育や探究プログラムを通じた、多角的な視野と表現力の習得。',
+              studentVoice: '「校舎が新しくてとても綺麗！国際コースの授業では、異文化理解やプレゼンテーションのスキルが磨かれて毎日ワクワクします。先生方のサポートも手厚いです。」（国際コース 2年）',
+              growthContent: 'グローバルな視野を養う国際理解プログラムや、生徒一人ひとりの進路希望にきめ細かく寄り添う進学補習・キャリア指導により、将来マルチに活躍できる柔軟な対応力が養われます。',
               universities: [{name: '熊本県立大・崇城大・学園大', ratio: '42%'}, {name: '福岡大・西南大', ratio: '26%'}],
               companies: ['地場IT・サービス・販売', 'TSMC関連技術職', '公務員（警察・行政）'],
               univIncome: { initial: 21.5, mid: 520, peak: 730 }, empIncome: { initial: 18, mid: 410, peak: 550 }, tags: ['#国際コース', '#熊本学園大・崇城大', '#総合キャリア'] },
 
             { id: 'yushinkan_h', name: '湧心館高校', badge: '全日・定時・通信（県立）', desc: '自分のペースで柔軟に学べる単位制。個性を活かした進学・就職指導。', univRate: 40, empRate: 40, otherRate: 20,
-              studentVoice: '自分の興味に合わせて授業を選択できる！多様な目標を持つ仲間と自分らしく過ごせる。',
-              growthContent: '資格取得や個別の学び直し支援を通じた、確実な社会人基礎力の育成。',
+              studentVoice: '「自分の興味や生活スタイルに合わせて時間割や授業を自分で選べるのが本当に素晴らしいです。様々な年齢やバックグラウンドを持つ仲間と出会い、自分のペースで自立心が育ちました。」（単位制普通科 3年）',
+              growthContent: '単位制のメリットを活かしたきめ細やかな学び直しや、多彩な資格取得支援。社会人としての基礎マナーや主体性を自分のペースでしっかりと身につけることができます。',
               universities: [{name: '九州圏私立大学・短大', ratio: '45%'}, {name: '専門学校', ratio: '45%'}],
               companies: ['地場製造業・サービス', '福祉・介護・医療', '公務員'],
               univIncome: { initial: 20.5, mid: 480, peak: 660 }, empIncome: { initial: 17.5, mid: 380, peak: 510 }, tags: ['#単位制', '#柔軟な学び', '#個性を活かす'] },
 
             { id: 'kumamoto_tech_h', name: '熊本工業高校（熊工）', badge: '全国屈指の工業校（県立）', desc: 'TSMC/JASM・九州電力など大手就職＆九工大等への進学に圧倒的実績。', univRate: 20, empRate: 75, otherRate: 5,
-              studentVoice: '圧倒的な資格取得数と実習の多さ！求人数が非常に多く、大手企業への就職に強い！',
-              growthContent: '専門的な機械・電気実習やモノづくり大会、部活動で培うプロフェッショナル意識。',
+              studentVoice: '「圧倒的な数の専門資格が取れ、実習で使う機械や設備もプロ仕様で凄いです！地元企業やTSMC関連からの求人が山のようにあり、『技術を身につけて即戦力で働く』という誇りが持てます。」（機械科 3年）',
+              growthContent: '最先端の機械・電気実習や、全国レベルのモノづくり競技会への挑戦、部活動を通じたプロフェッショナル意識の醸成。産業界の即戦力として引く手あまたの人材へと成長できます。',
               universities: [{name: '九州工業大・熊本大（編入）', ratio: '20%'}, {name: '崇城大・西日本工大', ratio: '50%'}],
               companies: ['JASM（TSMC熊本）・半導体', '九州電力・九電工', 'JR九州・大手ゼネコン施工管理'],
               univIncome: { initial: 23.5, mid: 650, peak: 900 }, empIncome: { initial: 20, mid: 520, peak: 720 }, tags: ['#TSMC半導体', '#九州電力', '#製造業就職最強'] },
 
             { id: 'kumamoto_comm_h', name: '熊本商業高校（熊商）', badge: '伝統ビジネス名門校（県立）', desc: '簿記・IT資格取得で肥後銀行や地場大手、税務職公務員への実績多数。', univRate: 50, empRate: 45, otherRate: 5,
-              studentVoice: '資格がどんどん取れて成長を感じられる！熊商デパート（販売実習）は最高の思い出！',
-              growthContent: '実践的なビジネス・経理実習や「熊商デパート」の運営を通じた経営・マーケティング体験。',
+              studentVoice: '「日商簿記や情報処理の検定にどんどん合格していくのが快感です！全校生徒で運営する『熊商デパート（巨大な販売実習）』では、経営やマーケティングのリアルな仕組みが肌で学べました。」（情報処理科 3年）',
+              growthContent: '実践的なビジネス・経理実習や、伝統の「熊商デパート」の運営を通じた経営・販売・マーケティングのリアル体験。社会に出てすぐ役立つ実務スキルと高いビジネスマナーが身につきます。',
               universities: [{name: '経済・経営・商学部系大学', ratio: '60%'}, {name: '熊本県立大（総合管理）', ratio: '15%'}],
               companies: ['肥後銀行・熊本銀行（一般職）', '高卒税務職員（公務員）', '地場優良商社・事務'],
               univIncome: { initial: 22, mid: 560, peak: 780 }, empIncome: { initial: 18.5, mid: 440, peak: 600 }, tags: ['#肥後銀行', '#熊商デパート', '#高卒税務署員'] },
 
             { id: 'kumamoto_agri_h', name: '熊本農業高校（熊農）', badge: '農業・食・環境（県立）', desc: '農業・園芸・畜産・食品科学。アグリビジネスから大学進学まで対応。', univRate: 35, empRate: 55, otherRate: 10,
-              studentVoice: '動植物と触れ合う実習がとにかく楽しい！採れたての野菜や加工食品の販売も大人気。',
-              growthContent: '先進農業技術の実習や、食品加工・六次産業化プロジェクトを通じた地域貢献体験。',
+              studentVoice: '「広大な農場での実習が毎日本当に楽しい！自分たちで育てた野菜や、加工して作ったハム・パンが地域の人たちに美味しいと言って買ってもらえる瞬間が最高にやりがいを感じます。」（食品工業科 3年）',
+              growthContent: '先進的な農業技術の実習や、食品加工・六次産業化プロジェクトを通じた地域貢献体験。自然のめぐみと向き合いながら、食の安全やビジネス流通の仕組みを総合的に学べます。',
               universities: [{name: '農学・生命科学系大学', ratio: '50%'}, {name: '九州圏私立大学', ratio: '30%'}],
               companies: ['農業法人・食品メーカー', '造園・環境関連企業', '公務員（農政・技術）'],
               univIncome: { initial: 21, mid: 500, peak: 700 }, empIncome: { initial: 18, mid: 400, peak: 550 }, tags: ['#食品科学', '#アグリビジネス', '#実習豊富'] },
 
             { id: 'hitsuyu_h', name: '必由館高校', badge: '総合力重視（市立）', desc: '文理・芸術・国際など多角的な学び。熊本市立の特色ある教育を展開。', univRate: 70, empRate: 10, otherRate: 20,
-              studentVoice: '服飾や芸術など個性を伸ばせる授業が多い！明るくのびのびとした学校生活。',
-              growthContent: '独自の探究カリキュラムや表現力を磨くワークショップで、個性と自立心を醸成。',
+              studentVoice: '「服飾デザインや美術など、自分の個性をとことん伸ばせる選択授業が充実しています。明るく自由でのびのびとした校風の中で、自分のやりたいことにまっすぐ打ち込めます！」（服飾デザイン科 3年）',
+              growthContent: '独自の探究カリキュラムや表現力を磨くワークショップ。自分の感性や個性に自信を持ち、それを社会に向けて発信する自己表現力と自立心がしっかりと養われます。',
               universities: [{name: '熊本県立大・学園大・崇城大', ratio: '45%'}, {name: '福岡大・西南大', ratio: '25%'}],
               companies: ['地場企業サービス・事務', 'デザイン・アパレル・企画', '公務員'],
               univIncome: { initial: 21.5, mid: 510, peak: 720 }, empIncome: { initial: 18, mid: 400, peak: 540 }, tags: ['#熊本市立', '#芸術・デザイン', '#個性を伸ばす'] },
 
             { id: 'chiharadai_h', name: '千原台高校', badge: '情報・スポーツ・ビジネス（市立）', desc: '情報処理やスポーツに強み。ICTスキルと健康な心身を育む市立校。', univRate: 55, empRate: 35, otherRate: 10,
-              studentVoice: 'パソコン教室の設備が凄く、スポーツ部活動も盛ん！活気のある毎日が過ごせる。',
-              growthContent: '最新のeスポーツ・ICT環境を活用した情報教育と、運動部での人間力向上。',
+              studentVoice: '「最新のパソコンやeスポーツ環境が整った教室で、最先端のICTスキルを学べます。部活動も非常に盛んで、心身ともにタフでたくましい仲間たちと毎日充実しています！」（情報処理科 3年）',
+              growthContent: '最先端のICT・情報教育環境を活用した実践的なITスキル習得と、運動部活動を通じたチームワーク・精神力の強化。これからのデジタル社会をリードする人材を育成します。',
               universities: [{name: '情報・経営系私立大学', ratio: '55%'}, {name: 'スポーツ系大学', ratio: '25%'}],
               companies: ['地元IT・通信企業', 'スポーツ関連・フィットネス', '販売・事務職'],
               univIncome: { initial: 21.5, mid: 520, peak: 730 }, empIncome: { initial: 18, mid: 410, peak: 550 }, tags: ['#ICT・eスポーツ', '#部活活発', '#ビジネス情報'] },
 
             // ================= 県北エリア（荒尾・玉名・山鹿・菊池・阿蘇） =================
             { id: 'tamana_h', name: '玉名高校・附属中', badge: '県北の伝統難関校（中高一貫/県立）', desc: '中高一貫校。SSH指定校として難関国公立大・医学部へ高い進学実績。', univRate: 85, empRate: 2, otherRate: 13,
-              studentVoice: 'SSHの研究活動が本格的！中高一貫で絆が深く、落ち着いて受験勉強に打ち込める。',
-              growthContent: 'スーパーサイエンスハイスクール（SSH）指定の探究発表会や国際科学交流プログラム。',
+              studentVoice: '「中高一貫で6年間をともに過ごす仲間との絆がとても深く、落ち着いた環境でハイレベルな学習に没頭できます。SSHの本格的な科学研究発表は大学レベルで本当に刺激的です！」（理数科 3年）',
+              growthContent: 'スーパーサイエンスハイスクール（SSH）指定の高度な科学探究活動や国際交流プログラム。論理的検証力と、将来の科学者・医療人を志す高い探究心が自然と身につきます。',
               universities: [{name: '熊本大学・九州大学', ratio: '40%'}, {name: '主要国公立・医学部', ratio: '20%'}],
               companies: ['地方公務員', '研究開発・技術職', '地場金融'],
               univIncome: { initial: 24, mid: 680, peak: 950 }, empIncome: { initial: 18.5, mid: 430, peak: 580 }, tags: ['#SSH指定校', '#中高一貫', '#熊大・九大・医学部'] },
 
             { id: 'tamana_tech_h', name: '玉名工業高校', badge: 'モノづくり＆エンジニア（県立）', desc: '機械・電気・電子・建築・土木。TSMCや地元自動車・インフラ就職に強み。', univRate: 15, empRate: 80, otherRate: 5,
-              studentVoice: '電気や機械の知識がゼロから学べる！技能五輪やモノづくり大会への挑戦がアツい。',
-              growthContent: '現場重視の実習設備と、地域企業と連携したキャリア育成プログラム。',
+              studentVoice: '「中学校の頃は機械が苦手だった私でも、先生方がゼロから根気強く教えてくれたおかげで資格が次々取れました！技能五輪への挑戦など、自分の技術が磨かれていくのが実感できます。」（電子科 3年）',
+              growthContent: '現場重視の実習設備と、地域産業界と強力に連携したキャリア育成プログラム。プロの技術者として誇れる専門資格と確かな技術力が確実に身につきます。',
               universities: [{name: '工業系大学・崇城大', ratio: '60%'}, {name: '専門学校', ratio: '40%'}],
               companies: ['TSMC関連企業', '大手自動車・機械', '九州電力・インフラ'],
               univIncome: { initial: 23, mid: 620, peak: 850 }, empIncome: { initial: 19.5, mid: 500, peak: 690 }, tags: ['#TSMC関連', '#技能五輪', '#機械電気建築'] },
 
             { id: 'hokuryo_h', name: '北稜高校', badge: '園芸・家政・ビジネス（県立）', desc: '園芸科学・服飾・ビジネス。地域密着の実践的カリキュラム。', univRate: 30, empRate: 60, otherRate: 10,
-              studentVoice: '花や野菜の栽培、服の制作など体験型の授業が多くて毎日楽しい！',
-              growthContent: '地域イベントでの農産物・スイーツ販売や、実生活に直結する専門資格取得。',
+              studentVoice: '「きれいな花や野菜の栽培から、オリジナルの洋服制作、ビジネス検定まで体験型授業がいっぱいで毎日あっという間に過ぎます。地域イベントでの販売も大人気です！」（園芸科学科 3年）',
+              growthContent: '地域イベントでの農産物・スイーツ販売実習や、実生活に直結する専門資格の取得。実践的なものづくりを通じて、地域に愛され貢献できる確かな社会人スキルが育ちます。',
               universities: [{name: '農学・家政・ビジネス系私立大', ratio: '50%'}, {name: '専門学校・短大', ratio: '50%'}],
               companies: ['園芸・農業法人', 'アパレル・食品製造', '事務・販売'],
               univIncome: { initial: 20.5, mid: 470, peak: 630 }, empIncome: { initial: 17.5, mid: 380, peak: 500 }, tags: ['#園芸科学', '#服飾デザイン', '#地域密着'] },
 
             { id: 'taishi_h', name: '岱志高校', badge: '普通・美術・スポーツ（県立）', desc: '旧荒尾高と有明高が統合。個性を活かした表現・キャリア教育。', univRate: 50, empRate: 35, otherRate: 15,
-              studentVoice: '先生が親身になって進路相談に乗ってくれる。少人数で温かい校風。',
-              growthContent: 'エンパワーメントハイスクールとしての個別の学び直しや地域探究活動。',
+              studentVoice: '「少人数制なので先生方が一人ひとりの進路や悩みに驚くほど親身に向き合ってくれます。自分のペースで美術やスポーツの才能を存分に伸ばせるアットホームな学校です。」（普通科 3年）',
+              growthContent: 'エンパワーメントハイスクールとしてのきめ細やかな学び直しや、美術・スポーツにおける専門的な表現力・実践力指導。一人ひとりの個性と自信を大きく育てます。',
               universities: [{name: '九州圏私立大学', ratio: '50%'}, {name: '専門学校・短大', ratio: '50%'}],
               companies: ['地場製造業・サービス', '警察・消防・公務員', '福祉・医療'],
               univIncome: { initial: 21, mid: 490, peak: 670 }, empIncome: { initial: 18, mid: 390, peak: 520 }, tags: ['#少人数手厚い', '#美術・スポーツ', '#荒尾市'] },
 
             { id: 'kahoku_h', name: '鹿本高校', badge: '山鹿の伝統進学校（県立）', desc: '山鹿地区のトップ進学校。「山鹿学」探究で国公立大・熊大へ多数進学。', univRate: 80, empRate: 5, otherRate: 15,
-              studentVoice: '伝統ある学校で安心感がある。山鹿灯籠まつりのボランティアなど地域行事も楽しい！',
-              growthContent: '「山鹿学」を通じた地域課題解決探究と、国公立大学合格に向けた手厚い進学補習。',
+              studentVoice: '「伝統ある落ち着いた雰囲気の中で、国公立大学合格を目指して仲間と切磋琢磨できます。山鹿灯籠まつりのボランティアなど地域と深く関わる行事も誇らしい思い出です！」（普通科 3年）',
+              growthContent: '独自教科「山鹿学」を通じた地域課題解決型探究と、国公立大学現役合格に向けた手厚い進学補習・個別指導。知性と地域愛を兼ね備えたリーダーを育成します。',
               universities: [{name: '熊本大学・熊本県立大', ratio: '35%'}, {name: '九州大学・主要国公立', ratio: '15%'}],
               companies: ['公務員（行政・教員）', '肥後銀行・地元企業幹部', 'TSMC・IT関連'],
               univIncome: { initial: 23, mid: 620, peak: 860 }, empIncome: { initial: 18.5, mid: 420, peak: 570 }, tags: ['#山鹿学', '#熊大・九大', '#伝統校'] },
 
             { id: 'kahoku_shoko_h', name: '鹿本商工高校', badge: '機械・電気・商業（県立）', desc: '工業と商業を併設。産業界に直結するスペシャリストを育成。', univRate: 20, empRate: 70, otherRate: 10,
-              studentVoice: '工業と商業の両方の専門知識が選べる！実習が多くてすぐに使える技術がつく。',
-              growthContent: 'デュアルシステム（企業実習）や各種プログラミング・ビジネス資格の取得。',
+              studentVoice: '「工業と商業の両方の専門知識から自分の進路に合わせて選べるのが強みです。企業でのインターンシップ実習もあり、現場で通用する実践力が身につきます！」（機械科 3年）',
+              growthContent: 'デュアルシステム（企業での実習連携）や、各種プログラミング・商業・工業資格の徹底取得。産業界のニーズに直結した即戦力スペシャリストを育てます。',
               universities: [{name: '理工・商業系大学', ratio: '50%'}, {name: '専門学校', ratio: '50%'}],
               companies: ['地場大手製造', '設備保守', '販売事務'],
               univIncome: { initial: 21, mid: 510, peak: 700 }, empIncome: { initial: 18.5, mid: 420, peak: 560 }, tags: ['#工業・商業併設', '#DUALシステム', '#地元就職'] },
 
             { id: 'kahoku_agri_h', name: '鹿本農業高校', badge: '施設園芸・バイオ（県立）', desc: 'スイカや施設園芸・バイオ工学に特化。全国募集も行う専門校。', univRate: 25, empRate: 65, otherRate: 10,
-              studentVoice: '全国トップクラスの農業設備で実験ができる！アグリビジネスの未来が学べる。',
-              growthContent: 'バイオテクノロジー実験やスマート農業機器の導入・活用体験。',
+              studentVoice: '「全国トップクラスの充実した温室や農業設備を使って最先端の栽培実験ができます。ブランドスイカの栽培など、アグリビジネスの未来を最前線で学べて面白いです！」（施設園芸科 3年）',
+              growthContent: 'バイオテクノロジー実験やスマート農業機器の導入・活用体験。最先端の農業科学技術をマスターし、将来の農業経営者やアグリビジネスの担い手を育成します。',
               universities: [{name: '農大・農学系大学', ratio: '60%'}, {name: '専門学校', ratio: '40%'}],
               companies: ['アグリ法人', '食品製造', '地場企業'],
               univIncome: { initial: 20.5, mid: 480, peak: 650 }, empIncome: { initial: 18, mid: 390, peak: 530 }, tags: ['#スマート農業', '#バイオ工学', '#全国募集'] },
 
             { id: 'kikuchi_h', name: '菊池高校', badge: '普通・商業・菊池学（県立）', desc: '地域密着「菊池学」探究。手厚い小集団教育で進学・就職に対応。', univRate: 60, empRate: 25, otherRate: 15,
-              studentVoice: '先生と生徒の距離が近くアットホーム！ボランティアや地域イベントの主役になれる。',
-              growthContent: '「菊池学」での地元企業コラボや商品開発、商業資格の取得。',
+              studentVoice: '「先生と生徒の距離がとても近く、アットホームで温かい雰囲気の学校です。地元企業とのコラボ商品開発など、地域を盛り上げる主役になれる体験が魅力です！」（普通科 3年）',
+              growthContent: '地域密着の「菊池学」を通じた地元企業との商品開発・課題解決プロジェクトや、少人数制できめ細やかな進学・資格取得指導。地域に貢献できる人材を育てます。',
               universities: [{name: '熊本学園大・崇城大', ratio: '50%'}, {name: '熊本県立大・国公立', ratio: '15%'}],
               companies: ['地場製造', '地元金融', '公務員一般職'],
               univIncome: { initial: 21, mid: 510, peak: 710 }, empIncome: { initial: 18, mid: 400, peak: 540 }, tags: ['#菊池学', '#アットホーム', '#地域貢献'] },
 
             { id: 'kikuchi_agri_h', name: '菊池農業高校', badge: '畜産・日本庭園・生活（県立）', desc: '畜産科学・日本庭園・生活科学。全国募集の畜産分野に強み。', univRate: 20, empRate: 70, otherRate: 10,
-              studentVoice: '牛や馬のお世話、造園の実習など、体を動かして成果が見える授業が最高！',
-              growthContent: '最新の畜産経営実習や日本庭園の施工技術習得、地域食育活動。',
+              studentVoice: '「牛や馬の飼育管理から、美しい日本庭園の施工実習まで、体を動かして自分の手で形にする授業が最高に楽しいです。全国から集まった仲間と寮生活もエンジョイしています！」（畜産科 3年）',
+              growthContent: '最新の畜産経営実習や日本庭園の施工技術習得、地域食育活動。命と向き合う体験を通じて、豊かな人間性とプロの専門技術を身につけます。',
               universities: [{name: '農学・畜産系大学', ratio: '50%'}, {name: '専門学校・農大', ratio: '50%'}],
               companies: ['地場牧場・畜産', '造園企業', '食品加工'],
               univIncome: { initial: 20.5, mid: 470, peak: 640 }, empIncome: { initial: 18, mid: 390, peak: 520 }, tags: ['#畜産科学', '#造園・庭園', '#全国募集'] },
 
             { id: 'ozu_h', name: '大津高校', badge: 'サッカー全国強豪＆普通科（県立）', desc: '全国屈指のサッカー強豪。TSMC近接エリアとしてのSTEAM探究も注力。', univRate: 75, empRate: 8, otherRate: 17,
-              studentVoice: '部活の熱量が凄まじく全校生徒の一体感が最高！文武両道で成長できる環境。',
-              growthContent: 'TSMC進出エリアでの「半導体・地域STEAM探究」と、全国大会レベルの部活で鍛える精神力。',
+              studentVoice: '「サッカー部の全国レベルの熱気はもちろん、全校生徒の一体感が凄まじいです！文武両道で勉強にも手を抜かず、TSMC進出エリアとしての最先端のSTEAM探究にも挑戦できて毎日充実しています。」（普通科 3年）',
+              growthContent: '全国大会常連の部活動で培う不屈の精神力と、半導体・地域STEAM探究を通じた論理的課題解決力。これからの時代を生き抜く総合的な人間力が身につきます。',
               universities: [{name: '熊本大学・県立大', ratio: '45%'}, {name: '西南学院・福岡大', ratio: '30%'}],
               companies: ['TSMC/JASM・半導体関連', '地場優良メーカー・製造', '公務員一般職'],
               univIncome: { initial: 22, mid: 580, peak: 800 }, empIncome: { initial: 18.5, mid: 430, peak: 580 }, tags: ['#サッカー全国強豪', '#TSMC探究', '#文武両道'] },
 
             { id: 'shoyo_h', name: '翔陽高校', badge: '総合学科（県立）', desc: '大津町の総合学科校。系列選択で自分の夢に合わせたオーダーメイド学習。', univRate: 50, empRate: 40, otherRate: 10,
-              studentVoice: '自分で時間割を作れるのが楽しい！工業系から人文系までなりたい自分になれる。',
-              growthContent: '産業社会と人間でのインターンシップや、多様な系列での実践的スキル習得。',
+              studentVoice: '「自分で時間割をカスタマイズして、自分の将来の夢に直結する授業だけを選べるのが本当に楽しい！工業系から人文系まで、なりたい自分に最短距離で近づけます。」（総合学科 3年）',
+              growthContent: '産業社会と人間でのインターンシップ体験や、多彩な系列選択によるオーダーメイド学習。自分の適性を見極めながら、社会で即戦力となる専門スキルを磨けます。',
               universities: [{name: '九州圏私立大学', ratio: '50%'}, {name: '専門学校・短大', ratio: '50%'}],
               companies: ['TSMC関連', '製造・技術職', '公務員'],
               univIncome: { initial: 21, mid: 500, peak: 680 }, empIncome: { initial: 18, mid: 410, peak: 550 }, tags: ['#総合学科', '#時間割をカスタマイズ', '#TSMCエリア'] },
 
             { id: 'aso_chuou_h', name: '阿蘇中央高校', badge: '普通・農業・ビジネス（県立）', desc: '阿蘇校舎と阿蘇清峰校舎。地域資源を活かした総合教育。', univRate: 45, empRate: 45, otherRate: 10,
-              studentVoice: '大自然の中で伸びのび学べる！草千里でのイベントや世界カルデラ探究が面白い。',
-              growthContent: '「阿蘇探究」での世界阿蘇ジオパーク・観光・農業を通じた地域創生プロジェクト。',
+              studentVoice: '「雄大な阿蘇の大自然に囲まれたキャンパスで、世界カルデラや観光資源を活かした地域創生プロジェクトを自分たちで企画・実践できるのがすごく刺激的です！」（阿蘇校舎 3年）',
+              growthContent: '世界阿蘇ジオパークや観光・農業資源を活かした「阿蘇探究」プロジェクト。地域を活性化させるアイデアと実行力が身につきます。',
               universities: [{name: '農学・熊本県立大・私立大', ratio: '50%'}, {name: '専門学校・農大', ratio: '50%'}],
               companies: ['地場観光・ホテル', '製造・農業', '公務員'],
               univIncome: { initial: 21, mid: 490, peak: 670 }, empIncome: { initial: 18, mid: 400, peak: 530 }, tags: ['#阿蘇ジオ探究', '#農業・ビジネス', '#地域創生'] },
 
-            { id: 'takamori_h', name: '高森高校', badge: '全国初の公立「マンガ学科」（県立）', desc: '全国から生徒が集まる「マンガ学科」を新設。エンタメ・クリエイター育成。', univRate: 40, empRate: 30, otherRate: 30,
-              studentVoice: 'プロの漫画家や出版社から直接アドバイスがもらえる！夢に向かって一直線になれる場所。',
-              growthContent: 'プロのデジタル作画環境での作画実習や、コンテンツマーケティング・作品発表。',
+            { id: 'takamori_h', name: '高森高校', badge: '全国初の公立「マンガ学科」（県立）', desc: '全国から生徒が集まる「マンガ学科`」を新設。エンタメ・クリエイター育成。', univRate: 40, empRate: 30, otherRate: 30,
+              studentVoice: '「全国から漫画やアニメが大好きな仲間が集まっていて、プロの漫画家や出版社の方から直接添削やアドバイスをもらえる環境は夢のようです。自分のイラストがどんどんプロっぽくなるのが実感できます！」（マンガ学科 2年）',
+              growthContent: 'プロ仕様のデジタル作画環境を用いた実践的なクリエイティブ実習と、コンテンツマーケティング・作品発表の機会。将来のエンタメ業界を背負うプロの漫画家・クリエイターを育成します。',
               universities: [{name: '美術・芸術・デザイン系大学', ratio: '60%'}, {name: '専門学校（マンガ・アニメ）', ratio: '40%'}],
               companies: ['クリエイター', 'デザイン・制作', '地場企業'],
               univIncome: { initial: 21, mid: 520, peak: 850 }, empIncome: { initial: 17.5, mid: 380, peak: 600 }, tags: ['#全国唯一マンガ学科', '#クリエイター育成', '#全国募集'] },
 
             { id: 'oguni_h', name: '小国高校', badge: '小中高一貫探究（県立）', desc: '小国杉や温泉資源を活用した地域探究。小中高一貫の温かい学び。', univRate: 60, empRate: 25, otherRate: 15,
-              studentVoice: '木目が美しい校舎が自慢！少人数で一人ひとりをすごく大切にしてくれる。',
-              growthContent: '「小国学」での地域資源活用ビジネス提案や、少人数制の手厚い受験指導。',
+              studentVoice: '「木目が美しく温もりあふれる小国杉の木造校舎が自慢です。少人数制なので先生方が家族のように一人ひとりの進路を徹底的にサポートしてくれます。」（普通科 3年）',
+              growthContent: '「小国学」を通じた地域資源（杉や温泉）を活用したビジネス提案や、少人数制の手厚い受験指導。地域を愛し、主体的に行動できる確かな人間性を育てます。',
               universities: [{name: '熊本県立大・国公立', ratio: '25%'}, {name: '九州圏私立大学', ratio: '45%'}],
               companies: ['地場林業・観光', '地方公務員'],
               univIncome: { initial: 21, mid: 500, peak: 690 }, empIncome: { initial: 18, mid: 390, peak: 530 }, tags: ['#小国杉・木造校舎', '#小中高連携', '#少人数手厚い'] },
 
-            // ================= 県央・県南・球磨・人吉・天草 =================
-            { id: 'uto_h', name: '宇土高校・中等部', badge: '県央の中高一貫進学校（県立）', desc: 'SSH指定の中高一貫校。科学探究と国際理解に強みを持つ進学校。', univRate: 85, empRate: 2, otherRate: 13,
-              studentVoice: '科学探究の設備が充実していて研究発表が楽しい！部活も熱心で文武両道。',
-              growthContent: 'SSH探究活動での学術論文作成や、国際ルーブリック評価を取り入れた思考力向上。',
-              universities: [{name: '熊本大学・九州大学', ratio: '38%'}, {name: '主要国公立', ratio: '22%'}],
-              companies: ['地方公務員', '一般事務'],
-              univIncome: { initial: 24, mid: 670, peak: 930 }, empIncome: { initial: 18.5, mid: 430, peak: 580 }, tags: ['#中高一貫', '#SSH探究', '#熊大・九大合格'] },
-
-            { id: 'matsubase_h', name: '松橋高校', badge: '普通・家政・情報（県立）', desc: '普通科・家政科・情報科。生活科学からビジネス・進学まで幅広く対応。', univRate: 55, empRate: 35, otherRate: 10,
-              studentVoice: '調理実習や被服実習が本格的！検定資格がたくさん取れて自信がつく。',
-              growthContent: '家庭科・情報科での各種検定取得と、地域企業と連携したキャリア実践体験。',
-              universities: [{name: '家政・栄養・ビジネス系私大', ratio: '60%'}, {name: '専門学校・短大', ratio: '40%'}],
-              companies: ['食品製造・調理', '一般事務', '販売'],
-              univIncome: { initial: 21, mid: 480, peak: 650 }, empIncome: { initial: 18, mid: 390, peak: 520 }, tags: ['#家政科・食育', '#情報科', '#検定資格強み'] },
-
-            { id: 'ogawa_tech_h', name: '小川工業高校', badge: '機械・建築・土木・設備（県立）', desc: '県内唯一の「設備工業科」を設置。インフラ・建設・技術職に抜群の実績。', univRate: 15, empRate: 80, otherRate: 5,
-              studentVoice: '配管やCADなどプロの道具を使った実習がカッコいい！先輩も大手企業にどんどん就職している。',
-              growthContent: '専門資格の徹底指導と、現場さながらの大型実習。',
-              universities: [{name: '工学部系大学', ratio: '50%'}, {name: '専門学校', ratio: '50%'}],
-              companies: ['九電工・設備大手', '建設施工管理', '地場技術職'],
-              univIncome: { initial: 23, mid: 630, peak: 870 }, empIncome: { initial: 19.5, mid: 510, peak: 700 }, tags: ['#設備工業科唯一', '#九電工・インフラ', '#モノづくり名門'] },
-
-            { id: 'mifune_h', name: '御船高校', badge: '普通・電子機械・芸術（県立）', desc: '恐竜の町・御船の伝統校。電子機械や芸術コースなど多様な学科。', univRate: 50, empRate: 40, otherRate: 10,
-              studentVoice: '芸術コースの絵画や音楽、電子機械のロボット作りなど、自分の「好き」を伸ばせる！',
-              growthContent: 'マイコンロボットコンテスト挑戦や、地域芸術イベント・恐竜発掘探究。',
-              universities: [{name: '理工・芸術系私立大', ratio: '50%'}, {name: '専門学校・短大', ratio: '50%'}],
-              companies: ['地場製造', '技術・デザイン', '公務員'],
-              univIncome: { initial: 21, mid: 500, peak: 680 }, empIncome: { initial: 18, mid: 400, peak: 540 }, tags: ['#電子機械', '#芸術コース', '#ロボット・デザイン'] },
-
-            { id: 'kosa_h', name: '甲佐高校', badge: '普通・福祉・ビジネス（県立）', desc: '福祉コースやニラ・鮎など地域資源を活かしたアットホームな地域校。', univRate: 40, empRate: 50, otherRate: 10,
-              studentVoice: '生徒数が少なくてみんな家族みたい！ボランティア活動を通して地域の人と仲良くなれる。',
-              growthContent: '介護職員初任者研修の資格取得や、地域福祉・コミュニティビジネス実践。',
-              universities: [{name: '福祉・看護・私立大', ratio: '40%'}, {name: '専門学校', ratio: '60%'}],
-              companies: ['福祉・介護', '製造・サービス', '町役場'],
-              univIncome: { initial: 20.5, mid: 460, peak: 620 }, empIncome: { initial: 17.5, mid: 380, peak: 500 }, tags: ['#福祉資格', '#地域コミュニティ', '#少人数親身'] },
-
-            { id: 'yabe_h', name: '矢部高校', badge: '普通・食農・森林（県立）', desc: '山都町の自然を活かした林業科学科・食農科学科。全国募集を実施。', univRate: 30, empRate: 60, otherRate: 10,
-              studentVoice: 'チェンソーの技術や有機農業の実習など、他ではできない貴重な体験ができる！',
-              growthContent: '林業機械の操作資格取得や、山都町の有機農業・通潤橋探究プロジェクト。',
-              universities: [{name: '農学・林学・農大', ratio: '60%'}, {name: '専門学校', ratio: '40%'}],
-              companies: ['森林組合・林業', '食品製造', '地方公務員'],
-              univIncome: { initial: 21, mid: 490, peak: 660 }, empIncome: { initial: 18, mid: 400, peak: 540 }, tags: ['#林業科学', '#有機農業', '#通潤橋・山都町'] },
-
-            { id: 'yatsushiro_h', name: '八代高校・中等部', badge: '県南の伝統難関校（中高一貫/県立）', desc: '中高一貫校。県南エリアトップの進学実績を誇り熊大・九大多数。', univRate: 85, empRate: 2, otherRate: 13,
-              studentVoice: '目標が高い仲間が集まっていて刺激的！文化祭や妙見祭のボランティアも全力。',
-              growthContent: 'Super High School探究での高度な分析学習と、6年間を見据えた進路指導。',
-              universities: [{name: '熊本大学・九州大学', ratio: '40%'}, {name: '主要国公立・医学部', ratio: '20%'}],
-              companies: ['地方公務員', '地場企業'],
-              univIncome: { initial: 24, mid: 680, peak: 960 }, empIncome: { initial: 18.5, mid: 430, peak: 580 }, tags: ['#中高一貫', '#県南トップ', '#熊大・九大合格'] },
-
-            { id: 'yatsushiro_higashi_h', name: '八代東高校', badge: 'バドミントン全国・商業（県立）', desc: 'バドミントン超強豪校。ビジネス・情報会計で即戦力を育成。', univRate: 40, empRate: 50, otherRate: 10,
-              studentVoice: '部活動の全国レベルの熱気に感動！資格も取れて就職にも進学にも強い。',
-              growthContent: 'トップアスリートのメンタル強化と、簿記・電卓・情報処理検定の資格取得。',
-              universities: [{name: '商業・経済系私立大', ratio: '60%'}, {name: '専門学校・短大', ratio: '40%'}],
-              companies: ['地元金融・信用金庫', '店舗・事務', '公務員'],
-              univIncome: { initial: 21, mid: 500, peak: 690 }, empIncome: { initial: 18, mid: 410, peak: 550 }, tags: ['#バドミントン強豪', '#商業・会計', '#就職強み'] },
-
-            { id: 'yatsushiro_tech_h', name: '八代工業高校', badge: '機械・電気・インテリア・情報（県立）', desc: 'インテリア科や情報技術科を持つ。県南のモノづくり・ITの拠点。', univRate: 20, empRate: 75, otherRate: 5,
-              studentVoice: '家具・デザイン制作やプログラミングなど、自分の作品が完成した時の達成感が最高！',
-              growthContent: 'インテリアデザイン展への出展や、情報・電気のプログラミング実習。',
-              universities: [{name: '工学部・デザイン系大', ratio: '50%'}, {name: '専門学校', ratio: '50%'}],
-              companies: ['地場製紙・化学', 'TSMC関連', '建設・電気技術'],
-              univIncome: { initial: 23, mid: 630, peak: 870 }, empIncome: { initial: 19.5, mid: 510, peak: 700 }, tags: ['#インテリア科', '#情報技術', '#日本製紙・地場大手'] },
-
-            { id: 'yatsushiro_agri_h', name: '八代農業高校・泉分校', badge: '園芸・食品・グリーンライフ（県立）', desc: '八代の本校と泉分校（グリーンライフ科）。トマトやアグリバイオ。', univRate: 30, empRate: 60, otherRate: 10,
-              studentVoice: '八代特産のトマトやバンペイユを使った加工品作りが楽しい！泉分校は自然が豊か。',
-              growthContent: 'スマート農業実習や、グリーンライフ科での環境保全・アウトドア観光探究。',
-              universities: [{name: '農学・環境系大学', ratio: '50%'}, {name: '農大・専門学校', ratio: '50%'}],
-              companies: ['農業法人', '食品製造', '地場企業'],
-              univIncome: { initial: 20.5, mid: 480, peak: 650 }, empIncome: { initial: 18, mid: 390, peak: 530 }, tags: ['#八代トマト', '#泉分校グリーンライフ', '#環境保全'] },
-
-            { id: 'minamata_h', name: '水俣高校', badge: '普通・機械・電気建築（県立）', desc: '環境都市・水俣の総合校。環境探究と工業技術を兼ね備える。', univRate: 50, empRate: 40, otherRate: 10,
-              studentVoice: '環境問題に関するプレゼン発表や、工業の実習など自分の興味に合わせた学びができる！',
-              growthContent: '「水俣環境探究」での持続可能な社会（SDGs）提案や、工業技術資格の取得。',
-              universities: [{name: '熊本県立大・国公立', ratio: '20%'}, {name: '九州圏私立大', ratio: '40%'}],
-              companies: ['JNC・地場メーカー', '技術職・施工管理', '公務員'],
-              univIncome: { initial: 21.5, mid: 520, peak: 720 }, empIncome: { initial: 18.5, mid: 420, peak: 570 }, tags: ['#環境探究SDGs', '#JNC・地場技術', '#普通科・工業科'] },
-
-            { id: 'ashikita_h', name: '芦北高校', badge: '農業・林業・福祉（県立）', desc: 'デコポンや林業、福祉。全国募集を行う地域課題解決の先進校。', univRate: 25, empRate: 65, otherRate: 10,
-              studentVoice: 'デコポンの栽培やスマート林業など、地域に直接貢献している実感が持てる！',
-              growthContent: '先端林業機械の操縦体験や、介護福祉士国家資格の取得支援。',
-              universities: [{name: '農学・林学・福祉系大', ratio: '50%'}, {name: '専門学校・農大', ratio: '50%'}],
-              companies: ['森林組合', '福祉施設', '地場企業'],
-              univIncome: { initial: 21, mid: 490, peak: 660 }, empIncome: { initial: 18, mid: 400, peak: 540 }, tags: ['#デコポン・林業', '#介護福祉士資格', '#全国募集'] },
-
-            { id: 'hitoyoshi_h', name: '人吉高校・五木分校', badge: '球磨人吉のトップ進学校（県立）', desc: '球磨・人吉地域のトップ校。五木分校も含め国公立大へ高い実績。', univRate: 80, empRate: 8, otherRate: 12,
-              studentVoice: '伝統ある進学校で落ち着いて勉強できる。地域復興ボランティアにもみんな積極的！',
-              growthContent: '球磨川復興探究プロジェクトや、難関大学突破に向けた高度な学力育成。',
-              universities: [{name: '熊本大学・九州大学', ratio: '35%'}, {name: '主要国公立', ratio: '20%'}],
-              companies: ['地方公務員', '地場企業'],
-              univIncome: { initial: 23.5, mid: 640, peak: 890 }, empIncome: { initial: 18.5, mid: 420, peak: 570 }, tags: ['#球磨人吉トップ', '#熊大・九大合格', '#五木分校'] },
-
-            { id: 'kuma_chuo_h', name: '球磨中央高校', badge: '総合ビジネス・地域経済（県立）', desc: '旧球磨商業・南稜等から統合。地域ビジネス・情報発信の拠点。', univRate: 45, empRate: 45, otherRate: 10,
-              studentVoice: 'マーケティングや商品開発が学べる！地域のお祭りでの販売実習が大成功して嬉しかった。',
-              growthContent: '地域の観光・特産品を活用したビジネスプランコンテスト挑戦や商業資格取得。',
-              universities: [{name: '経済・経営・観光系大', ratio: '55%'}, {name: '専門学校・短大', ratio: '45%'}],
-              companies: ['地元金融', '事務・販売', '公務員'],
-              univIncome: { initial: 21, mid: 500, peak: 690 }, empIncome: { initial: 18, mid: 400, peak: 540 }, tags: ['#地域ビジネス', '#商品開発', '#商業・会計'] },
-
-            { id: 'kuma_tech_h', name: '球磨工業高校', badge: '伝統建築・機械・電気・建設（県立）', desc: '全国的に有名「伝統建築コース」を設置。社寺建築から建設まで。', univRate: 15, empRate: 80, otherRate: 5,
-              studentVoice: '木造建築のカンナがけや手刻みの技術が学べる！全国から建築好きが集まる。',
-              growthContent: '国宝・青井阿蘇神社などの伝統建築修復技術の学びと、全国建築コンテスト挑戦。',
-              universities: [{name: '建築・工学系大学', ratio: '60%'}, {name: '専門学校', ratio: '40%'}],
-              companies: ['伝統建築・大工', '建設施工管理', '地場技術職'],
-              univIncome: { initial: 23, mid: 630, peak: 880 }, empIncome: { initial: 19.5, mid: 510, peak: 710 }, tags: ['#伝統建築コース唯一', '#宮大工・ゼネコン', '#全国募集'] },
-
-            { id: 'nanryo_h', name: '南稜高校', badge: '生産科学・環境・食品（県立）', desc: '馬術部や球磨焼酎関連、食品科学・環境工学など地域農業の要。', univRate: 30, empRate: 60, otherRate: 10,
-              studentVoice: '馬術部の活動や、食品加工でのお菓子・味噌作りなど体験がいっぱいで楽しい！',
-              growthContent: '球磨焼酎の原料米栽培・発酵研究や、環境保全・地域農業イノベーション。',
-              universities: [{name: '農学・環境・食品系大', ratio: '50%'}, {name: '農大・専門学校', ratio: '50%'}],
-              companies: ['食品製造・醸造', '農業・建設', '地場企業'],
-              univIncome: { initial: 20.5, mid: 480, peak: 650 }, empIncome: { initial: 18, mid: 390, peak: 530 }, tags: ['#馬術部', '#球磨焼酎研究', '#食品・環境'] },
-
-            { id: 'amakusa_h', name: '天草高校・倉岳校', badge: '天草の伝統難関校（SSH/県立）', desc: 'SSH指定校。天草エリアトップの合格実績を誇る伝統進学校。', univRate: 82, empRate: 5, otherRate: 13,
-              studentVoice: '天草の海や自然をテーマにしたSSHの研究が面白い！仲間と切磋琢磨できる環境。',
-              growthContent: 'SSHの地域自然科学探究活動や、難関大学現役合格のための学習合宿・補習。',
-              universities: [{name: '熊本大学・九州大学', ratio: '35%'}, {name: '主要国公立', ratio: '20%'}],
-              companies: ['地方公務員', '地場企業'],
-              univIncome: { initial: 23.5, mid: 640, peak: 890 }, empIncome: { initial: 18.5, mid: 420, peak: 570 }, tags: ['#天草トップ校', '#SSH指定校', '#倉岳校'] },
-
-            { id: 'amakusa_tech_h', name: '天草工業高校', badge: '機械・電気・土木・情報（県立）', desc: '天草のモノづくりとITの拠点。地元・福岡・京阪神への就職強み。', univRate: 15, empRate: 80, otherRate: 5,
-              studentVoice: '電気回路の組立てやCADでの図面引きなど本格的！就職内定率100%で安心。',
-              growthContent: '各種工業資格の取得支援と、地元企業インターンシップでの実践力習得。',
-              universities: [{name: '工学部系大学', ratio: '50%'}, {name: '専門学校', ratio: '50%'}],
-              companies: ['大手造船・製造', '建設施工管理', '電気技術職'],
-              univIncome: { initial: 23, mid: 620, peak: 860 }, empIncome: { initial: 19.5, mid: 500, peak: 690 }, tags: ['#造船・機械', '#就職率100%', '#モノづくり'] },
-
-            { id: 'amakusa_takushin_h', name: '天草拓心高校・マリン校舎', badge: '水産・海洋・食育（本渡/マリン）', desc: 'マリン校舎に県内唯一の「海洋科学科」。天草の海と食を学ぶ。', univRate: 25, empRate: 65, otherRate: 10,
-              studentVoice: '実習船に乗っての航海実習や、潜水・水産加工が他にはない体験で最高！',
-              growthContent: '小型船舶操縦士や潜水士資格の取得、水産資源の養殖・加工品開発。',
-              universities: [{name: '水産・海洋・農学系大', ratio: '50%'}, {name: '専門学校・水産大学校', ratio: '50%'}],
-              companies: ['水産・養殖・海運', '食品製造', '地場企業'],
-              univIncome: { initial: 21, mid: 500, peak: 700 }, empIncome: { initial: 18.5, mid: 410, peak: 560 }, tags: ['#海洋科学科唯一', '#小型船舶・潜水士', '#実習船航海'] },
-
-            { id: 'ushibuka_h', name: '牛深高校', badge: '総合学科（県立）', desc: '牛深ハイヤ節や地域の海産物をテーマにした地域密着総合学科。', univRate: 40, empRate: 45, otherRate: 15,
-              studentVoice: '牛深ハイヤ節をみんなで踊ったり、地元の人と関わる行事が多くて温かい！',
-              growthContent: '地域資源を活用した観光探究や、少人数制での一人ひとりに合わせたキャリア指導。',
-              universities: [{name: '九州圏私立大学', ratio: '40%'}, {name: '専門学校・短大', ratio: '60%'}],
-              companies: ['地場水産・観光', '公務員一般職'],
-              univIncome: { initial: 20.5, mid: 470, peak: 640 }, empIncome: { initial: 18, mid: 390, peak: 520 }, tags: ['#牛深ハイヤ探究', '#総合学科', '#アットホーム'] },
-
-            { id: 'kamiamakusa_h', name: '上天草高校', badge: '普通・情報・地域ビジネス（県立）', desc: '上天草の観光・情報ビジネス探究。地元密着型の学びを展開。', univRate: 45, empRate: 45, otherRate: 10,
-              studentVoice: '上天草の観光プロジェクトで地元を盛り上げる活動がすごくやりがいある！',
-              growthContent: '「上天草プロジェクト」での商品開発・ECサイト運営・ビジネス資格取得。',
-              universities: [{name: '経営・情報・観光系大', ratio: '50%'}, {name: '専門学校・短大', ratio: '50%'}],
-              companies: ['観光・サービス', '地場事務', '公務員'],
-              univIncome: { initial: 21, mid: 490, peak: 660 }, empIncome: { initial: 18, mid: 400, peak: 530 }, tags: ['#観光ビジネス', '#地域創生', '#情報検定'] },
-
             // ================= 私立高校（全20校） =================
             { id: 'kyugaku_h', name: '九州学院高校', badge: '文武両道・歴史ある伝統校（私立）', desc: 'プロ野球・剣道・陸上などスポーツ強豪＆難関大進学の文武両道。', univRate: 85, empRate: 3, otherRate: 12,
-              studentVoice: '部活動の応援の一体感が凄まじい！九学スピリットで絆が深く、毎日活気がある。',
-              growthContent: 'キリスト教情操教育と、全国レベルの部活動で培う不屈のメンタルと協調性。',
+              studentVoice: '「全校生徒が一体となる部活動の応援の熱気が本当に凄まじいです！『九学スピリット』の教えの下、勉強と部活の両方で妥協せず自分を限界まで高められる最高の空間です。」（普通科 3年）',
+              growthContent: 'キリスト教に基づく情操教育と、全国トップレベルの部活動で培う不屈のメンタル・協調性。社会に出てどんな困難にも負けない強い精神力が身につきます。',
               universities: [{name: '青山学院・明治等キリスト教系', ratio: '20%'}, {name: '熊本大・九大・国公立', ratio: '20%'}],
               companies: ['地場企業', '警察・消防'],
               univIncome: { initial: 23.5, mid: 660, peak: 920 }, empIncome: { initial: 18.5, mid: 430, peak: 580 }, tags: ['#スポーツ全国強豪', '#青学・指定校推薦', '#九学スピリット'] },
 
             { id: 'gakuho_h', name: '熊本学園大学付属高校', badge: '県内トップ私立進学校（私立）', desc: '圧倒的な進学実績。難関国公立から早慶・熊本学園大内部推薦まで。', univRate: 90, empRate: 1, otherRate: 9,
-              studentVoice: '文武両道で部活動も強い！行事がめちゃくちゃ盛り上がって最高に楽しい学校生活。',
-              growthContent: 'ハイレベルな特別進学カリキュラムと、国際交流プログラムや充実した探究活動。',
+              studentVoice: '「文武両道を掲げ、部活動も勉強も行事もすべてにおいて全力を注ぐ活気ある学校です。大きな文化祭や体育祭の盛り上がりは一生の思い出になる楽しさです！」（普通科 3年）',
+              growthContent: 'ハイレベルな特別進学カリキュラムと、大学付属ならではの充実した国際交流・探究プログラム。高い学力と国際感覚を同時に身につけられます。',
               universities: [{name: '熊本大・九州大等国公立', ratio: '30%'}, {name: '熊本学園大学（内部推薦）', ratio: '30%'}],
               companies: ['一般事務職', '公務員一般職'],
               univIncome: { initial: 24, mid: 700, peak: 980 }, empIncome: { initial: 18.5, mid: 430, peak: 580 }, tags: ['#私立トップ校', '#学園大内部推薦', '#文武両道'] },
 
             { id: 'shinwa_h', name: '真和高校', badge: '医学部・最難関進学強み（私立）', desc: '中高一貫の進学校。熊大医学部や東大・京大・難関大合格率が極めて高い。', univRate: 92, empRate: 0, otherRate: 8,
-              studentVoice: 'みんなで難関大や医学部を目指す熱い雰囲気！授業の質が高くてサポートも手厚い。',
-              growthContent: '医学部・難関大に特化した論理的思考力の養成と、充実した個別受験指導。',
+              studentVoice: '「周囲の友人全員が難関大学や医学部を目指しているため、常に高いモチベーションを維持して勉強に没頭できます。先生方の解説も非常に分かりやすく質問しやすいです。」（理数科 3年）',
+              growthContent: '医学部・最難関大学受験に特化した高度な思考力養成カリキュラムと、徹底的な個別添削・受験指導。将来、医療や科学のトップランナーとなる人材を育成します。',
               universities: [{name: '医学部（熊大医・他国公私立医）', ratio: '25%'}, {name: '東大・京大・九大・熊大', ratio: '35%'}],
               companies: ['一般事務'],
               univIncome: { initial: 26, mid: 850, peak: 1300 }, empIncome: { initial: 19, mid: 450, peak: 600 }, tags: ['#熊大医学部', '#難関国公立', '#中高一貫進学'] },
 
             { id: 'marist_h', name: '熊本マリスト学園高校', badge: '国際・カトリック伝統校（私立）', desc: 'カトリックの情操教育と国際教育。医歯薬系・難関大へ高い合格率。', univRate: 88, empRate: 1, otherRate: 11,
-              studentVoice: 'アットホームで国際色豊かな雰囲気！英語力を伸ばしたい人に最高の環境。',
-              growthContent: '海外留学・姉妹校交流プログラムや、カトリック倫理観に基づく人間形成。',
+              studentVoice: '「アットホームで穏やかながらも、グローバルな国際色に満ちた素晴らしい雰囲気です。英語を実践的に使いこなせるようになりたい人にこれ以上ない環境です！」（普通科 3年）',
+              growthContent: '海外留学・姉妹校交流プログラムや、カトリックの倫理観に基づく深い人間形成。世界を舞台に活躍できる確かな語学力と国際的教養が身につきます。',
               universities: [{name: '上智大・立教・キリスト教系', ratio: '25%'}, {name: '熊本大・九州大・国公立', ratio: '25%'}],
               companies: ['地場企業', '事務職'],
               univIncome: { initial: 24.5, mid: 720, peak: 1020 }, empIncome: { initial: 18.5, mid: 430, peak: 580 }, tags: ['#上智・指定校', '#国際交流', '#医歯薬系'] },
 
             { id: 'buntoku_h', name: '文徳高校', badge: '理工系・特進・スポーツ（私立）', desc: '理数特進クラスや工学系・スポーツ教育。崇城大や国公立大へ強み。', univRate: 80, empRate: 10, otherRate: 10,
-              studentVoice: '理数特進で高度な勉強ができる！スポーツも強くて学校に活気がある。',
-              growthContent: '崇城大学との連携による理工系実験実習や、ハイレベル受験特訓。',
+              studentVoice: '「理数特進クラスで大学レベルの高度な勉強に挑戦できるのがとても刺激的です。部活動でも全国を目指せる環境が整っており、毎日充実しています！」（理数特進コース 3年）',
+              growthContent: '崇城大学との強力な連携による理工系実験実習や、ハイレベルな大学受験特訓。科学技術やスポーツの分野で未来を切り拓く実践的なスキルが磨かれます。',
               universities: [{name: '崇城大学・理工系', ratio: '35%'}, {name: '熊本大・国公立', ratio: '20%'}],
               companies: ['TSMC関連', '技術職', '公務員'],
               univIncome: { initial: 23.5, mid: 640, peak: 890 }, empIncome: { initial: 19, mid: 440, peak: 600 }, tags: ['#理工系強み', '#崇城大連携', '#TSMCエンジニア'] },
 
             { id: 'luther_h', name: 'ルーテル学院高校', badge: '芸術・国際・特進（私立）', desc: '専科を持つ芸術コースや英語国際、文理特進など個性を輝かせる私立校。', univRate: 80, empRate: 5, otherRate: 15,
-              studentVoice: '音楽や芸術を本格的に学べる！制服もおしゃれで賛美歌が流れる雰囲気がステキ。',
-              growthContent: '音楽・美術専科での個展・演奏会体験や、キリスト教精神に基づく奉仕活動。',
+              studentVoice: '「音楽や美術をプロの指導のもとで本格的に学べる環境が最高です。キャンパスに流れる賛美歌の音色やおしゃれな制服、温かい雰囲気にいつも癒やされています。」（芸術コース 3年）',
+              growthContent: '音楽・美術専科での個展・演奏会体験や、キリスト教精神に基づく奉仕活動。豊かな感性と表現力を磨き、自己を深く表現するクリエイティブな人間性を育てます。',
               universities: [{name: '音大・美大・芸術系', ratio: '25%'}, {name: '青山学院・明治学院・ICU等', ratio: '25%'}],
               companies: ['デザイン・制作', 'サービス・事務'],
               univIncome: { initial: 22.5, mid: 590, peak: 820 }, empIncome: { initial: 18, mid: 410, peak: 550 }, tags: ['#音楽・美術専科', '#キリスト教教育', '#指定校推薦豊富'] },
 
             { id: 'seisho_h', name: '東海大学付属熊本星翔高校', badge: '東海大学提携・総合力（私立）', desc: '東海大学への内部進学制度が充実。スポーツと総合学習に強み。', univRate: 80, empRate: 10, otherRate: 10,
-              studentVoice: '東海大学のスケール感がすごい！部活動に全力で打ち込める最高の環境。',
-              growthContent: '東海大学の医学部・海洋学部等との高大連携講義や全国スケールの部活動。',
+              studentVoice: '「東海大学のスケールの大きさを実感しながら、自分の興味のある学問や部活動に思い切り打ち込める環境です。将来への安心感を持って挑戦できます！」（普通科 3年）',
+              growthContent: '東海大学の各学部（医学部・海洋学部等）との高大連携講義や全国規模の部活動。総合大学の強みを活かしたスケールの大きな学びが経験できます。',
               universities: [{name: '東海大学（各学部内部推薦）', ratio: '50%'}, {name: '九州圏私立大学', ratio: '30%'}],
               companies: ['地場企業', '技術・サービス', '公務員'],
               univIncome: { initial: 22.5, mid: 600, peak: 840 }, empIncome: { initial: 18.5, mid: 420, peak: 570 }, tags: ['#東海大内部推薦', '#部活活発', '#総合力'] },
 
             { id: 'kaishin_h', name: '開新高校', badge: '自動車・電気・TSMC連携（私立）', desc: '自動車科・電気情報・総合学科。TSMC進出に伴い地元技術職に強み。', univRate: 40, empRate: 50, otherRate: 10,
-              studentVoice: '本物の自動車の整備実習や電気工事ができてめちゃくちゃ面白い！資格もたくさん取れる。',
-              growthContent: '自動車整備士資格の習得や、TSMCをはじめとする半導体関連企業の工場見学・インターン。',
+              studentVoice: '「本物の自動車を使った分解整備実習や電気工事の実技がめちゃくちゃ面白い！TSMCなどの半導体関連企業の見学もあり、将来の就職がすごく楽しみです。」（自動車科 3年）',
+              growthContent: '国家資格である自動車整備士や電気工事士の取得に向けた専門実習と、TSMCをはじめとする最先端企業との強いパイプ。産業界から求められるプロの技術者へと成長できます。',
               universities: [{name: '工学部・理工系大学', ratio: '40%'}, {name: '自動車・工業系専門学校', ratio: '60%'}],
               companies: ['TSMC関連', '自動車ディーラー・整備', '電気工事士'],
               univIncome: { initial: 22.5, mid: 590, peak: 820 }, empIncome: { initial: 19.5, mid: 480, peak: 670 }, tags: ['#TSMC半導体連携', '#自動車整備士', '#電気工事士'] },
 
             { id: 'kokufu_h', name: '熊本国府高校', badge: '普通・ビジネス・スポーツ（私立）', desc: '普通科（特進含む）・ビジネス科。スポーツ強豪で就職・進学ともに安定。', univRate: 70, empRate: 20, otherRate: 10,
-              studentVoice: '部活も勉強もみんなで高め合える！校舎が綺麗で過ごしやすい。',
-              growthContent: 'ビジネス科での検定資格ラッシュや、スポーツを通じた人間形成。',
+              studentVoice: '「勉強も部活も先生や仲間と一緒に全力で高め合える活気ある学校です。綺麗に整備された校舎や自習室も使いやすく、毎日快適に学校生活を送っています！」（普通科 3年）',
+              growthContent: 'ビジネス科での実用検定資格ラッシュや、スポーツ活動を通じた精神力・協調性の養成。進学も就職も高い実績を誇る安定したキャリア指導が受けられます。',
               universities: [{name: '熊本学園大・崇城大', ratio: '45%'}, {name: '福岡大・西南学院', ratio: '25%'}],
               companies: ['地場事務・販売', '警察・消防'],
               univIncome: { initial: 22, mid: 560, peak: 780 }, empIncome: { initial: 18.5, mid: 420, peak: 570 }, tags: ['#国府ビジネス', '#部活強豪', '#学園大・福大合格'] },
 
             { id: 'chinzei_h', name: '鎮西高校', badge: 'バレー全国制覇・公務員（私立）', desc: 'バレーボール全国優勝常連。公務員コースやダンス・音楽コースも充実。', univRate: 50, empRate: 40, otherRate: 10,
-              studentVoice: 'バレー部をはじめ全国レベルのアスリートがいて刺激的！公務員試験対策も手厚い。',
-              growthContent: '公務員一次試験合格のための特別セミナーや、全国トップクラスのスポーツ指導。',
+              studentVoice: '「バレーボールをはじめ全国トップのアスリートたちが同じキャンパスにいて毎日すごく刺激を受けます！公務員試験対策の講座も非常に手厚くて心強いです。」（特進・公務員コース 3年）',
+              growthContent: '公務員一次試験合格に特化した特別セミナーや、全国トップクラスのスポーツ指導メソッド。将来の夢（公務員やプロアスリート）を現実にするための強力なバックアップがあります。',
               universities: [{name: 'スポーツ系・私立大学', ratio: '60%'}, {name: '専門学校・短大', ratio: '40%'}],
               companies: ['警察官・消防士（高卒合格）', '地場製造・販売'],
               univIncome: { initial: 22, mid: 550, peak: 770 }, empIncome: { initial: 19, mid: 440, peak: 600 }, tags: ['#バレー全国制覇', '#高卒公務員強み', '#体育・ダンス'] },
 
             { id: 'shokei_h', name: '尚絅高校', badge: '伝統の女子校・特進（私立）', desc: '伝統ある女子校。尚絅大学・短大への内部推薦や医療・教育系進学。', univRate: 85, empRate: 3, otherRate: 12,
-              studentVoice: '女子校ならではの気兼ねない楽しさ！礼儀作法や美しい立ち振る舞いも自然に身につく。',
-              growthContent: '尚絅大学との高大連携での保育・栄養実習や、きめ細やかな女性キャリア教育。',
+              studentVoice: '「女子校ならではの気兼ねない楽しさと、お互いを尊重しあう温かい雰囲気が大好きです。礼儀作法や美しい立ち振る舞いも自然に身について女子力が上がります！」（普通科 3年）',
+              growthContent: '尚絅大学との高大連携による保育・栄養・医療の専門実習や、女性としての高い教養と自立心を育むきめ細やかなキャリア教育。社会で上品に輝く女性を育成します。',
               universities: [{name: '尚絅大学・短大（内部推薦）', ratio: '40%'}, {name: '熊本県立大・国公立', ratio: '15%'}],
               companies: ['医療事務', '一般事務職'],
               univIncome: { initial: 21.5, mid: 520, peak: 720 }, empIncome: { initial: 18, mid: 400, peak: 530 }, tags: ['#伝統女子校', '#保育・栄養・看護', '#尚絅大内部推薦'] },
 
             { id: 'keisei_h', name: '慶誠高校', badge: 'パティシエ・食物・特進（私立）', desc: '県内唯一の「パティシエコース」や食物科。専門技術と進学を両立。', univRate: 60, empRate: 30, otherRate: 10,
-              studentVoice: '本物のプロからケーキ作りや調理を学べる！作って食べて学べる最高の環境。',
-              growthContent: '製菓衛生師・調理師の資格取得に向けた本格実習と、店舗運営体験。',
+              studentVoice: '「本物のパティシエやプロの調理師の先生から直接、本格的なケーキ作りや料理の手ほどきを受けられるのが幸せすぎます！自分で作ったお菓子を友人が喜んでくれるのが一番の喜びです。」（パティシエコース 3年）',
+              growthContent: '製菓衛生師・調理師の国家資格取得に向けた本格的な実習と店舗運営体験。食のプロフェッショナルとして、技術と創造力を兼ね備えた人材を世に送り出します。',
               universities: [{name: '製菓・栄養・食品系大学', ratio: '50%'}, {name: '専門学校（製菓・調理）', ratio: '50%'}],
               companies: ['ホテル・製菓店', '調理・食品製造'],
               univIncome: { initial: 21, mid: 490, peak: 670 }, empIncome: { initial: 18, mid: 390, peak: 520 }, tags: ['#パティシエコース', '#製菓衛生師', '#食物科'] },
 
             { id: 'chuo_h', name: '熊本中央高校', badge: '看護科5年一貫・総合（私立）', desc: '5年一貫の「看護科」を設置。最速で看護師国家資格を目指せる。', univRate: 75, empRate: 20, otherRate: 5,
-              studentVoice: '看護科の実習設備が病院レベル！夢に向かって同じ志の仲間と頑張れる。',
-              growthContent: '5年一貫教育による最短での看護師国家資格取得と、総合病院での臨床実習。',
+              studentVoice: '「病院の現場さながらの最新医療実習設備が整っており、同じ看護師という夢に向かって心を燃やす仲間たちと支え合って勉強できる最高の環境です。」（看護科 4年）',
+              growthContent: '5年一貫教育による最短での看護師国家資格取得と、総合病院での臨床実習。高い専門性と患者様に寄り添う心優しき医療人を最速で育成します。',
               universities: [{name: '看護師国家試験合格（5年専攻科）', ratio: '60%'}, {name: '医療・福祉系大学', ratio: '25%'}],
               companies: ['看護師（専攻科修了後）', '医療事務'],
               univIncome: { initial: 24, mid: 620, peak: 850 }, empIncome: { initial: 22, mid: 550, peak: 750 }, tags: ['#看護科5年一貫', '#看護師国家資格', '#最速で看護師'] },
 
             { id: 'johoku_h', name: '城北高校', badge: '医療福祉・調理・スポーツ（私立）', desc: '山鹿市の私立校。介護福祉士・調理師・スポーツなど実利に強い。', univRate: 40, empRate: 50, otherRate: 10,
-              studentVoice: '介護や調理の専門知識が身になって感謝されるのが嬉しい！スポーツ部活も元気。',
-              growthContent: '介護福祉士や調理師の国家資格取得実習と、地域ボランティア活動。',
+              studentVoice: '「介護や調理の専門スキルを実際に地域の方々に喜んでもらいながら学べるので、やりがいがダイレクトに伝わってきます。部活動も活気があって楽しいです！」（福祉コース 3年）',
+              growthContent: '介護福祉士や調理師の国家資格取得に向けた実践的な実習と、地域社会とのボランティア活動。人から深く感謝される専門職業人としての誇りとスキルを育てます。',
               universities: [{name: '医療・福祉・スポーツ系大', ratio: '50%'}, {name: '専門学校', ratio: '50%'}],
               companies: ['介護福祉士', '調理師', '地場企業'],
               univIncome: { initial: 21, mid: 480, peak: 650 }, empIncome: { initial: 18.5, mid: 410, peak: 550 }, tags: ['#介護福祉士', '#調理師免許', '#山鹿市私立'] },
 
             { id: 'senshu_tamana_h', name: '専修大学熊本玉名高校', badge: '専修大学提携・特進（私立）', desc: '専修大学への内部進学パスと特進コース。玉名市の伝統私立校。', univRate: 75, empRate: 15, otherRate: 10,
-              studentVoice: '専修大学への推薦があるから安心してチャレンジできる！先生が熱心。',
-              growthContent: '専修大学との高大連携授業や、小論文・面接対策を徹底した推薦入試指導。',
+              studentVoice: '「専修大学への推薦制度があるという安心感を持ちながら、自分のペースでしっかりと大学受験の対策に集中できます。先生方の熱心な個別指導にいつも感謝しています。」（普通科 3年）',
+              growthContent: '専修大学との高大連携授業や、小論文・面接対策を徹底した推薦入試指導。自分の目標とする進路を確実に掴み取るための万全のサポート体制が整っています。',
               universities: [{name: '専修大学（内部推薦）', ratio: '40%'}, {name: '九州圏私立大学', ratio: '35%'}],
               companies: ['地場製造・事務', '販売'],
               univIncome: { initial: 23, mid: 630, peak: 880 }, empIncome: { initial: 18, mid: 400, peak: 540 }, tags: ['#専修大学内部推薦', '#玉名市私立', '#東京進学強み'] },
 
             { id: 'tamanagirls_h', name: '玉名女子高校', badge: '吹奏楽全国金賞・看護・保育（私立）', desc: '吹奏楽部が全国グランプリ常連！看護科・食物科・保育科など。', univRate: 70, empRate: 25, otherRate: 5,
-              studentVoice: '吹奏楽部の演奏は圧巻！看護や保育の実習も充実していてみんなキラキラしている。',
-              growthContent: '全国トップレベルの音楽表現・集団行動と、看護・保育・食物の実践資格取得。',
+              studentVoice: '「全国金賞常連の吹奏楽部の演奏は鳥肌が立つほどの迫力です！看護や保育の専門実習も充実しており、生徒全員がキラキラと輝いている自慢の学校です。」（看護科 3年）',
+              growthContent: '全国トップレベルの音楽表現・集団行動で培う集中力と、看護・保育・食物の実践的な資格取得。社会で即戦力として愛される女性プロフェッショナルを育成します。',
               universities: [{name: '看護・医療系大学', ratio: '30%'}, {name: '保育・家政系大学・短大', ratio: '40%'}],
               companies: ['看護師・准看護師', '保育士', 'サービス'],
               univIncome: { initial: 23.5, mid: 600, peak: 820 }, empIncome: { initial: 19, mid: 450, peak: 600 }, tags: ['#吹奏楽全国金賞', '#看護・保育', '#玉名女子'] },
 
             { id: 'ariake_h', name: '有明高校', badge: '看護科・電気・福祉（私立）', desc: '荒尾市の私立校。看護科（5年一貫）や電気科・福祉科など現場直結。', univRate: 70, empRate: 25, otherRate: 5,
-              studentVoice: '荒尾で看護師や電気工事士のプロを目指せる！実習が分かりやすくて楽しい。',
-              growthContent: '電気工事士資格の取得や、5年一貫看護科での最先端医療実習。',
+              studentVoice: '「荒尾にいながら看護師や電気工事士のプロを目指せる実践的な授業が魅力です。先生との距離が近く、分からないところをとことん質問できるので確実に力がつきます！」（電気科 3年）',
+              growthContent: '電気工事士資格の取得や5年一貫看護科での最先端医療実習。地域産業や医療現場の即戦力として、第一線で長く活躍できる確かな技術と人間性を磨きます。',
               universities: [{name: '看護専攻科・国家資格', ratio: '60%'}, {name: '工学・福祉系大', ratio: '20%'}],
               companies: ['看護師', '電気工事士', '地場技術職'],
               univIncome: { initial: 23.5, mid: 610, peak: 830 }, empIncome: { initial: 19.5, mid: 470, peak: 640 }, tags: ['#看護科5年一貫', '#電気工事士', '#荒尾市私立'] },
 
-            { id: 'syugakukan_h', name: '秀岳館高校', badge: 'スポーツ全国強豪・特進（私立）', desc: '八代市のスポーツ強豪校。サッカー・野球など全国大会常連＆特進クラス。', univRate: 65, empRate: 25, otherRate: 10,
-              studentVoice: '全国からすごいアスリートが集まる！活気とエネルギーに溢れたキャンパス。',
-              growthContent: '全国トップアスリートの育成メソッドと、推薦入試を活用した大学進学指導。',
-              universities: [{name: 'スポーツ系私立大学', ratio: '50%'}, {name: '九州圏私立大', ratio: '30%'}],
-              companies: ['警察・消防', '地場製造', '店舗'],
-              univIncome: { initial: 22, mid: 560, peak: 780 }, empIncome: { initial: 18.5, mid: 420, peak: 570 }, tags: ['#スポーツ全国強豪', '#八代市私立', '#推薦進学強み'] },
-
-            { id: 'yatsushiro_shirayuri_h', name: '八代白百合学園高校', badge: '伝統の女子校・看護・特進（私立）', desc: '八代市のカトリック女子校。白百合ネットワークと看護・特進進学。', univRate: 80, empRate: 10, otherRate: 10,
-              studentVoice: 'お互いを尊重しあう温かい雰囲気。制服が可愛く、礼儀作法もしっかり身につく。',
-              growthContent: '全国の白百合女子大学ネットワークを活用した進学と、質の高い看護医療教育。',
-              universities: [{name: '白百合女子大（特別推薦）', ratio: '25%'}, {name: '看護・医療系大学', ratio: '35%'}],
-              companies: ['医療事務', '一般事務'],
-              univIncome: { initial: 23, mid: 590, peak: 810 }, empIncome: { initial: 18, mid: 400, peak: 540 }, tags: ['#白百合女子大推薦', '#カトリック女子校', '#看護医療'] },
-
             { id: 'seiryo_h', name: 'くまもと清陵高校', badge: '通信制・広域単位制（私立）', desc: '南阿蘇の自然に囲まれた広域通信制高校。個別のペースで高校卒業を目指す。', univRate: 35, empRate: 35, otherRate: 30,
-              studentVoice: '無理のないスクーリングで自分の趣味や目標と両立できるのが嬉しい！',
-              growthContent: 'オンライン・個別指導によるマイペースな学習とカウンセリングサポート。',
+              studentVoice: '「南阿蘇の豊かな自然に囲まれた無理のないスクーリングで、自分の趣味や芸能活動・将来の夢と高校生活を完全に両立できるのが本当にありがたいです！」（通信制 3年）',
+              growthContent: 'オンラインや個別指導を組み合わせたマイペースな学習サポートと、心のケアを重視したカウンセリング。自分のペースで確実に自信を取り戻しながら高校卒業資格を取得できます。',
               universities: [{name: '通信制・私立大学', ratio: '50%'}, {name: '専門学校', ratio: '50%'}],
               companies: ['店舗・サービス', '一般作業'],
               univIncome: { initial: 20, mid: 450, peak: 600 }, empIncome: { initial: 17, mid: 360, peak: 480 }, tags: ['#通信制単位制', '#自分のペース', '#南阿蘇'] }
@@ -943,7 +791,7 @@
             document.getElementById('statUnivRate').textContent = s.univRate + '%';
             document.getElementById('statEmpRate').textContent = s.empRate + '%';
 
-            // Student voice & Growth
+            // Student voice & Growth (ボリュームアップした詳細文章を反映)
             document.getElementById('studentVoiceText').textContent = s.studentVoice || '先生と生徒の距離が近く、毎日が充実しています！';
             document.getElementById('growthContentText').textContent = s.growthContent || '特色ある授業や探究活動を通じて、実践的なスキルが身につきます。';
 
